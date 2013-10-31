@@ -1,0 +1,29 @@
+doctype html
+html
+  head
+    meta charset="utf-8"
+    title Dawn.io
+    meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:200,300,400,600,700,900"
+    = stylesheet_link_tag 'application', :media => 'all'
+    = javascript_include_tag 'application'
+    = csrf_meta_tags
+
+  body
+    header
+      #header-content
+        #logo Dawn.io
+        ul#menu
+          li: a Features
+          li: a Pricing
+          li: a Blog
+          li: a Docs
+          li: a Support
+          li: a About
+
+    .notice = notice
+    .alert = alert
+
+    = yield
+
+    footer Copyright © 2013 Blaž Hrastnik

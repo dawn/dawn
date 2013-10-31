@@ -1,0 +1,184 @@
+/*
+  colors:
+    - main black hue #31313A
+  
+    green + brown (bonsai) japanese-white-pine-bonsai-masaru-yamaki-us-bicentennial-2.jpg
+
+    - white-ish green #DAF3DD
+    - red neon #EEBF9A
+    - green neon #D3EE9A
+    - light green for border #B8E7B4
+
+    light brown: #CFB590;
+    dark wood brown: #564334;
+    driftwood #7C7052
+
+    alter colors
+    https://kuler.adobe.com/create/color-wheel/?base=2&rule=Compound&selected=2&name=My%20Kuler%20Theme&mode=rgb&rgbvalues=0.8,0.46168963884342,0.34933828580454973,0.6,0.4207851823066769,0.36126874543603593,1,0.15320412130137573,0.27619833130378335,0.9101334827098071,1,0.9,0.5615492604263281,0.8,0.36631754774247427&swatchOrder=0,1,2,3,4
+    
+    #6871DF - dove purple blue
+    #FF2746 - kuler red
+    #996B5C - kuler brown
+
+    driftwood #7C7052
+
+    FONTS:
+
+    FF Tisa Pro or Proxima Nova (crazy awesome)
+    Frankling Gothic URW (cool!)
+    FF Dagny Pro
+    Whitney + FF Thundra
+}
+*/
+
+header {
+  z-index: 999;
+  box-shadow: 0 0px 1px rgba(0, 0, 0, 0.15);
+  background: rgba(255,255,255,.1); 
+  /* alternative #15191B or #686150 */
+  height: 60px;
+  color: #000000;
+  line-height: 58px;
+
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+
+  a {color: #8B8B8B; border-bottom: 0;}
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #15191B;
+  text-shadow: 0 1px white;
+}
+
+#header-content, #main, .inner {
+  margin: 0 auto;
+  max-width: 880px; }
+
+#header-content {
+  padding: 0 15px; }
+
+#logo {
+  float: left;
+}
+
+#menu {
+  float: right; }
+
+#menu li {
+  font-size: 14px;
+  text-transform: uppercase;
+  display: inline-block;
+  margin: 0 9px;
+  a:hover,  a.selected {
+    color: #f3efda;
+  }
+}
+
+#main {
+  padding: 15px; 
+}
+
+section#landing {
+  box-shadow: inset 0 -1px #ddd, inset 0 -15px 15px -15px rgba(0,0,0,.1);
+  height: 420px;
+  line-height: 420px;
+  text-align: center;
+  padding: 0;
+
+  background-image: url('bg.jpg');
+  background-size: 100% auto;
+  background-size: 1920px auto; /* temp: fixate the background to the look at 1920p, so we have the same look at all sizes */
+  background-position: center;
+}
+
+#landing .text {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#landing h1 {
+  text-shadow: 0 1px #999;
+}
+
+#landing h4 {
+  color: #aaa;
+  font-weight: 400;
+  text-shadow: 0 1px #444;
+}
+
+/* temp: color filter */
+#landing {position:relative}
+#landing::after {content: ''; position:absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(192, 149, 73, 0.1); z-index: 1;}
+#landing .text {position: relative; z-index: 3 }
+/* end color filter */
+
+section .inner {
+  padding: 30px;
+}
+
+section#two {
+  background-image: url("cubes.png"); 
+}
+
+section#white {
+  background-color: #fff;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee; 
+}
+
+footer {
+  margin-top: 20px;
+  background-color: #111;
+  color: #f4f8f0;
+  height: 180px;
+  width: 100%;
+  font-size: .75em; 
+}
+
+section#photo {
+  background-image: url("http://farm6.staticflickr.com/5520/9699238575_9e9c4841a3_k.jpg"); /* temp */
+  background-size: 1920px auto;
+  background-position: 100% 650px;
+  position: relative;
+}
+section#photo .inner {
+  position: relative;
+  z-index: 2;
+  
+  color: #fff;
+}
+section#photo .inner h2 {
+  color: #fff;
+  text-shadow: 0 1px black;
+}
+section#photo::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left:0;
+  right:0;
+  bottom:0;
+  background-color: rgba(0,0,0,.7);
+  z-index: 1;
+}
+
+/* three columnar thingy */
+.column img {
+  margin: 0 auto;
+  max-width: 100%;
+}
+.column:first-child {padding-left: 25px;}
+.column:last-child {padding-right: 25px;}
+.column {
+  display:inline-block;
+  width: 33.3%;
+  padding: 1em;
+  vertical-align: top;
+}
+/* Dashboard */
+body.dashboard {
+  margin-top: 60px;
+}

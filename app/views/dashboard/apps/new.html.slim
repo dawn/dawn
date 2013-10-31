@@ -1,0 +1,13 @@
+h1 Create new app
+
+= form_for [:dashboard, @app] do |f|
+  - if @app.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@app.errors.count, "error")} prohibited this app from being saved:"
+      ul
+        - @app.errors.full_messages.each do |message|
+          li = message
+
+  = f.text_field :name, placeholder: "Name"
+
+  = f.button "Save"

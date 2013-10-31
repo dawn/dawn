@@ -1,0 +1,15 @@
+= inside_layout 'dashboard' do
+  .appbar
+    h4 speed / RubyApp
+
+  ul#sidebar
+    a href="/" class=("selected" if action?('dashboard')) : li data-title="Controls": i.icon-anchor
+    a: li data-title="Metrics": i.icon-bar-chart
+    a: li data-title="Services": i.icon-suitcase
+    a: li data-title="Environment": i.icon-wrench
+    a: li data-title="Domains": i.icon-globe
+    a: li data-title="SSL": i.icon-lock
+    a href="/logs" class=("selected" if action?('logs')) : li data-title="Logs": i.icon-align-left
+    a: li data-title="Settings": i.icon-cogs
+  #main
+    = yield

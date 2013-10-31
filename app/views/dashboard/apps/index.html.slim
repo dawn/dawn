@@ -1,0 +1,5 @@
+= link_to "new", new_dashboard_app_path
+
+p #{@apps.count} app(s)
+- @apps.each do |app|
+  h2 = app.name

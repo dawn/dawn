@@ -1,0 +1,28 @@
+#main
+  h3 Settings
+
+  = devise_error_messages!
+
+  = form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f|
+    dl
+      dt = f.label :username
+      dd = f.text_field :username
+    dl
+      dt = f.label :email
+      dd = f.email_field :email
+    dl
+      dt
+      dd = f.button "Save"
+
+  = form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f|
+    dl
+      dt
+        h4 Password
+      dd 
+        = f.password_field :current_password, placeholder: "Current password"
+        = f.password_field :password, :autocomplete => "off", placeholder: "New password"
+        = f.password_field :password_confirmation, placeholder: "Confirm new password"
+    dl
+      dt
+      dd = f.button "Save"
+  p Unhappy? #{link_to "Cancel your account", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete}.

@@ -1,0 +1,9 @@
+h4 Forgot your password?
+.tagline Enter your email address here and we'll send you an email with instructions and a key that will let you reset your password.
+#devise
+  = form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f|
+    = devise_error_messages!
+    / = f.label :email
+    = f.email_field :email, placeholder: "Email address"
+    = f.button "Reset password", :class => 'btn'
+  = render "devise/shared/links"
