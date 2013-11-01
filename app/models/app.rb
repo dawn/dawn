@@ -2,13 +2,8 @@ class App
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  before_create do
-    create_git_repo
-  end
-
-  before_destroy do
-    delete_git_repo
-  end
+  before_create { create_git_repo }
+  before_destroy { delete_git_repo }
 
   # after_update = don't do this on create
   after_update do # rebuild and redeploy if config was changed
