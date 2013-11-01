@@ -13,11 +13,11 @@ class Dashboard::AppsController < ApplicationController
   end
 
   def create
-    @app = App.new(params[:app].permit[:name])
+    @app = App.new(name: params[:app][:name])
     @app.user = current_user
 
     if @app.save
-      redirect_to @app, notice: 'app was successfully created.'
+      redirect_to [:dashboard, @app], notice: 'app was successfully created.'
     else
       render action: "new"
     end
