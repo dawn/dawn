@@ -13,7 +13,7 @@ class Dashboard::AppsController < ApplicationController
   end
 
   def create
-    @app = App.new(params[:app])
+    @app = App.new(params[:app].permit[:name])
     @app.user = current_user
 
     if @app.save
