@@ -88,7 +88,7 @@ class App
 
   def create_git_repo
     Dir.chdir Dir.home("git") do
-      folder = "#{params[:name]}.git"
+      folder = "#{name}.git"
       raise "Repo exists!" if Dir.exists? folder
 
       FileUtils.mkdir_p(folder)
