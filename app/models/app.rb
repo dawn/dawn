@@ -6,6 +6,10 @@ class App
     create_git_repo
   end
 
+  before_destroy do
+    delete_git_repo
+  end
+
   # after_update = don't do this on create
   after_update do # rebuild and redeploy if config was changed
     if config_changed?
@@ -99,6 +103,13 @@ class App
     end
   end
   private :create_git_repo
+
+  def delete_git_repo
+    Dir.chdir Dir.home("git") do
+      FileUtils.rmdir(git)
+    end
+  end
+  private :delete_git_repo
 
   belongs_to :user
   embeds_many :releases, order: :created_at.desc
