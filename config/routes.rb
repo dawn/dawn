@@ -34,7 +34,7 @@ Dawn::Application.routes.draw do
     # get '/settings' ?
 
     # TEST ROUTES
-    get '/controls', to: 'apps#dashboard'
+    get '/controls', to: 'apps#controls'
     get '/logs', to: 'apps#logs'
   end
 
