@@ -13,7 +13,7 @@ class App
     end
   end
 
-  validate :name, 
+  validate :name,
     uniqueness: true,
     presence: true,
     format: {with: /\A[a-z][a-z\d-]+\z/}, # a-z + 0-9 + -, must start with a-z

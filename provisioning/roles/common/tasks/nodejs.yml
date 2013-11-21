@@ -1,0 +1,17 @@
+---
+sudo: yes
+
+- name: install node.js dependencies
+  apt: pkg=$item state=present
+  with_items:
+    - python-software-properties 
+    - python
+    - g++
+    - make
+  tags: [packages]
+
+- name: add node.js repository
+  apt_repository: repo='ppa:chris-lea/node.js' state=present
+
+- name: install node.js
+  apt: update_cache=yes pkg=nodejs state=present

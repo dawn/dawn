@@ -1,0 +1,11 @@
+---
+- name: install RVM
+# sudo: yes
+  shell: \curl -L https://get.rvm.io | bash -s stable --autolibs=3 creates=~/.rvm
+
+#- name: add user to RVM group
+#  sudo: yes
+#  user: name=vagrant append=yes groups=rvm
+
+- name: install ruby 2.0
+  shell: ~/.rvm/bin/rvm install --default $ruby creates=~/.rvm/rubies/$ruby

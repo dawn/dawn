@@ -1,0 +1,4 @@
+---
+- name: install hipache
+  sudo: yes
+  shell: npm install hipache -g creates=~/usr/local/bin/hipache

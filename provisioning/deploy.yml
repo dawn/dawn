@@ -1,0 +1,18 @@
+---
+- hosts: vagrant
+  roles:
+    - common
+
+  user: vagrant # rename to remote_user in Ansible v1.4
+
+  vars:
+    gem_bin_path: ~/.rvm/gems/$ruby/bin
+    ruby: ruby-2.0.0-p247
+    wd: /vagrant/src
+
+  tasks:
+    #- name: upgrade packages
+    #  apt: upgrade=yes update_cache=yes
+    #  sudo: true
+
+
