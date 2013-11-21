@@ -4,7 +4,7 @@ class Gear
 
   # before_create create a docker container and run the worker, set port/ip/container_id
   before_create do |gear|
-    gear.name = "#{type}.#{app.gears.where(type: type).count + 1}" # TEMP? might not be cross process safe, need to make it Atomic
+    gear.number = app.gears.where(type: type).count + 1 # TEMP? might not be cross process safe, need to make it Atomic
     gear.port = 5000 # temp?
                                                            # FUGLY, FIX!
     gear.container_id = `docker run -d -e PORT=#{port} #{app.releases.last.image} /bin/bash -c "/start #{type}"`
@@ -19,11 +19,15 @@ class Gear
   validates_uniqueness_of :name, :container_id, :ip
 
   field :type, type: String # worker type: web/...
-  field :name, type: String # full name: web.1, mailer.3
+  field :number, type: Integer # 1,2,3
 
   field :port, type: Integer # outbound port of the container
   field :ip, type: String # network IP of the container
   field :container_id, type: String # pid/identifier of the Docker container
+
+  def name # full name: web.1, mailer.3 (type.number)
+    "#{type}.#{number}"
+  end
 
   def kill
     `docker kill #{container_id}`

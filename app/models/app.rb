@@ -66,9 +66,35 @@ class App
   end
 
   # scales the application to a particular size (in gears)
-  def scale
-    # determine whether we need to add or remove gears
-    # ...
+  def scale input
+    old_formation = self.formation
+
+    pairs = input.split(/\s+/)
+
+    new_formation = pairs.each_with_object({}) do |str, hash|
+      key, val = str.split("=")
+      hash[key.to_sym] = val.to_i # TODO: parse +1, -2 as relative
+    end  # rescue {}
+
+    new_formation.each_pair do |type, count|
+      if old_formation[key]
+        diff = old_formation[key] - count
+      else
+        diff = count
+      end
+
+      # determine whether we need to add or remove gears
+      if diff = 0
+        # do nothing
+      elsif diff > 0
+        diff.times { gear.create!(type: type) }
+      elsif diff < 0
+        # get rid of diff number of gears, from the highest worker number down
+        gears.where(type: type).order_by(:number.desc).limit(abs(diff)).destroy
+      end
+    end
+
+    self.formation = new_formation
   end
 
   # returns a log stream of the application
