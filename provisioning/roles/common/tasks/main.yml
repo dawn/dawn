@@ -7,3 +7,4 @@
   sudo: yes
 - include: hipache.yml
 - include: git.yml
+  sudo: yes
