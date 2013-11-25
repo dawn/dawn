@@ -1,15 +1,9 @@
 ---
-- name: install userspace packages
-  apt: pkg=$item state=present
-  sudo: yes
-  tags: [packages]
-  with_items:
-    - curl
-    - git
-    - python-pycurl # needed for apt_repo
-
+- include: packages.yml
 - include: ruby.yml
 - include: nodejs.yml
-- include: docker.yml
-- include: hipache.yml
   sudo: yes
+- include: docker.yml
+  sudo: yes
+- include: hipache.yml
+- include: git.yml

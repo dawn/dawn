@@ -8,4 +8,8 @@
 #  user: name=vagrant append=yes groups=rvm
 
 - name: install ruby 2.0
-  shell: ~/.rvm/bin/rvm install --default $ruby creates=~/.rvm/rubies/$ruby
+  shell: ~/.rvm/bin/rvm install --default {{ ruby }} creates=~/.rvm/rubies/{{ ruby }}
+
+- name: setup gemrc
+  sudo: yes
+  copy: src=gemrc dest=/etc/gemrc

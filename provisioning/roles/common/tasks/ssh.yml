@@ -1,0 +1,4 @@
+---
+- name: replace the sshd_config
+  sudo: yes
+  copy: src=sshd_config dest=/etc/ssh/sshd_config

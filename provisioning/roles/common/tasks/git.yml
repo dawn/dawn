@@ -1,0 +1,9 @@
+---
+- name: setup user group
+  group: name={{ user_group }} state=present
+
+- name: create git user
+  user: name={{ user_git }} shell=/usr/bin/git-shell home={{ git_home_path }} group={{ user_group }}
+
+- name: set git home access for user_group
+  file: path={{ git_home_path }} group={{ user_group }} recurse=yes state=directory mode=0760

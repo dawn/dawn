@@ -1,14 +1,15 @@
 ---
-sudo: yes
-
 - name: install node.js dependencies
-  apt: pkg=$item state=present
+  apt: pkg={{ item }} state=present
   with_items:
-    - python-software-properties 
+    - python-software-properties
     - python
     - g++
     - make
   tags: [packages]
+
+- name: add node.js to local key chain
+  apt_key: url=http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xB9316A7BC7917B12
 
 - name: add node.js repository
   apt_repository: repo='ppa:chris-lea/node.js' state=present
