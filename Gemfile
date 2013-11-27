@@ -26,6 +26,8 @@ gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 
+gem 'rfc822', '0.1.4' # email verification gem
+
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
