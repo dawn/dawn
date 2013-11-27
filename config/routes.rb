@@ -17,7 +17,7 @@ Dawn::Application.routes.draw do
   end
 
   subdomain :dashboard do
-    resources :apps, param: :name do # param maps to :name, not :id 
+    resources :apps, param: :name do # param maps to :name, not :id
       member do
         get 'controls'
         get 'metrics'
@@ -50,6 +50,10 @@ Dawn::Application.routes.draw do
   subdomain :api do
     resources :apps do
       # build, deploy, logs...
+      member do
+        resources :gears
+        #get 'gears'
+      end
     end
 
     post '/login', to: 'session#create'
