@@ -1,3 +1,5 @@
+require 'fileutils'
+
 class App
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -8,7 +10,7 @@ class App
   # after_update = don't do this on create
   after_update do # rebuild and redeploy if config was changed
     if config_changed?
-      rebuild 
+      rebuild
       deploy!
     end
   end
@@ -37,7 +39,7 @@ class App
   end
   alias :rebuild :build
 
-  # using the latest release, destroy old gears and 
+  # using the latest release, destroy old gears and
   # generate new ones
   def deploy!
     image = releases.last.image # TEMP: unused?
