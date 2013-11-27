@@ -56,10 +56,9 @@ class User
       break key unless User.where(api_key: key).exists?
     end
   end
+  private :generate_api_key
 
   has_many :apps
   has_many :keys
-
-  private :generate_api_key
 
 end
