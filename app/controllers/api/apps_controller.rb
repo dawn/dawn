@@ -9,7 +9,7 @@ class Api::AppsController < ApiController
   end
 
   def create
-    App.create!(name: params[:name], user: current_user)
+    App.create!(name: app_params[:name], user: current_user)
     render status: 200
   end
 
@@ -31,10 +31,9 @@ class Api::AppsController < ApiController
   end
 
   def find_app
-    if app = App.find_by(name: params[:name])
+    if app = App.find_by(name: app_params[:name])
       @app = app
     else
-      @app = nil
       render status: 404
     end
   end
@@ -48,7 +47,7 @@ class Api::AppsController < ApiController
   private :verify_app_owner
 
   def app_params
-    param.require(:app).permit(:name, :git)
+    params.require(:app).permit(:name, :git)
   end
   private :app_params
 
