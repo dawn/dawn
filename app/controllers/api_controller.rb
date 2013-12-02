@@ -13,7 +13,7 @@ class ApiController < ActionController::Metal
 
   force_ssl if: :ssl_configured?
 
-  before_filter :set_default_response_format # force json
+  before_action :set_default_response_format # force json
 
   append_view_path "#{Rails.root}/app/views" # you have to specify your views location as well
 
