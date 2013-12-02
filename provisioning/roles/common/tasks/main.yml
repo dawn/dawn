@@ -9,3 +9,5 @@
 - include: git.yml
   sudo: yes
 - include: ssh.yml
+- include: mongodb.yml
+  sudo: yes

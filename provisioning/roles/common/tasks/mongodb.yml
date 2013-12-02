@@ -1,0 +1,4 @@
+---
+- name: replace the sshd_config
+  sudo: yes
+  copy: src=mongodb.conf dest=/etc/mongodb.conf
