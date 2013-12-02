@@ -52,7 +52,7 @@ Dawn::Application.routes.draw do
       # build, deploy, logs...
       member do
         resources :gears
-        #get 'gears'
+        resources :domains
       end
     end
 
@@ -60,7 +60,9 @@ Dawn::Application.routes.draw do
 
     get '/q', to: 'keys#test'
 
-    scope '/user' do
+    scope :account do
+      get '/', to: 'account#index'
+      patch '/', to: 'account#update'
       resources :keys
     end
 
