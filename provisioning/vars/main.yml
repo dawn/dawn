@@ -1,8 +1,8 @@
 ---
 ruby: ruby-2.0.0-p247
 gem_bin_path: ~/.rvm/gems/{{ ruby }}/bin
-wd: /vagrant/src
+wd: /dawn/src
 git_home_path: /home/git
 user_group: dawnusers
 user_git: git
-user_main: vagrant
+user_main: dawn

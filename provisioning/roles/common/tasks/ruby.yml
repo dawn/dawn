@@ -7,11 +7,11 @@
 #  sudo: yes
 #  user: name=vagrant append=yes groups=rvm
 
-- name: installing ruby 2.0.x
-  shell: ~/.rvm/bin/rvm install --default {{ ruby }} creates=~/.rvm/rubies/{{ ruby }}
+- name: installing ruby 2.0
+  shell: ~/.rvm/bin/rvm install {{ ruby }} --default
 
-#- name: installing rubinius
-#  shell: ~/.rvm/bin/rvm install --default {{ rubinius }} creates=~/.rvm/rubies/{{ rubinius }}
+- name: installing rubinius
+  shell: ~/.rvm/bin/rvm install rbx
 
 - name: setup gemrc
   sudo: yes
