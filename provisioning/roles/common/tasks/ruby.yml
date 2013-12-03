@@ -1,15 +1,21 @@
 ---
 - name: install RVM
-# sudo: yes
   shell: \curl -L https://get.rvm.io | bash -s stable --autolibs=3 creates=~/.rvm
-#- name: add user to RVM group
-#  sudo: yes
-#  user: name=vagrant append=yes groups=rvm
+
+- name: add user to RVM group
+  sudo: yes
+  user: name={{ user_main }} append=yes groups=rvm
+
 - name: install ruby (2.0)
   shell: ~/.rvm/bin/rvm install {{ ruby }} --default
+
 ## requires at least 500mb of free RAM
 #- name: install rubinius
 #  shell: ~/.rvm/bin/rvm install rbx
-- name: setup gemrc
+
+- name: setup system gemrc
   sudo: yes
-  copy: src=gemrc dest=/etc/gemrc
+  copy: src=gemrc-system dest=/etc/gemrc
+
+- name: setup user gemrc
+  copy: src=gemrc-user dest=/home/{{ user_main }}/.gemrc
