@@ -4,5 +4,4 @@
   shell: npm install hipache -g creates=~/usr/local/bin/hipache
 
 - name: replace the hipache.conf
-  sudo: yes
-  copy: src=hipache.conf.json dest=~/etc/hipache.conf
+  copy: src=hipache.conf.json dest=~/hipache.conf
