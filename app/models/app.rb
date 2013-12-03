@@ -15,12 +15,6 @@ class App
     end
   end
 
-  validate :name,
-    uniqueness: true,
-    presence: true,
-    format: {with: /\A[a-z][a-z\d-]+\z/}, # a-z + 0-9 + -, must start with a-z
-    length: { min: 3, max: 16 }
-
   field :name, type: String
   field :config, type: Hash, default: {} # master env config (on change, build new release)
   field :git, type: String # git repo location
@@ -28,6 +22,12 @@ class App
   field :formation, type: Hash, default: {web: 1} # formation - how many gears of what type do we have
 
   field :version, type: Integer, default: 0 # release version tracker
+
+  validate :name,
+    uniqueness: true,
+    presence: true,
+    format: {with: /\A[a-z][a-z\d-]+\z/}, # a-z + 0-9 + -, must start with a-z
+    length: { min: 3, max: 16 }
 
   def build
     self.inc(version: 1) # increment current version

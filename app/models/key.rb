@@ -4,16 +4,16 @@ class Key # SSH public key representation
 
   after_create do # add the key to authorized_keys
     Dir.chdir Dir.home("git") do
-      File.open('.ssh/authorized_keys', 'a') {|io| io.write key }
+      File.open('.ssh/authorized_keys', 'a') { |io| io.write key }
     end
   end
 
   before_destroy do # remove the key from authorized_keys (HAXX)
     Dir.chdir Dir.home("git") do
-      File.open('.ssh/authorized_keys', 'a') {|io|
+      File.open('.ssh/authorized_keys', 'a') do |io|
         contents = io.read.sub(key, '')
         io.write contents
-      }
+      end
     end
   end
 
