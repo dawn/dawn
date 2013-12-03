@@ -8,8 +8,8 @@
 - include: hipache.yml
 - include: git.yml
   sudo: yes
-- include: ssh.yml
-  sudo: yes
+#- include: ssh.yml
+#  sudo: yes
 - include: mongodb.yml
   sudo: yes
 - include: hipache.yml
