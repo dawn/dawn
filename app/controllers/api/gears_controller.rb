@@ -1,11 +1,11 @@
 class Api::GearsController < ApiController
 
-  before_action :find_app, only: [:index, :show, :destroy]
+  before_action :find_app, only: [:index, :show, :destroy, :destroy_all]
   before_action :find_gear, only: [:show, :destroy]
 
   def index
     @gears = @app.gears
-    render 'gears'
+    render
   end
 
   def show
@@ -13,7 +13,12 @@ class Api::GearsController < ApiController
   end
 
   def destroy
-    @gear
+    @gear.restart
+  end
+
+  def destroy_all
+    @gears = @app.gears
+    @gears.each(&:restart)
   end
 
   def find_app

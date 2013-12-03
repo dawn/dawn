@@ -52,6 +52,7 @@ Dawn::Application.routes.draw do
       # build, deploy, logs...
       member do
         resources :gears
+        delete '/gears', to: 'gears#destroy_all'
         resources :domains
       end
     end
@@ -68,4 +69,5 @@ Dawn::Application.routes.draw do
 
     post '/githook', to: 'stream#githook', :constraints => {:ip => /127.0.0.1/}
   end
+
 end
