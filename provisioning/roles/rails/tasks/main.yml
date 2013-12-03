@@ -1,9 +1,12 @@
----
-- name: Install Rails
-  command: gem install rails
-
-- name: Install deps for Puma
+- name: install puma dependency
   apt: pkg=libssl-dev state=present
 
-- name: Install Puma
-  command: gem install puma
+- name: bundle install
+  command: bundle install
+
+- name: export Procfile to Upstart
+  command: foreman export upstart /etc/init -a dawn
+  sudo: yes
+
+- name: deploy!
+  service: name=dawn state=started # enabled=yes

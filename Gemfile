@@ -6,6 +6,7 @@ gem 'rails', '4.0.0'
 gem 'mongoid', '~> 4', github: 'mongoid/mongoid'
 gem 'redis', '~> 3.0.5'
 gem 'puma'
+gem 'foreman'
 
 gem 'figaro', '~> 0.7.0'
 
