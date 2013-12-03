@@ -1,6 +1,5 @@
 ---
 - hosts: dawndev
-  remote_user: root
   tasks:
     - name: create dawn user
       user: name=dawn shell=/bin/bash state=present group=sudo password=$1$salt$wEFEXlsqMhUc7RwxISKiy0
