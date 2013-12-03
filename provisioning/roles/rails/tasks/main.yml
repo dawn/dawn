@@ -1,6 +1,9 @@
 ---
-- name: rails | Install Rails
+- name: Install Rails
   command: gem install rails
 
-- name: rails | Install Puma
+- name: Install deps for Puma
+  apt: pkg=libssl-dev state=present
+
+- name: Install Puma
   command: gem install puma
