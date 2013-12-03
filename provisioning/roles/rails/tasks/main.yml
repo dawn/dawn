@@ -1,0 +1,6 @@
+---
+- name: rails | Install Rails
+  command: gem install rails
+
+- name: rails | Install Puma
+  command: gem install puma

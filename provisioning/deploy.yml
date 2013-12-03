@@ -5,7 +5,4 @@
     - vars/main.yml
   roles:
     - common
-  tasks:
-    #- name: upgrade packages
-    #  apt: upgrade=yes update_cache=yes
-    #  sudo: true
+    - rails
