@@ -14,4 +14,4 @@
   apt: update_cache=yes pkg=lxc-docker state=present
 
 - name: install buildstep
-  shell: docker build -t progrium/buildstep github.com/progrium/buildstep
+  shell: docker pull progrium/buildstep
