@@ -4,6 +4,6 @@
   vars_files:
     - vars/main.yml
   roles:
-    - common
-    - git
-    - rails
+    - { role: common, tags: ["common"] }
+    - { role: git,    tags: ["git"]    }
+    - { role: rails,  tags: ["rails"]  }
