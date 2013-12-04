@@ -2,7 +2,7 @@
     "server": {
         "accessLog": "/var/log/hipache_access.log",
         "port": 80,
-        "workers": 5,
+        "workers": 2,
         "maxSockets": 100,
         "deadBackendTTL": 30,
         "address": ["127.0.0.1"],
