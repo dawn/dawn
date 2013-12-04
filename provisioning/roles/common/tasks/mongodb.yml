@@ -1,4 +1,10 @@
 ---
+- name: install mongodb
+  apt: pkg=mongodb state=present
+
 - name: setup /etc/mongodb.conf
   sudo: yes
   copy: src=mongodb.conf dest=/etc/mongodb.conf
+
+- name: start mongodb
+  service: name=mongodb state=started
