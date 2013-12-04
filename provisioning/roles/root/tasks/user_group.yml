@@ -1,0 +1,4 @@
+---
+- name: setup user group
+  group: name={{ user_group }}
+         state=present

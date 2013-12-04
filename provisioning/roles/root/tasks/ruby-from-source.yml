@@ -1,0 +1,15 @@
+---
+- name: Download Ruby
+  shell: curl -L ftp://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p247.tar.bz2 -o ruby.tar.bz2 chdir={{ root_tmp }}
+
+- name: Extract Ruby
+  shell: tar -xf ruby.tar.bz2 chdir={{ root_tmp }} creates=ruby-2.0.0-p247
+
+- name: configure ruby
+  shell: ./configure chdir={{ root_tmp }}/ruby-2.0.0-p247 creates=Makefile
+
+- name: Build Ruby
+  shell: make chdir={{ root_tmp }}/ruby-2.0.0-p247 creates=ruby
+
+- name: Install Ruby
+  shell: make install chdir={{ root_tmp }}/ruby-2.0.0-p247

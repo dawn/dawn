@@ -1,17 +1,9 @@
 ---
 - hosts: dawndev
   remote_user: root
+  vars:
+    root_tmp: /root/tmp
   vars_files:
     - vars/main.yml
-  tasks:
-    - name: setup user group
-      group: name={{ user_group }}
-             state=present
-
-    - name: create dawn user
-      user: name=dawn
-            shell=/bin/bash
-            state=present
-            group=sudo
-            groups={{ user_group }}
-            password=$1$salt$wEFEXlsqMhUc7RwxISKiy0
+  roles:
+    - root
