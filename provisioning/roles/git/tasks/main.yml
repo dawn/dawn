@@ -1,0 +1,4 @@
+---
+- include: setup-templates.yml
+  sudo: yes
+  sudo_user: {{ user_git }}

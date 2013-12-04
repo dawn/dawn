@@ -5,4 +5,5 @@
     - vars/main.yml
   roles:
     - common
+    - git
     - rails
