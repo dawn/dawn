@@ -1,15 +1,15 @@
 ---
-- name: Download Ruby
+- name: download ruby
   shell: curl -L ftp://ftp.ruby-lang.org/pub/ruby/2.0/{{ ruby }}.tar.bz2 -o ruby.tar.bz2 chdir={{ root_tmp }} creates=ruby.tar.bz2
 
-- name: Extract Ruby
+- name: extract ruby
   shell: tar -xf ruby.tar.bz2 chdir={{ root_tmp }} creates={{ ruby }}
 
 - name: configure ruby
   shell: ./configure chdir={{ root_tmp }}/{{ ruby }} creates=Makefile
 
-- name: Build Ruby
+- name: build ruby
   shell: make chdir={{ root_tmp }}/{{ ruby }} creates=ruby
 
-- name: Install Ruby
+- name: install ruby
   shell: make install chdir={{ root_tmp }}/{{ ruby }} creates=/usr/local/bin/ruby

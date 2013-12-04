@@ -7,7 +7,7 @@ class Release
     git_ref = 'master'
 
     Dir.chdir "#{Dir.home("git")}/#{app.git}" do
-      IO.popen "git archive #{git_ref} | /home/git/tools/buildstep #{self.image}" do |fd|
+      IO.popen "git archive #{git_ref} | /#{Rails.root}/script/buildstep #{self.image}" do |fd|
         puts "\e[1G#{fd.readline}" until fd.eof? # \e[1G gets rid of that pesky 'remote:' text
       end
     end
