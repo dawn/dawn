@@ -1,4 +1,18 @@
 ---
+- name: setup user group
+  tags: group_main
+  group: name={{ group_main }}
+         state=present
+
+- name: create dawn user
+  tags: user
+  user: name=dawn
+        shell=/bin/bash
+        state=present
+        group=sudo
+        groups={{ group_main }}
+        password=$1$salt$wEFEXlsqMhUc7RwxISKiy0
+
 - name: create git user
   tags: user
   user: name={{ user_git }}

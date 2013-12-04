@@ -1,5 +1,0 @@
----
-- name: setup user group
-  tags: group_main
-  group: name={{ group_main }}
-         state=present
