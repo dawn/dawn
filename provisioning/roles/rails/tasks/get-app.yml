@@ -1,6 +1,7 @@
 ---
 - name: pull source from repository
   git: repo={{ project_repo }} dest={{ path_app }}
+  sudo: yes
 
 - name: setup app directory
   sudo: yes

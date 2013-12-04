@@ -1,4 +1,4 @@
 #!/bin/bash
 # jumpstart
-./provision --tags "app-get,app-deploy"
-./service restart
+script/provision --tags "app-get,app-deploy"
+script/service restart
