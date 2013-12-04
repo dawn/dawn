@@ -11,7 +11,7 @@
   shell: git config --global init.templatedir "{{ path_home_git }}/.git-templates"
 
 - name: setup hook link
-  file: path={{ path_app }}/hooks/pre-receive
+  file: src={{ path_app }}/hooks/pre-receive
         dest={{ path_home_git }}/.git-templates/hooks/pre-receive
         state=link
         force=true
