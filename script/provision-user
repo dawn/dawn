@@ -1,0 +1,3 @@
+#!/bin/bash
+# provision-user
+ansible-playbook provisioning/deploy.yml -i provisioning/hosts -k "$@"
