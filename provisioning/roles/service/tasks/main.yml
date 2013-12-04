@@ -1,0 +1,19 @@
+#
+# this task is expected to be used via --tags
+#
+---
+- name: starting service
+  tags: start
+  service: name={{ service_name }} state=started
+
+- name: restarting service
+  tags: restart
+  service: name={{ service_name }} state=restarted
+
+- name: stopping service
+  tags: stop
+  service: name={{ service_name }} state=stopped
+
+- name: reloading service
+  tags: reload
+  service: name={{ service_name }} state=reloaded

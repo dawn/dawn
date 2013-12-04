@@ -1,0 +1,7 @@
+#!/bin/bash
+# USAGE:
+#   service stop
+#   service start
+#   service restart
+#   service reload
+ansible-playbook ../provisioning/service-control.yml -i ../provisioning/hosts -k --tags "$@"

@@ -1,0 +1,7 @@
+---
+- hosts: dawndev
+  remote_user: root
+  vars_files:
+    - vars/service.yml
+  roles:
+    - service
