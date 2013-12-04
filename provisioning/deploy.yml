@@ -3,6 +3,7 @@
   remote_user: dawn # rename to remote_user in Ansible v1.4
   vars_files:
     - vars/main.yml
+    - vars/service.yml
   roles:
     - { role: common, tags: ["common"] }
     - { role: git,    tags: ["git"]    }

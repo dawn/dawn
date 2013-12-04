@@ -1,4 +1,4 @@
 ---
 - name: deploy!
   sudo: yes
-  service: name=dawn state=started # enabled=yes
+  service: name={{ service_name }} state=started # enabled=yes
