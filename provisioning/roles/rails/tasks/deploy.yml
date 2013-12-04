@@ -1,0 +1,4 @@
+---
+- name: deploy!
+  sudo: yes
+  service: name=dawn state=started # enabled=yes

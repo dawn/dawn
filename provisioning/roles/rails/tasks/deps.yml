@@ -1,0 +1,4 @@
+---
+- name: install puma dependency
+  sudo: yes
+  apt: pkg=libssl-dev state=present
