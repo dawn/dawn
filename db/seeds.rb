@@ -9,3 +9,5 @@
 user = User.create(email: 'speed.the.bboy@gmail.com', password: 'test1234')
 #user.skip_confirmation!
 user.save!
+
+User.create(email: 'mistdragon100@gmail.com', password: 'cream').save!
