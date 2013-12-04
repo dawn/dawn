@@ -1,6 +1,11 @@
 ---
 - include: deps.yml
+  tags: get-deps
 - include: get-app.yml
+  tags: app-get
 - include: bundle-install.yml
+  tags: bundle-install
 - include: export-services.yml
+  tags: export-services
 - include: deploy.yml
+  tags: app-deploy
