@@ -1,17 +1,17 @@
 ---
 - name: create .git-templates
-  file: path={{ home_git }}/.git-templates
+  file: path={{ path_home_git }}/.git-templates
         state=directory
 
 - name: create .git-templates/hook
-  file: path={{ home_git }}/.git-templates/hooks
+  file: path={{ path_home_git }}/.git-templates/hooks
         state=directory
 
 - name: enable git templates
-  shell: git config --global init.templatedir "{{ home_git }}/.git-templates"
+  shell: git config --global init.templatedir "{{ path_home_git }}/.git-templates"
 
 - name: setup hook link
   file: path={{ path_app }}/hooks/pre-receive
-        dest={{ home_git }}/.git-templates/hooks/pre-receive
+        dest={{ path_home_git }}/.git-templates/hooks/pre-receive
         state=link
         force=true
