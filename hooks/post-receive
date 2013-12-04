@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+require 'net/http'
+$stdout.sync = true
+
+while line = STDIN.gets
+  old_rev, new_rev, refname = line.split
+
+  if refname == 'refs/heads/master'
+    name = Dir.pwd.split("/").last.gsub(/\.git\z/, '')
+
+    http = Net::HTTP.new('http://localhost', 3000)
+    http.request_post '/api/githook', "name=#{name}" do |response|
+      response.read_body do |segment|
+        $stdout.write segment
+      end
+    end
+
+  end
+end
