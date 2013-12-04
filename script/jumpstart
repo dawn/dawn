@@ -1,4 +1,4 @@
 #!/bin/bash
 # jumpstart
-script/provision-user --tags "app-get,app-deploy"
-script/service restart
+script/provision-user --tags "app-get,app-deploy" "$@"
+script/service restart "$@"
