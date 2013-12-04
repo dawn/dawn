@@ -1,6 +1,7 @@
 ---
-- include: user_group.yml
+- include: group-main.yml
 - include: user-dawn.yml
+- include: user-git.yml
 - include: ruby-from-source.yml
 #- include: rvm.yml
 - include: gem-foreman.yml

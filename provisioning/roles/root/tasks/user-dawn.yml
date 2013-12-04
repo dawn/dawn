@@ -1,8 +1,9 @@
 ---
 - name: create dawn user
+  tags: user
   user: name=dawn
         shell=/bin/bash
         state=present
         group=sudo
-        groups={{ user_group }}
+        groups={{ group_main }}
         password=$1$salt$wEFEXlsqMhUc7RwxISKiy0

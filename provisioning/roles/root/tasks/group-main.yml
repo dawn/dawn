@@ -1,4 +1,5 @@
 ---
 - name: setup user group
-  group: name={{ user_group }}
+  tags: group_main
+  group: name={{ group_main }}
          state=present
