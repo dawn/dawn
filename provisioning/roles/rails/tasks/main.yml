@@ -1,11 +1,14 @@
+- name: pull source from repository
+  git: repo={{project_repo}} dest={{wd}}
+
 - name: install puma dependency
   apt: pkg=libssl-dev state=present
 
 - name: bundle install
-  command: bundle install
+  command: bundle install chdir={{wd}}
 
 - name: export Procfile to Upstart
-  command: foreman export upstart /etc/init -a dawn
+  command: foreman export upstart /etc/init -a dawn chdir={{wd}}
   sudo: yes
 
 - name: deploy!

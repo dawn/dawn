@@ -1,8 +1,9 @@
 ---
 ruby: ruby-2.0.0-p247
 gem_bin_path: ~/.rvm/gems/{{ ruby }}/bin
-wd: /dawn/src
+wd: /home/dawn/src
 git_home_path: /home/git
 user_group: dawnusers
 user_git: git
 user_main: dawn
+project_repo: git@bitbucket.org:Speechless/paas.git
