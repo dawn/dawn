@@ -1,7 +1,6 @@
 ---
 - include: deps.yml
-- include: setup_app_dir.yml
-- include: pull-app.yml
+- include: get-app.yml
 - include: bundle-install.yml
 - include: export-services.yml
 - include: deploy.yml

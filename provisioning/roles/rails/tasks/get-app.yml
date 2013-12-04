@@ -1,0 +1,11 @@
+---
+- name: pull source from repository
+  git: repo={{ project_repo }} dest={{ path_app }}
+
+- name: setup app directory
+  sudo: yes
+  file: path={{ path_app }}
+        owner={{ user_main }}
+        recurse=yes
+        state=directory
+        mode=0644

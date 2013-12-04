@@ -1,3 +1,0 @@
----
-- name: pull source from repository
-  git: repo={{ project_repo }} dest={{ path_app }}
