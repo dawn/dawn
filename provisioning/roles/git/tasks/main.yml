@@ -3,3 +3,8 @@
   tags: setup-template
   sudo: yes
   sudo_user: "{{ user_git }}"
+
+- include: setup-ssh.yml
+  tags: setup-ssh
+  sudo: yes
+  sudo_user: "{{ user_git }}"

@@ -1,0 +1,4 @@
+---
+- name: create /home/git/.ssh
+  file: path={{ path_home_git }}/.ssh
+        state=directory
