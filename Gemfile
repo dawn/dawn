@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'
 
-gem 'mongoid', '~> 4', github: 'mongoid/mongoid'
+gem 'mongoid', '~> 4.0.0.alpha1', github: 'mongoid/mongoid'
 gem 'redis', '~> 3.0.5'
 gem 'puma', '~> 2.7.1'
 gem 'foreman', '~> 0.63.0'
