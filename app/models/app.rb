@@ -119,7 +119,7 @@ class App
       raise "Repo exists!" if Dir.exists? folder
 
       FileUtils.mkdir_p(folder)
-      system('git init --bare --shared ')
+      system("git init --bare --shared #{folder}")
       Rugged::Repository.init_at folder, :bare
       self.git = folder
 
