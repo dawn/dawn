@@ -1,10 +1,6 @@
 ---
-- include: setup-templates.yml
-  tags: setup-template
-  sudo: yes
-  sudo_user: "{{ user_git }}"
-
-- include: setup-ssh.yml
-  tags: setup-ssh
+- name: create /home/git/.ssh
+  file: path={{ path_home_git }}/.ssh
+        state=directory
   sudo: yes
   sudo_user: "{{ user_git }}"
