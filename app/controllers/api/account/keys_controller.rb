@@ -28,9 +28,12 @@ class Api::Account::KeysController < ApiController
 
   def destroy
     @key.destroy
+    render status: 200
   end
 
   def find_key
+    @keys = nil
+    @key = nil
     if key = Key.find(params[:key][:id])
       @key = key
     else
