@@ -1,2 +1,2 @@
 collection @keys
-extends 'apps/key'
+extends 'api/account/keys/key'

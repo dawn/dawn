@@ -1,2 +1,2 @@
 collection @apps
-extends 'apps/app'
+extends 'api/apps/app'

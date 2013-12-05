@@ -1,2 +1,2 @@
 collection @gears
-extends 'apps/gear'
+extends 'api/gears/gear'
