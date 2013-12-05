@@ -34,6 +34,20 @@ class App
 
     image_name = "#{user.username}/#{name}"
 
+    # build image using buildpacks (buildstep)
+    git_ref = 'master'
+
+    Dir.chdir "#{Dir.home("git")}/#{git}" do
+      IO.popen "git archive #{git_ref} | /#{Rails.root}/script/buildstep #{image_name}" do |fd|
+        puts "\e[1G#{fd.readline}" until fd.eof? # \e[1G gets rid of that pesky 'remote:' text
+      end
+    end
+
+    # .. import ENV config
+
+    # .. tag the current image commit with version (user/image:v3, etc., the ':v3' part)
+    # `docker tag #{self.image} `
+
     # set the release version to the counter
     releases.build(image: image_name, version: version)
   end

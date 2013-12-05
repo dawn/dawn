@@ -8,6 +8,9 @@ class Gear
     gear.port = 5000 # temp?
                                                            # FUGLY, FIX!
     gear.container_id = `docker run -d -e PORT=#{port} #{app.releases.last.image} /bin/bash -c "/start #{type}"`
+
+    `docker wait #{gear.container_id}` # wait until the container starts
+
     info = JSON.parse(`docker inspect #{container_id}`).first
     gear.ip = info["NetworkSettings"]["IPAddress"]
   end

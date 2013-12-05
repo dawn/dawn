@@ -14,14 +14,10 @@ class Api::StreamController < ActionController::Base#ApiController
   include ActionController::Live
 
   def githook
-    $stdout.write "yay! #{params[:git]}"
-
     response.headers['Content-Type'] = 'text/stream'
     real_stdout, $stdout = $stdout, response.stream
 
-    $stdout.write "before model fetch"
     app = App.find_by(git: params[:git])
-    $stdout.write "before build"
     app.build
     $stdout.write "\e[1G-----> Launching... " # no newline
     app.deploy!
