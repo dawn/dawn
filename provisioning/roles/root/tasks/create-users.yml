@@ -28,4 +28,4 @@
         group={{ group_main }}
         recurse=yes
         state=directory
-        mode=0760
+        mode=0770
