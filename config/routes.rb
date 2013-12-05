@@ -69,6 +69,6 @@ Dawn::Application.routes.draw do
   end
 
   # catch git pushes locally
-  post '/api/githook', to: 'stream#githook', :constraints => {:ip => /127.0.0.1/}
+  post '/api/githook', to: 'api/stream#githook', :constraints => {:ip => /127.0.0.1/}
 
 end
