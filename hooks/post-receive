@@ -8,7 +8,7 @@ while line = STDIN.gets
   if refname == 'refs/heads/master'
     name = Dir.pwd.split("/").last.gsub(/\.git\z/, '')
 
-    http = Net::HTTP.new('http://localhost', 3000)
+    http = Net::HTTP.new('http://localhost', 5000)
     http.request_post '/api/githook', "name=#{name}" do |response|
       response.read_body do |segment|
         $stdout.write segment

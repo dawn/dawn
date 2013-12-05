@@ -123,6 +123,8 @@ class App
       self.git = folder
 
       # add git hook to catch pushes
+      hook = File.join(folder, 'hooks', 'post-receive')
+      File.symlink(File.join(Rails.root, 'hooks', 'post-receive'), hook)
     end
   end
   private :create_git_repo
