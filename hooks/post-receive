@@ -9,7 +9,7 @@ while line = STDIN.gets
     name = Dir.pwd.split("/").last
 
     http = Net::HTTP.new('localhost', 5000)
-    http.read_timeout = 0
+    http.read_timeout = 60*5
     http.request_post '/api/githook', "git=#{name}" do |response|
       response.read_body do |segment|
         $stdout.write segment
