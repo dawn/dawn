@@ -10,7 +10,7 @@ require 'fileutils'
 
 # Controller for methods needing a stream
 
-class Api::StreamController < ApiController
+class Api::StreamController < ActionController::Base#ApiController
   include ActionController::Live
 
   def githook
