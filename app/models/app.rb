@@ -134,7 +134,6 @@ class App
 
       FileUtils.mkdir_p(folder)
       system("git init --bare --shared #{folder}")
-      Rugged::Repository.init_at folder, :bare
       self.git = folder
 
       # add git hook to catch pushes
