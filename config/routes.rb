@@ -61,7 +61,7 @@ Dawn::Application.routes.draw do
 
     get '/q', to: 'keys#test'
 
-    scope :account do
+    scope module: "account" do
       get '/', to: 'account#index'
       patch '/', to: 'account#update'
       resources :keys

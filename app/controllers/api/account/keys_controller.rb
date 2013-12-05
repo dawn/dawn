@@ -1,4 +1,4 @@
-class Api::KeysController < ApiController
+class Api::Account::KeysController < ApiController
 
   before_action :find_key, only: [:show, :destroy]
 
