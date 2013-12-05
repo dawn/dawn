@@ -1,12 +1,4 @@
 GIT
-  remote: git://github.com/libgit2/rugged.git
-  revision: 4dcf573d509b38869bb23ad55e26ceec3c98fa95
-  branch: development
-  submodules: true
-  specs:
-    rugged (0.19.0)
-
-GIT
   remote: git://github.com/mongoid/mongoid.git
   revision: ddfe7773d4689473525e2925d232889b4d6d6f90
   specs:
@@ -173,7 +165,6 @@ DEPENDENCIES
   rabl (~> 0.9.0)
   rails (= 4.0.0)
   redis (~> 3.0.5)
-  rugged!
   sass-rails (~> 4.0.0)
   slim-rails (~> 2.0.3)
   turbolinks

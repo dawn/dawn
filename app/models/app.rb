@@ -119,13 +119,14 @@ class App
       raise "Repo exists!" if Dir.exists? folder
 
       FileUtils.mkdir_p(folder)
+      system('git init --bare --shared ')
       Rugged::Repository.init_at folder, :bare
       self.git = folder
 
       # add git hook to catch pushes
       hook = File.join(folder, 'hooks', 'post-receive')
       File.symlink(File.join(Rails.root, 'hooks', 'post-receive'), hook)
-      FileUtils.chown_R('git', nil, folder)
+      FileUtils.chown_R(nil , ENV['DAWN_GROUP'], folder)
     end
   end
   private :create_git_repo

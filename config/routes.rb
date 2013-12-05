@@ -66,8 +66,9 @@ Dawn::Application.routes.draw do
       patch '/', to: 'account#update'
       resources :keys
     end
-
-    post '/githook', to: 'stream#githook', :constraints => {:ip => /127.0.0.1/}
   end
+
+  # catch git pushes locally
+  post '/api/githook', to: 'stream#githook', :constraints => {:ip => /127.0.0.1/}
 
 end

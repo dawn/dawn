@@ -12,8 +12,6 @@ gem 'figaro', '~> 0.7.0'
 
 gem 'devise', '~> 3.1.1'
 
-gem 'rugged', git: 'git://github.com/libgit2/rugged.git', branch: 'development', submodules: true
-
 gem 'rabl', '~> 0.9.0'
 gem 'slim-rails', '~> 2.0.3'
 gem 'font-awesome-rails', '~> 3.2.1.3'
