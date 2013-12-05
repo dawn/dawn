@@ -6,11 +6,11 @@
 
 - name: create dawn user
   tags: user
-  user: name=dawn
+  user: name={{ user_main }}
         shell=/bin/bash
         state=present
         group=sudo
-        groups={{ group_main }}
+        groups="{{ group_main }},docker"
         password=$1$salt$wEFEXlsqMhUc7RwxISKiy0
 
 - name: create git user
