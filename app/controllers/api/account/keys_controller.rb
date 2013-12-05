@@ -31,6 +31,7 @@ class Api::Account::KeysController < ApiController
   end
 
   def find_key
+    @key = nil
     if key = Key.find(params[:key][:id])
       @key = key
     else
