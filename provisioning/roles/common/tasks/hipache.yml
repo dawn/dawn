@@ -3,5 +3,11 @@
   sudo: yes
   shell: npm install hipache -g creates=~/usr/local/bin/hipache
 
-- name: replace the hipache.conf
-  copy: src=hipache.conf.json dest=~/hipache.conf
+- name: add hipache configuration
+  copy: src=hipache/hipache.json dest=/etc/hipache.json
+
+- name: add hipache service to Upstart
+  copy: src=hipache/upstart.conf dest=/etc/init/hipache.conf
+
+- name: start hipache
+  service: name=hipache state=started
