@@ -31,7 +31,11 @@ class Api::Account::KeysController < ApiController
   end
 
   def find_key
-    @key = Key.find(params[:key][:id])
+    if key = Key.find(params[:key][:id])
+      @key = key
+    else
+      render status: 404
+    end
   end
   private :find_key
 
