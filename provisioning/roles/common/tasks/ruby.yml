@@ -1,13 +1,13 @@
 ---
-- name: install RVM
-  shell: \curl -L https://get.rvm.io | bash -s stable --autolibs=3 creates=~/.rvm
+#- name: install RVM
+#  shell: \curl -L https://get.rvm.io | bash -s stable --autolibs=3 creates=~/.rvm
 
-- name: add user to RVM group
-  sudo: yes
-  user: name={{ user_main }} append=yes groups=rvm
+#- name: add user to RVM group
+#  sudo: yes
+#  user: name={{ user_main }} append=yes groups=rvm
 
-- name: install ruby (2.0)
-  shell: ~/.rvm/bin/rvm install {{ ruby }} --default
+#- name: install ruby (2.0)
+#  shell: ~/.rvm/bin/rvm install {{ ruby }} --default
 
 ## requires at least 500mb of free RAM
 #- name: install rubinius

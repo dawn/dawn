@@ -1,11 +1,34 @@
 ---
-- include: deps.yml
-  tags: get-deps
-- include: get-app.yml
+- name: install puma dependency
+  sudo: yes
+  apt: pkg=libssl-dev state=present
+
+- name: pull source from repository
+  git: repo={{ project_repo }} dest={{ path_app }}
+  sudo: yes
   tags: app-get
-- include: bundle-install.yml
+
+- name: setup app directory
+  sudo: yes
+  file: path={{ path_app }}
+        owner={{ user_main }}
+        recurse=yes
+        state=directory
+        mode=0644
+  tags: app-get
+
+- name: bundle install
+  sudo: yes
+  sudo_user: "{{ user_main }} -i"
+  command: bundle install chdir={{ path_app }}
   tags: bundle-install
-- include: export-services.yml
+
+- name: export Procfile to Upstart
+  sudo: yes
+  command: foreman export -f {{ path_app }}/Procfile upstart /etc/init -a dawn chdir={{ path_app }}
   tags: export-services
-- include: deploy.yml
+
+- name: deploy!
+  sudo: yes
+  service: name={{ service_name }} state=started # enabled=yes
   tags: app-deploy

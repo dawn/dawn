@@ -1,5 +1,0 @@
----
-- name: bundle install
-  sudo: yes
-  sudo_user: "{{ user_main }} -i"
-  command: bundle install chdir={{ path_app }}

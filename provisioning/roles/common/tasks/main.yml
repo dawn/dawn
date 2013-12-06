@@ -6,10 +6,10 @@
 - include: docker.yml
   sudo: yes
 - include: hipache.yml
+  sudo: yes
 - include: ssh.yml
   sudo: yes
 - include: mongodb.yml
   sudo: yes
 - include: redis.yml
   sudo: yes
-- include: hipache.yml

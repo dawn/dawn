@@ -1,5 +1,10 @@
 ---
-- name: setup user group
+- name: create user group
+  tags: group_main
+  group: name={{ group_main }}
+         state=present
+
+- name: create docker group
   tags: group_main
   group: name={{ group_main }}
          state=present

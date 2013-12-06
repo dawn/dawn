@@ -1,8 +1,0 @@
----
-- name: setup app directory
-  sudo: yes
-  file: path={{ path_app }}
-        owner={{ user_main }}
-        recurse=yes
-        state=directory
-        mode=0644

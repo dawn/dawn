@@ -1,4 +1,0 @@
----
-- name: export Procfile to Upstart
-  sudo: yes
-  command: foreman export -f {{ path_app }}/Procfile upstart /etc/init -a dawn chdir={{ path_app }}
