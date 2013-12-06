@@ -5,14 +5,12 @@ class Gear
   # before_create create a docker container and run the worker, set port/ip/container_id
   before_create do |gear|
     gear.number = app.gears.where(type: type).count + 1 # TEMP? might not be cross process safe, need to make it Atomic
-    PORT = 5000 # temp?
+    gear.port = 5000 # temp?
                                                            # FUGLY, FIX!
-    gear.container_id = `docker run -d -p #{PORT} -e PORT=#{PORT} #{app.releases.last.image} /bin/bash -c "/start #{type}"`
+    gear.container_id = `docker run -d -e PORT=#{port} #{app.releases.last.image} /bin/bash -c "/start #{type}"`
 
     info = JSON.parse(`docker inspect #{container_id}`).first
     gear.ip = info["NetworkSettings"]["IPAddress"]
-
-    gear.port = info["NetworkSettings"]["Ports"]["5000/tcp"].first["HostPort"].to_i
   end
 
   after_destroy do # destroy the accompanying docker container
