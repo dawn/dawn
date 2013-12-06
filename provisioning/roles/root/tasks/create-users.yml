@@ -1,12 +1,12 @@
 ---
 - name: create user group
-  tags: group_main
+  tags: group
   group: name={{ group_main }}
          state=present
 
 - name: create docker group
-  tags: group_main
-  group: name={{ group_main }}
+  tags: group
+  group: name=docker
          state=present
 
 - name: create dawn user
