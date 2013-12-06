@@ -100,7 +100,7 @@ class App
       end
 
       # determine whether we need to add or remove gears
-      if diff = 0
+      if diff == 0
         # do nothing
       elsif diff > 0
         diff.times { gear.create!(type: type) }
