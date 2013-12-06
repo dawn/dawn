@@ -71,7 +71,7 @@ class App
       count.times do
         gear = gears.create!(type: type)
         # update Hipache with the new gear IP/ports (only add web gears)
-        redis.rpush(redis_key, "localhost:#{gear.port}") if gear.type == 'web'
+        redis.rpush(redis_key, "http://localhost:#{gear.port}") if gear.type == 'web'
       end
     end
   end
