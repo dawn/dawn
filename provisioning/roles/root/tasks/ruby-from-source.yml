@@ -3,9 +3,12 @@
   apt: pkg={{ item }} state=present update_cache=yes
   with_items:
   - build-essential
+  - zlib1g-dev
   - libyaml-dev
   - libssl-dev
   - libgdbm-dev
+  - libreadline-dev
+  - libncurses5-dev
   - libffi-dev
 
 - name: ensure directory /tmp/ruby is present

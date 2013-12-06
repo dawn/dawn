@@ -25,6 +25,8 @@ gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 
+gem 'rb-readline', '~> 0.4.2' # tempfix for cannot load such file -- readline
+
 gem 'rfc822', '~> 0.1.4' # email verification gem
 
 group :development do
