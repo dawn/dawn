@@ -12,7 +12,7 @@ class Gear
     info = JSON.parse(`docker inspect #{container_id}`).first
     gear.ip = info["NetworkSettings"]["IPAddress"]
 
-    gear.port = ["NetworkSettings"]["Ports"]["5000/tcp"]["HostPort"].to_i
+    gear.port = ["NetworkSettings"]["Ports"]["5000/tcp"].first["HostPort"].to_i
   end
 
   after_destroy do # destroy the accompanying docker container
