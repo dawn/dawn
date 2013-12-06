@@ -1,8 +1,6 @@
 ---
 - hosts: dawndev
   remote_user: root
-  vars:
-    root_tmp: /root/tmp
   vars_files:
     - vars/main.yml
     - vars/service.yml

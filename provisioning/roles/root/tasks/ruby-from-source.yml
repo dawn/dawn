@@ -1,15 +1,27 @@
 ---
+- name: ensure we have the build tools and dependencies needed
+  apt: pkg={{ item }} state=present update_cache=yes
+  with_items:
+  - build-essential
+  - libyaml-dev
+  - libssl-dev
+  - libgdbm-dev
+  - libffi-dev
+
+- name: ensure directory /tmp/ruby is present
+  file: state=directory path=/tmp/ruby
+
 - name: download ruby
-  shell: curl -L ftp://ftp.ruby-lang.org/pub/ruby/2.0/{{ ruby }}.tar.bz2 -o ruby.tar.bz2 chdir={{ root_tmp }} creates=ruby.tar.bz2
+  get_url: url=ftp://ftp.ruby-lang.org/pub/ruby/2.0/{{ ruby }}.tar.bz2 dest=/tmp/ruby
 
 - name: extract ruby
-  shell: tar -xf ruby.tar.bz2 chdir={{ root_tmp }} creates={{ ruby }}
+  shell: tar -xf {{ruby}}.tar.bz2 chdir=/tmp/ruby creates={{ ruby }}
 
 - name: configure ruby
-  shell: ./configure chdir={{ root_tmp }}/{{ ruby }} creates=Makefile
+  shell: ./configure chdir=/tmp/ruby/{{ ruby }} creates=Makefile
 
 - name: build ruby
-  shell: make chdir={{ root_tmp }}/{{ ruby }} creates=ruby
+  shell: make chdir=/tmp/ruby/{{ ruby }} creates=ruby
 
 - name: install ruby
-  shell: make install chdir={{ root_tmp }}/{{ ruby }} creates=/usr/local/bin/ruby
+  shell: make install chdir=/tmp/ruby/{{ ruby }} creates=/usr/local/bin/ruby
