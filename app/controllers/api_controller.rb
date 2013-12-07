@@ -5,6 +5,9 @@ class ApiController < ActionController::Metal
 
   include ActionController::ForceSSL # secure API by forcing SSL in production
 
+  # Authentication: Token
+  include ActionController::HttpAuthentication::Token::ControllerMethods
+
   include ActionController::Helpers
   include Devise::Controllers::Helpers # helper methods
 
