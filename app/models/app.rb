@@ -23,7 +23,7 @@ class App
 
   field :version, type: Integer, default: 0 # release version tracker
 
-  validate :name,
+  validates :name,
     uniqueness: true,
     presence: true,
     format: {with: /\A[a-z][a-z\d-]+\z/}, # a-z + 0-9 + -, must start with a-z
