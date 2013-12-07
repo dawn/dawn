@@ -39,13 +39,14 @@ class ApiController < ActionController::Metal
   # via parameters. However, anyone could use Rails's token
   # authentication features to get the token from a header.
   def authenticate_user_from_api_key!
-    key  = params[:api_key].presence
-    user = key && User.find_by(api_key: key)
-
-    if user
-      self.current_user = user
-    else
-      head :unauthorized
+    authenticate_or_request_with_http_token do |token, options|
+      if token && user = User.find_by(api_key: token)
+        self.current_user = user
+        return true
+      else
+        return false
+      end
     end
   end
+
 end
