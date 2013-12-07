@@ -27,7 +27,7 @@ class App
     uniqueness: true,
     presence: true,
     format: {with: /\A[a-z][a-z\d-]+\z/}, # a-z + 0-9 + -, must start with a-z
-    length: { min: 3, max: 16 }
+    length: { minimum: 3, maximum: 16 }
 
   def build
     self.inc(version: 1) # increment current version
