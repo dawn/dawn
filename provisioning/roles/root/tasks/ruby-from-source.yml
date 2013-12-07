@@ -21,7 +21,7 @@
   shell: tar -xf {{ruby}}.tar.bz2 chdir=/tmp/ruby creates={{ ruby }}
 
 - name: configure ruby
-  shell: ./configure chdir=/tmp/ruby/{{ ruby }} creates=Makefile
+  shell: ./configure --with-readline-dir=/usr/local chdir=/tmp/ruby/{{ ruby }} creates=Makefile
 
 - name: build ruby
   shell: make chdir=/tmp/ruby/{{ ruby }} creates=ruby
