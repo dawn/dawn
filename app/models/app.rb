@@ -127,6 +127,10 @@ class App
     "#{name}.#{ENV['DAWN_HOST']}"
   end
 
+  def to_param # override for correct link_to routing
+    name
+  end
+
   def create_git_repo
     Dir.chdir Dir.home("git") do
       folder = "#{name}.git"
