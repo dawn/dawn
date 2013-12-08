@@ -26,10 +26,10 @@ class Dashboard::AppsController < ApplicationController
   # -- per app pages
 
   def controls
-    @app = App.find_by(name: params[:app][:name])
+    @app = App.find_by(name: params[:name])
   end
 
   def logs
-    @app = App.find_by(name: params[:app][:name])
+    @app = App.find_by(name: params[:name])
   end
 end
