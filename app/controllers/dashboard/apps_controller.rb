@@ -19,17 +19,17 @@ class Dashboard::AppsController < ApplicationController
     if @app.save
       redirect_to [:dashboard, @app], notice: 'app was successfully created.'
     else
-      render action: "new"
+      render action: 'new', layout: 'dashboard'
     end
   end
 
   # -- per app pages
 
   def controls
-
+    @app = App.find_by(name: params[:app][:name])
   end
 
   def logs
-
+    @app = App.find_by(name: params[:app][:name])
   end
 end

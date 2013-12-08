@@ -1,9 +1,9 @@
 = inside_layout 'dashboard' do
   .appbar
-    h4 speed / RubyApp
+    h4 #{@app.user.username} / #{@app.name}
 
   ul#sidebar
-    a href="/" class=("selected" if action?('dashboard')) : li data-title="Controls": i.icon-anchor
+    a href="/controls" class=("selected" if action?('dashboard')) : li data-title="Controls": i.icon-anchor
     a: li data-title="Metrics": i.icon-bar-chart
     a: li data-title="Services": i.icon-suitcase
     a: li data-title="Environment": i.icon-wrench

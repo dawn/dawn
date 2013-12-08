@@ -1,5 +1,5 @@
-= link_to "new", new_dashboard_app_path
+ul.apps
+  - @apps.each do |app|
+    li = link_to app.name, show_dashboard_app_path(app)
 
-p #{@apps.count} app(s)
-- @apps.each do |app|
-  h2 = app.name
+= link_to "Add new app", new_dashboard_app_path

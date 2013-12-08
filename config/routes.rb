@@ -17,7 +17,7 @@ Dawn::Application.routes.draw do
   end
 
   subdomain :dashboard do
-    resources :apps, param: :name do # param maps to :name, not :id
+    resources :apps, param: :name, except: [:show] do # param maps to :name, not :id
       member do
         get 'controls'
         get 'metrics'
@@ -32,10 +32,6 @@ Dawn::Application.routes.draw do
 
     get '/', to: redirect('/apps')
     # get '/settings' ?
-
-    # TEST ROUTES
-    get '/controls', to: 'apps#controls'
-    get '/logs', to: 'apps#logs'
   end
 
   subdomain :docs do
