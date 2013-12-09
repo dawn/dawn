@@ -35,7 +35,7 @@ class Api::AppsController < ApiController
   end
 
   def find_app
-    if app = App.find(params[:id])
+    if app = App.where(id: params[:id]).first
       @app = app
     else
       render nothing: true, status: 404
