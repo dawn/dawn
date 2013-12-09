@@ -1,2 +1,2 @@
 object @key
-attributes :key, :fingerprint
+attributes :id, :key, :fingerprint
