@@ -9,8 +9,12 @@ class Api::AppsController < ApiController
   end
 
   def create
-    App.create!(name: app_params[:name], user: current_user)
-    render status: 200
+    @app = App.new(name: params[:name], user: current_user)
+    if @app.save
+      render 'app', status: 200
+    else
+      render status: 500
+    end
   end
 
   def show
@@ -18,7 +22,7 @@ class Api::AppsController < ApiController
   end
 
   def update
-    if @app.update(app_params)
+    if @app.update(name: params[:name])
       render status: 200
     else
       render status: 500 # 422 could work too
@@ -27,11 +31,11 @@ class Api::AppsController < ApiController
 
   def destroy
     @app.destroy
-    render status: 200
+    render status: 204
   end
 
   def find_app
-    if app = App.find_by(name: app_params[:name])
+    if app = App.find_by(name: params[:name])
       @app = app
     else
       render status: 404
@@ -41,14 +45,9 @@ class Api::AppsController < ApiController
 
   def verify_app_owner
     unless @app.user == current_user
-      render status: 403
+      render status: 401
     end
   end
   private :verify_app_owner
-
-  def app_params
-    params.require(:app).permit(:name, :git)
-  end
-  private :app_params
 
 end
