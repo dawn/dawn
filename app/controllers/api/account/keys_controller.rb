@@ -11,9 +11,9 @@ class Api::Account::KeysController < ApiController
       Key.create!(user: current_user,
                   key: params[:key],
                   fingerprint: params[:fingerprint])
-      render status: 200, text: "Added pubkey!"
+      render 'key' status: 200
     else
-      render status: 409, text: "Key already exists!"
+      head 409
     end
   end
 
@@ -23,19 +23,19 @@ class Api::Account::KeysController < ApiController
   end
 
   def show
-    render 'key'
+    render 'key', status: 200
   end
 
   def destroy
     @key.destroy
-    render status: 200
+    head 204
   end
 
   def find_key
-    if key = current_user.keys.find(params[:id])
+    if key = current_user.keys.where(id: params[:id]).first
       @key = key
     else
-      render status: 404
+      head 404
     end
   end
   private :find_key
