@@ -4,7 +4,8 @@ class App
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  before_create { ensure_name; create_git_repo }
+  before_validation :ensure_name, :unless => Proc.new { |model| model.persisted? }
+  before_create { create_git_repo }
   before_destroy { delete_git_repo }
 
   # after_update = don't do this on create
@@ -133,8 +134,8 @@ class App
 
   def generate_name
     loop do
-      name = Bazaar.heroku
-      break name unless App.where(name: name).exists?
+      nm = Bazaar.heroku
+      break nm unless App.where(name: nm).exists?
     end
   end
 
