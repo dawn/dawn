@@ -27,6 +27,8 @@ gem 'turbolinks'
 
 gem 'rfc822', '~> 0.1.4' # email verification gem
 
+gem 'bazaar', '~> 0.0.2' # random name generation
+
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
