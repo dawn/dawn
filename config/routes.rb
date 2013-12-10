@@ -5,8 +5,6 @@ Dawn::Application.routes.draw do
     namespace(name, options) { yield }
   end
 
-  devise_for :users, :path => '/', :path_names => {:sign_in => 'login', :sign_out => 'logout', :sign_up => 'register'}
-
   subdomain :login do
 
   end
@@ -66,5 +64,7 @@ Dawn::Application.routes.draw do
 
   # catch git pushes locally
   post '/api/githook', to: 'api/stream#githook', :constraints => {:ip => /127.0.0.1/}
+
+  devise_for :users, :path => '/', :path_names => {:sign_in => 'login', :sign_out => 'logout', :sign_up => 'register'}
 
 end
