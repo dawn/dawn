@@ -4,7 +4,7 @@ class App
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  before_create { create_git_repo }
+  before_create { ensure_name; create_git_repo }
   before_destroy { delete_git_repo }
 
   # after_update = don't do this on create
@@ -129,6 +129,19 @@ class App
 
   def to_param # override for correct link_to routing
     name
+  end
+
+  def generate_name
+    loop do
+      name = Bazaar.heroku
+      break name unless App.where(name: name).exists?
+    end
+  end
+
+  def ensure_name
+    if name.blank?
+      self.name = generate_name
+    end
   end
 
   def create_git_repo
