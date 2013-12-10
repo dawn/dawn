@@ -5,7 +5,7 @@ class Api::SessionController < ApiController
   def create
     user = User.find_by(username: params[:username])
     if user && user.valid_password?(params[:password])
-      render json: { api_key: user.api_key }, status: 200
+      render nothing: true, json: { api_key: user.api_key }, status: 200
     else
       head 400
     end
