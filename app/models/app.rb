@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'bazaar'
 
 class App
   include Mongoid::Document
