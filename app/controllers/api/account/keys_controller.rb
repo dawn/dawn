@@ -11,7 +11,7 @@ class Api::Account::KeysController < ApiController
       Key.create!(user: current_user,
                   key: params[:key],
                   fingerprint: params[:fingerprint])
-      render 'key' status: 200
+      render 'key', status: 200
     else
       head 409
     end
