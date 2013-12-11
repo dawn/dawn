@@ -46,14 +46,14 @@ Dawn::Application.routes.draw do
       # build, deploy, logs...
       member do
         resources :gears
-        delete '/gears', to: 'gears#destroy_all'
         resources :domains
+        delete '/gears', to: 'gears#destroy_all'
+        get '/scale', to: 'apps#formation'
+        post '/scale', to: 'apps#scale'
       end
     end
 
     post '/login', to: 'session#create'
-
-    get '/q', to: 'keys#test'
 
     namespace :account do
       get '/', to: 'account#index'
