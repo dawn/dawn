@@ -134,8 +134,8 @@ class App
 
   def generate_name
     loop do
-      nm = Bazaar.heroku
-      break nm unless App.where(name: nm).exists?
+      nm = Forgery(:dawn).app_name
+      break nm if !App.where(name: nm).exists? && nm.length > 3 && nm.length <= 16
     end
   end
 
