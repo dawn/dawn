@@ -11,7 +11,7 @@ class App
   # after_update = don't do this on create
   after_update do # rebuild and redeploy if config was changed
     if config_changed?
-      rebuild
+      build
       deploy!
     end
   end
@@ -52,7 +52,6 @@ class App
     # set the release version to the counter
     releases.build(image: image_name, version: version)
   end
-  alias :rebuild :build
 
   # using the latest release, destroy old gears and
   # generate new ones
