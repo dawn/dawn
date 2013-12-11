@@ -1,7 +1,8 @@
 class Api::AppsController < ApiController
 
-  before_action :find_app, only: [:show, :update, :destroy]
-  before_action :verify_app_owner, only: [:show, :update, :destroy]
+  actions = [:show, :update, :destroy, :formation, :scale]
+  before_action :find_app, only: actions
+  before_action :verify_app_owner, only: actions
 
   def index
     @apps = current_user.apps
@@ -32,6 +33,15 @@ class Api::AppsController < ApiController
   def destroy
     @app.destroy
     head 204
+  end
+
+  def formation
+    render status: 200
+  end
+
+  def scale
+    @app.scale(params[:formation])
+    head 200
   end
 
   def find_app
