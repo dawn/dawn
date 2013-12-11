@@ -134,8 +134,8 @@ class App
 
   def generate_name
     loop do
-      nm = Forgery(:dawn).app_name
-      break nm if !App.where(name: nm).exists? && nm.length > 3 && nm.length <= 16
+      self.name = Forgery(:dawn).app_name
+      break name if valid?
     end
   end
 
