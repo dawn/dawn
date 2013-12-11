@@ -79,7 +79,7 @@ class App
 
   # restarts the application (restart the gears)
   def restart
-    gears.each {|gear| gear.restart }
+    gears.each(&:restart)
   end
 
   # scales the application to a particular size (in gears)
