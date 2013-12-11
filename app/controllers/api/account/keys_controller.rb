@@ -2,10 +2,6 @@ class Api::Account::KeysController < ApiController
 
   before_action :find_key, only: [:show, :destroy]
 
-  def test
-    render text: current_user.sign_in_count
-  end
-
   def create
     if !Key.where(fingerprint: params[:fingerprint]).exists?
       Key.create!(user: current_user,
