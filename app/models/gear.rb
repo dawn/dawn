@@ -11,6 +11,16 @@ class Gear
 
     info = JSON.parse(`docker inspect #{container_id}`).first
     gear.ip = info["NetworkSettings"]["IPAddress"]
+
+    # update Hipache with the new gear IP/ports (only add web gears)
+    redis_key = "frontend:#{app.url}"
+    $redis.rpush(redis_key, "http://#{gear.ip}:#{gear.port}") if gear.type == 'web'
+  end
+
+  before_destroy do |gear|
+    # remove gear from Hipache
+    redis_key = "frontend:#{app.url}"
+    $redis.rpush(redis_key, "http://#{gear.ip}:#{gear.port}") if gear.type == 'web'
   end
 
   after_destroy do # destroy the accompanying docker container

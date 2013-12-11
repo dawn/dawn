@@ -61,17 +61,14 @@ class App
     gears.destroy_all # destroy old gears
 
     # ... destroy old hipache node entries
-    redis_key = "frontend:#{name}.#{ENV['DAWN_HOST']}"
-    redis = Redis.new
-    redis.del(redis_key)
+    redis_key = "frontend:#{url}"
+    $redis.del(redis_key)
     # ... recreate hipache list
-    redis.rpush(redis_key, name)
+    $redis.rpush(redis_key, name)
 
     formation.each do |type, count| # generate new gears (they autostart/deploy)
       count.times do
         gear = gears.create!(type: type)
-        # update Hipache with the new gear IP/ports (only add web gears)
-        redis.rpush(redis_key, "http://#{gear.ip}:#{gear.port}") if gear.type == 'web'
       end
     end
   end
