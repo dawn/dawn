@@ -116,16 +116,12 @@ class App
     name
   end
 
-  def generate_name
-    loop do
-      self.name = Forgery(:dawn).app_name
-      break name if valid?
-    end
-  end
-
   def ensure_name
     if name.blank?
-      self.name = generate_name
+      loop do
+        self.name = Forgery(:dawn).app_name
+        break name if valid?
+      end
     end
   end
 
