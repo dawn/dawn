@@ -50,7 +50,7 @@ class App
     # `docker tag #{self.image} `
 
     # set the release version to the counter
-    releases.create(image: image_name, version: version)
+    self.create_release(image: image_name, version: version)
   end
 
   # using the latest release, destroy old gears and
