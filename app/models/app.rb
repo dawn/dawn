@@ -50,7 +50,7 @@ class App
     # `docker tag #{self.image} `
 
     # set the release version to the counter
-    Release.create!(image: image_name, version: version, app: self)
+    releases.create!(image: image_name, version: version)
   end
 
   # using the latest release, destroy old gears and
@@ -154,6 +154,6 @@ class App
   private :delete_git_repo
 
   belongs_to :user
-  embeds_many :releases, order: :created_at.desc
+  has_many :releases, order: :created_at.desc
   has_many :gears, dependent: :destroy
 end
