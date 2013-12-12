@@ -95,7 +95,10 @@ class App
         gears.where(type: gear_type).order_by(:number.desc).limit(abs(diff)).destroy
       end
     end
-    self.formation = new_formation
+    # we keep missing values and overwrite duplicates with
+    # new ones --> Hash#merge
+    self.formation = old_formation.merge(options)
+    self.save!
   end
 
   # returns a log stream of the application
