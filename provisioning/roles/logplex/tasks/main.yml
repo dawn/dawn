@@ -39,8 +39,8 @@
   service: name=redis-logplex state=started
   sudo: yes
 
-#- name: start logplex
-#  service: name=logplex state=started
+- name: start logplex
+  service: name=logplex state=started
 
 # to build log-shuttle
   # git clone https://github.com/heroku/log-shuttle.git
