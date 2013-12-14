@@ -5,8 +5,20 @@ class App
   include Mongoid::Timestamps
 
   before_validation :ensure_name, :unless => Proc.new { |model| model.persisted? }
-  before_create { create_git_repo }
-  before_destroy { delete_git_repo }
+  before_create {
+    create_git_repo
+
+    # create a new logplex channel
+    response = Logplex.post(expects: 201, path: '/channels', query: {tokens: [:app, :dawn]})
+    self.logplex_id = response['channel_id']
+    self.logplex_tokens = response['tokens'].symbolize_keys
+  }
+  before_destroy {
+    delete_git_repo
+
+    # delete logplex channel
+    Logplex.delete(expects: 200, path: "/v2/channels/#{logplex_id}")
+  }
 
   # after_update = don't do this on create
   after_update do # rebuild and redeploy if config was changed
@@ -24,11 +36,18 @@ class App
 
   field :version, type: Integer, default: 0 # release version tracker
 
+  field :logplex_id, type: Integer
+  field :logplex_tokens, type: Hash
+
   validates :name,
     uniqueness: true,
     presence: true,
     format: {with: /\A[a-z][a-z\d-]+\z/}, # a-z + 0-9 + -, must start with a-z
     length: { minimum: 3, maximum: 16 }
+
+  validates :logplex_id,
+    uniqueness: true,
+    presence: true
 
   def build
     self.inc(version: 1) # increment current version

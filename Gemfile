@@ -12,6 +12,8 @@ gem 'figaro', '~> 0.7.0'
 
 gem 'devise', '~> 3.2.2'
 
+gem 'excon', '~> 0.30.0'
+
 gem 'rabl', '~> 0.9.2'
 gem 'slim-rails', '~> 2.0.4'
 gem 'font-awesome-rails', '~> 3.2.1.3'

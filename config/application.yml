@@ -8,4 +8,8 @@
 
 DAWN_HOST: "anzejagodic.com"
 DAWN_GROUP: "dawnusers"
+
 LOGPLEX_SECRET: "hd4Dna3UGxqXqtuVkMYF"
+LOGPLEX_COOKIE: "dawnplex"
+LOGPLEX_USER: "dawn"
+LOGPLEX_PASSWORD: "salvorhardin"
