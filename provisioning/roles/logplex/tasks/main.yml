@@ -1,0 +1,50 @@
+---
+- name: add erlang to local key chain
+  apt_key: url=http://packages.erlang-solutions.com/debian/erlang_solutions.asc
+  sudo: yes
+
+- name: add erlang repository
+  apt_repository: repo='deb http://packages.erlang-solutions.com/debian raring contrib' state=present
+  sudo: yes
+
+- name: install erlang (R16B02 or newer)
+  apt: pkg=erlang state=present update_cache=yes
+  sudo: yes
+
+- name: download logplex
+  git: repo=https://github.com/heroku/logplex.git dest=/opt/logplex
+  sudo: yes
+
+- name: compile logplex
+  shell: ./rebar --config public.rebar.config get-deps compile chdir=/opt/logplex
+  sudo: yes
+
+- name: add logplex service to Upstart
+  copy: src=upstart.conf dest=/etc/init/logplex.conf
+  sudo: yes
+
+- name: add redis-logplex config
+  copy: src=redis.conf dest=/etc/redis/redis-logplex.conf
+  sudo: yes
+
+- name: add redis-logplex service to Upstart
+  copy: src=upstart-redis.conf dest=/etc/init/redis-logplex.conf
+  sudo: yes
+
+- name: ensure directory /var/lib/redis-logplex is present
+  file: state=directory path=/var/lib/redis-logplex owner=redis group=redis mode=0755
+  sudo: yes
+
+- name: start redis-logplex
+  service: name=redis-logplex state=started
+  sudo: yes
+
+#- name: start logplex
+#  service: name=logplex state=started
+
+# to build log-shuttle
+  # git clone https://github.com/heroku/log-shuttle.git
+  # cd log-shuttle
+  # go get github.com/kr/godep
+  # export PATH=$PATH:$GOPATH/bin
+  # godep go build
