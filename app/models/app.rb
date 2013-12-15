@@ -5,14 +5,17 @@ class App
   include Mongoid::Timestamps
 
   before_validation :ensure_name, :unless => Proc.new { |model| model.persisted? }
-  before_create do
-    create_git_repo
-  end
-  before_validation(on: create) do
+
+  before_validation :create_logplex_channel, :unless => Proc.new { |model| model.persisted? }
+  def create_logplex_channel
     # create a new logplex channel
     response = Logplex.post(expects: 201, path: '/channels', query: {tokens: [:app, :dawn]})
     self.logplex_id = response['channel_id']
     self.logplex_tokens = response['tokens'].symbolize_keys
+  end
+
+  before_create do
+    create_git_repo
   end
   before_destroy do
     delete_git_repo
