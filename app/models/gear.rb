@@ -6,8 +6,17 @@ class Gear
   before_create do |gear|
     gear.number = app.gears.where(type: type).count + 1 # TEMP? might not be cross process safe, need to make it Atomic
     gear.port = 5000 # temp?
+
+    logshuttle = {
+      procid: app.name
+      'logplex-token': app.logplex_tokens[type]
+      'logs-url': "http://#{ENV['DAWN_HOST']}:8601/logs"
+    }
+
+    opts = logshuttle.map {|key, val| "-#{key}=#{val.inspect}" }.join(" ")
+    command = %{/bin/bash -c '/start #{type} | /opt/log-shuttle #{opts}'}
                                                            # FUGLY, FIX!
-    gear.container_id = `docker run -d -e PORT=#{port} #{app.releases.last.image} /bin/bash -c "/start #{type}"`
+    gear.container_id = `docker run -d -e PORT=#{port} #{app.releases.last.image} #{command}`
 
     info = JSON.parse(`docker inspect #{container_id}`).first
     gear.ip = info["NetworkSettings"]["IPAddress"]
