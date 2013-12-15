@@ -16,6 +16,9 @@
         mode=0755
   tags: app-get
 
+- name: build dawn/buildstep
+  command: docker build -t dawn/buildstep . chdir={{ path_app }}
+
 - name: gem install bundler
   command: gem install bundler
   sudo: yes
