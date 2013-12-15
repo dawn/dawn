@@ -9,8 +9,8 @@ class Gear
 
     logshuttle = {
       procid: app.name
-      'logplex-token': app.logplex_tokens[type]
-      'logs-url': "http://#{ENV['DAWN_HOST']}:8601/logs"
+      :'logplex-token' => app.logplex_tokens[type]
+      :'logs-url' => "http://#{ENV['DAWN_HOST']}:8601/logs"
     }
 
     opts = logshuttle.map {|key, val| "-#{key}=#{val.inspect}" }.join(" ")
