@@ -1,11 +1,11 @@
 GIT
   remote: git://github.com/mongoid/mongoid.git
-  revision: f8b439dd9a59b769389aff81a42502cd857cf7fa
+  revision: e3a55c2a68895723f876dd1daaa86ec39b085d38
   specs:
     mongoid (4.0.0.alpha1)
       activemodel (~> 4.0.0)
       moped (~> 2.0.beta4)
-      origin (~> 1.0)
+      origin (~> 2.0)
       tzinfo (~> 0.3.37)
 
 GEM
@@ -63,6 +63,7 @@ GEM
       warden (~> 1.2.3)
     dotenv (0.9.0)
     erubis (2.7.0)
+    excon (0.30.0)
     execjs (2.0.2)
     figaro (0.7.0)
       bundler (~> 1.0)
@@ -92,7 +93,7 @@ GEM
       optionable (~> 0.2.0)
     multi_json (1.8.2)
     optionable (0.2.0)
-    origin (1.1.0)
+    origin (2.0.0)
     orm_adapter (0.5.0)
     polyglot (0.3.3)
     puma (2.7.1)
@@ -136,7 +137,7 @@ GEM
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-    sprockets-rails (2.0.1)
+    sprockets-rails (2.0.0)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
@@ -151,7 +152,7 @@ GEM
     turbolinks (2.0.0)
       coffee-rails
     tzinfo (0.3.38)
-    uglifier (2.3.2)
+    uglifier (2.3.3)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
     warden (1.2.3)
@@ -165,6 +166,7 @@ DEPENDENCIES
   binding_of_caller
   coffee-rails (~> 4.0.0)
   devise (~> 3.2.2)
+  excon (~> 0.30.0)
   figaro (~> 0.7.0)
   flot-rails (~> 0.0.4)
   font-awesome-rails (~> 3.2.1.3)
