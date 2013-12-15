@@ -9,7 +9,12 @@ class App
   before_validation :create_logplex_channel, :unless => Proc.new { |model| model.persisted? }
   def create_logplex_channel
     # create a new logplex channel
-    response = Logplex.post(expects: 201, path: '/channels', query: {tokens: [:app, :dawn]})
+    response = Logplex.post(
+      expects: 201,
+      path: '/channels',
+      body: {tokens: [:app, :dawn]}.to_json
+      headers: { "Content-Type" => "application/x-www-form-urlencoded" }
+    )
     self.logplex_id = response['channel_id']
     self.logplex_tokens = response['tokens'].symbolize_keys
   end
