@@ -7,7 +7,8 @@ class App
   before_validation :ensure_name, :unless => Proc.new { |model| model.persisted? }
   before_create do
     create_git_repo
-
+  end
+  before_validation(on: create) do
     # create a new logplex channel
     response = Logplex.post(expects: 201, path: '/channels', query: {tokens: [:app, :dawn]})
     self.logplex_id = response['channel_id']
