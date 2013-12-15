@@ -121,9 +121,13 @@ class App
     self.save!
   end
 
-  # returns a log stream of the application
-  def logs
-    # ...
+  # returns url to a log session
+  def logs(num: 100, tail: false)
+    Logplex.post(
+      expects: 201,
+      path: '/v2/sessions',
+      query: {channel_id: logplex_id, num: num, tail: tail}
+    )['url']
   end
 
   # runs the command inside a new one-time gear/container
