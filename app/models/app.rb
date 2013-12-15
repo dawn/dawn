@@ -12,7 +12,7 @@ class App
     response = Logplex.post(
       expects: 201,
       path: '/channels',
-      body: {tokens: [:app, :dawn]}.to_json
+      body: {tokens: [:app, :dawn]}.to_json,
       headers: { "Content-Type" => "application/x-www-form-urlencoded" }
     )
     self.logplex_id = response['channel_id']
