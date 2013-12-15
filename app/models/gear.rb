@@ -29,11 +29,11 @@ class Gear
   before_destroy do |gear|
     # remove gear from Hipache
     redis_key = "frontend:#{app.url}"
-    $redis.rpush(redis_key, "http://#{gear.ip}:#{gear.port}") if gear.type == 'web'
+    $redis.lrem(redis_key, 1, "http://#{gear.ip}:#{gear.port}") if gear.type == 'web'
   end
 
   after_destroy do # destroy the accompanying docker container
-    kill
+    stop
   end
 
   validates_uniqueness_of :name, :container_id, :ip
