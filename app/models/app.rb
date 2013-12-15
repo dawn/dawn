@@ -17,7 +17,7 @@ class App
     delete_git_repo
 
     # delete logplex channel
-    Logplex.delete(expects: 200, path: "/v2/channels/#{logplex_id}")
+    Logplex.delete(path: "/v2/channels/#{logplex_id}")
   end
 
   # after_update = don't do this on create
