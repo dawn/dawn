@@ -1,8 +1,8 @@
 class Api::AppsController < ApiController
 
-  actions = [:show, :update, :destroy, :formation, :scale]
-  before_action :find_app, only: actions
-  before_action :verify_app_owner, only: actions
+  actions = [:index, :create]
+  before_action :find_app, except: actions
+  before_action :verify_app_owner, except: actions
 
   def index
     @apps = current_user.apps
@@ -42,6 +42,10 @@ class Api::AppsController < ApiController
   def scale
     @app.scale(params[:formation])
     head 200
+  end
+
+  def logs
+    render json: @app.logs(params.permit(:num, :tail)), status: 200
   end
 
   def find_app
