@@ -5,20 +5,20 @@ class App
   include Mongoid::Timestamps
 
   before_validation :ensure_name, :unless => Proc.new { |model| model.persisted? }
-  before_create {
+  before_create do
     create_git_repo
 
     # create a new logplex channel
     response = Logplex.post(expects: 201, path: '/channels', query: {tokens: [:app, :dawn]})
     self.logplex_id = response['channel_id']
     self.logplex_tokens = response['tokens'].symbolize_keys
-  }
-  before_destroy {
+  end
+  before_destroy do
     delete_git_repo
 
     # delete logplex channel
     Logplex.delete(expects: 200, path: "/v2/channels/#{logplex_id}")
-  }
+  end
 
   # after_update = don't do this on create
   after_update do # rebuild and redeploy if config was changed
