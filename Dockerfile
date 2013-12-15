@@ -10,5 +10,5 @@ RUN git clone https://github.com/heroku/log-shuttle.git /opt/log-shuttle
 ENV GOPATH $HOME/go
 RUN go get github.com/kr/godep
 ENV PATH $PATH:$GOPATH/bin
-RUN "cd /opt/log-shuttle; godep go build"
+RUN cd /opt/log-shuttle && godep go build
 RUN apt-get clean
