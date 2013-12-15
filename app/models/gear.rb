@@ -8,8 +8,8 @@ class Gear
     gear.port = 5000 # temp?
 
     logshuttle = {
-      procid: app.name
-      :'logplex-token' => app.logplex_tokens[type]
+      procid: app.name,
+      :'logplex-token' => app.logplex_tokens[type],
       :'logs-url' => "http://#{ENV['DAWN_HOST']}:8601/logs"
     }
 
