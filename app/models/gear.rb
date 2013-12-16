@@ -8,13 +8,13 @@ class Gear
     gear.port = 5000 # temp?
 
     logshuttle = {
-      procid: app.name,
-      :'logplex-token' => app.logplex_tokens[type],
+      procid: name,
+      :'logplex-token' => app.logplex_tokens[type.to_s],
       :'logs-url' => "http://#{ENV['DAWN_HOST']}:8601/logs"
     }
 
     opts = logshuttle.map {|key, val| "-#{key}=#{val.inspect}" }.join(" ")
-    command = %{/bin/bash -c '/start #{type} | /opt/log-shuttle #{opts}'}
+    command = %{/bin/bash -c '/start #{type} | /opt/log-shuttle/log-shuttle #{opts}'}
                                                            # FUGLY, FIX!
     gear.container_id = `docker run -d -e PORT=#{port} #{app.releases.last.image} #{command}`
 
