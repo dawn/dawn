@@ -9,7 +9,7 @@ class Gear
 
     logshuttle = {
       procid: name,
-      :'logplex-token' => app.logplex_tokens[type.to_s],
+      :'logplex-token' => app.logplex_tokens['app'],
       :'logs-url' => "http://#{ENV['DAWN_HOST']}:8601/logs"
     }
 
