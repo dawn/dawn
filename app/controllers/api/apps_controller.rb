@@ -56,8 +56,9 @@ class Api::AppsController < ApiController
   def logs
     opts = {}
     opts[:tail] = true if params[:tail]
-    opts[:num] = params[:num] if params.key?(:num)
-    render json: @app.logs(opts), status: 200
+    opts[:num]  = params[:num] if params.key?(:num)
+    @logs = @app.logs(opts)
+    render status: 200
   end
 
   def find_app
