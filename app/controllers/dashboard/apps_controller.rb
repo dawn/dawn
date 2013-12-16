@@ -31,5 +31,12 @@ class Dashboard::AppsController < ApplicationController
 
   def logs
     @app = App.find_by(name: params[:name])
+
+    url = "http://dawn:salvorhardin@anzejagodic.com:8001"
+
+    @logs = Excon.get(
+      "#{url}#{@app.logs}",
+      query: {srv: 1},
+    ).body
   end
 end
