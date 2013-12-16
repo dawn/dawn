@@ -186,7 +186,7 @@ class App
 
   def delete_git_repo
     Dir.chdir Dir.home("git") do
-      FileUtils.rmdir(git)
+      FileUtils.rm_rf(git)
     end
   end
   private :delete_git_repo
