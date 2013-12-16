@@ -134,11 +134,11 @@ class App
 
   # returns url to a log session
   def logs(num: 100, tail: false)
-    Logplex.post(
+    JSON.parse(Logplex.post(
       expects: 201,
       path: '/v2/sessions',
-      query: {channel_id: logplex_id, num: num, tail: tail}
-    )['url']
+      body: {channel_id: logplex_id.to_s, num: num, tail: tail}.to_json,
+    ).body)['url']
   end
 
   # runs the command inside a new one-time gear/container
