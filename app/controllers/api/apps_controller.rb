@@ -54,7 +54,7 @@ class Api::AppsController < ApiController
   end
 
   def logs
-    opts = { srv: 1 }
+    opts = { }
     opts[:tail] = true if params[:tail]
     opts[:num]  = params[:num] if params.key?(:num)
     @logs = @app.logs(opts)
