@@ -3,7 +3,7 @@
     h4 #{@app.user.username} / #{@app.name}
 
   ul#sidebar
-    a href=controls_dashboard_app_path(@app) class=("selected" if action?('dashboard')) : li data-title="Controls": i.icon-anchor
+    a href=controls_dashboard_app_path(@app) class=("selected" if action?('controls')) : li data-title="Controls": i.icon-anchor
     a: li data-title="Metrics": i.icon-bar-chart
     a: li data-title="Services": i.icon-suitcase
     a: li data-title="Environment": i.icon-wrench

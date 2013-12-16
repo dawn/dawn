@@ -17,7 +17,7 @@ class Dashboard::AppsController < ApplicationController
     @app.user = current_user
 
     if @app.save
-      redirect_to [:dashboard, @app], notice: 'app was successfully created.'
+      redirect_to [:controls, :dashboard, @app], notice: 'app was successfully created.'
     else
       render action: 'new', layout: 'dashboard'
     end
