@@ -23,13 +23,13 @@ class Gear
 
     # update Hipache with the new gear IP/ports (only add web gears)
     redis_key = "frontend:#{app.url}"
-    $redis.rpush(redis_key, "http://#{gear.ip}:#{gear.port}") if gear.type == 'web'
+    $redis.rpush(redis_key, "http://#{gear.ip}:#{gear.port}") if gear.type == :web
   end
 
   before_destroy do |gear|
     # remove gear from Hipache
     redis_key = "frontend:#{app.url}"
-    $redis.lrem(redis_key, 1, "http://#{gear.ip}:#{gear.port}") if gear.type == 'web'
+    $redis.lrem(redis_key, 1, "http://#{gear.ip}:#{gear.port}") if gear.type == :web
   end
 
   after_destroy do # destroy the accompanying docker container
@@ -38,7 +38,7 @@ class Gear
 
   validates_uniqueness_of :name, :container_id, :ip
 
-  field :type, type: String # worker type: web/...
+  field :type, type: Symbol # worker type: web/...
   field :number, type: Integer # 1,2,3
 
   field :port, type: Integer # outbound port of the container
