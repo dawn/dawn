@@ -14,7 +14,7 @@ class Gear
     }
 
     opts = logshuttle.map {|key, val| "-#{key}=#{val.inspect}" }.join(" ")
-    command = %{/bin/bash -c '/start #{type} | /opt/log-shuttle/log-shuttle #{opts}'}
+    command = %{/bin/bash -c '/start #{type} 2>&1 | /opt/log-shuttle/log-shuttle #{opts}'}
                                                            # FUGLY, FIX!
     gear.container_id = `docker run -d -e PORT=#{port} #{app.releases.last.image} #{command}`
 
