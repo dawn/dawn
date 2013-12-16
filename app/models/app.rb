@@ -134,10 +134,14 @@ class App
 
   # returns url to a log session
   def logs(num: 100, tail: false)
+    body = {channel_id: logplex_id.to_s, num: num.to_s}
+    # this is fucked up, but if we add tail key, regardless of it's
+    # value, it will tail! (even on {tail: false}/{tail: false.to_s})
+    body.merge!(tail: tail) if tail
     JSON.parse(Logplex.post(
       expects: 201,
       path: '/v2/sessions',
-      body: {channel_id: logplex_id.to_s, num: num, tail: tail}.to_json,
+      body: body.to_json,
     ).body)['url']
   end
 
