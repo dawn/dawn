@@ -10,11 +10,16 @@ class Api::AppsController < ApiController
   end
 
   def create
-    @app = App.new(name: params[:name], user: current_user)
-    if @app.save
-      render 'app', status: 200
+    appname = params[:name]
+    if App.where(name: appname).first
+      head 409
     else
-      head 500
+      @app = App.new(name: appname, user: current_user)
+      if @app.save
+        render 'app', status: 200
+      else
+        head 500
+      end
     end
   end
 
