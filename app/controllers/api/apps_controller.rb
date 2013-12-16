@@ -5,7 +5,11 @@ class Api::AppsController < ApiController
   before_action :verify_app_owner, except: actions
 
   def index
-    @apps = current_user.apps
+    if name = params[:name]
+      @apps = current_user.apps.where(name: name)
+    else
+      @apps = current_user.apps
+    end
     render status: 200
   end
 
