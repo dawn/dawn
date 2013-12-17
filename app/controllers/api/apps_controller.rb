@@ -49,7 +49,7 @@ class Api::AppsController < ApiController
   end
 
   def scale
-    @app.scale(params[:formation])
+    @app.scale(JSON.parse(params[:formation]))
     head 200
   end
 
