@@ -36,7 +36,7 @@ class Gear
     stop
   end
 
-  validates_uniqueness_of :name, :container_id, :ip
+  validates_uniqueness_of :container_id, :ip, # :name
 
   field :type, type: Symbol # worker type: web/...
   field :number, type: Integer # 1,2,3

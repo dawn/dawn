@@ -110,8 +110,7 @@ class App
 
   # scales the application to a particular size (in gears)
   def scale(options)
-    options = options.to_hash.symbolize_keys
-    old_formation = self.formation
+    old_formation = self.formation.with_indifferent_access
     options.each do |gear_type, count|
       if o = old_formation[gear_type]
         diff = count - o
