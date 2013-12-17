@@ -123,7 +123,7 @@ class App
         diff.times { gears.create!(type: gear_type) }
       elsif diff < 0
         # get rid of diff number of gears, from the highest worker number down
-        gears.where(type: gear_type).order_by(:number.desc).limit(abs(diff)).destroy
+        gears.where(type: gear_type).order_by(:number.desc).limit(diff.abs).destroy
       end
     end
     # we keep missing values and overwrite duplicates with
