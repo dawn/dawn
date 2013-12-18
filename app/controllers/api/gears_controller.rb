@@ -24,7 +24,7 @@ class Api::GearsController < ApiController
   end
 
   def find_app
-    if app = App.where(id: params[:id]).first
+    if app = App.where(id: params[:app_id]).first
       @app = app
     else
       head 404
@@ -33,7 +33,7 @@ class Api::GearsController < ApiController
   private :find_app
 
   def find_gear
-    if gear = @app.gears.find_by(id: params[:id])
+    if gear = @app.gears.where(id: params[:id]).first
       @gear = gear
     else
       head 404
