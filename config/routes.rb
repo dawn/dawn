@@ -50,6 +50,10 @@ Dawn::Application.routes.draw do
       member do
         get '/scale',    to: 'apps#formation'
         post '/scale',   to: 'apps#scale'
+
+        get '/env',      to: 'apps#env'
+        put '/env',      to: 'apps#update_env'
+
         get '/logs',     to: 'apps#logs'
 
         post '/run',     to: 'apps#run'

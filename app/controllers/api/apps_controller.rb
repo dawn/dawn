@@ -39,6 +39,18 @@ class Api::AppsController < ApiController
     end
   end
 
+  def env
+    render 'env', status: 200
+  end
+
+  def update_env
+    if @app.update(env: params[:env])
+      render 'env', status: 200
+    else
+      head 500
+    end
+  end
+
   def destroy
     @app.destroy
     head 204
