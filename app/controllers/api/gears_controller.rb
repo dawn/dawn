@@ -14,13 +14,13 @@ class Api::GearsController < ApiController
 
   def destroy
     @gear.restart
-    head 200
+    head 204
   end
 
   def destroy_all
     @gears = @app.gears
     @gears.each(&:restart)
-    head 200
+    head 204
   end
 
   def find_app
