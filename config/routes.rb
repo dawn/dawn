@@ -44,9 +44,9 @@ Dawn::Application.routes.draw do
   subdomain :api do
     resources :apps do
       # build, deploy, logs...
+      resources :gears
+      resources :domains
       member do
-        resources :gears
-        resources :domains
         delete '/gears', to: 'gears#destroy_all'
         get '/scale',    to: 'apps#formation'
         post '/scale',   to: 'apps#scale'
