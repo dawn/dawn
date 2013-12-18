@@ -51,6 +51,8 @@ Dawn::Application.routes.draw do
         get '/scale',    to: 'apps#formation'
         post '/scale',   to: 'apps#scale'
         get '/logs',     to: 'apps#logs'
+
+        post '/run',     to: 'apps#run'
       end
     end
 

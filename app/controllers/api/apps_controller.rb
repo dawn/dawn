@@ -61,6 +61,40 @@ class Api::AppsController < ApiController
     render status: 200
   end
 
+  require 'open3'
+  # starts a one-off container session
+  def run
+    head 400 unless params[:command]
+
+    if env['rack.hijack']
+      env['rack.hijack'].call
+
+      socket = env['rack.hijack_io']
+
+      docker = "docker run  -i -t -rm #{@app.releases.last.image} #{params[:command]}"
+      stdin, stdout, wait_thr = Open3.popen2e(docker)
+
+      begin
+        while true
+          # while we're recieving from the user
+          # send the data back to the container
+          IO.copy_stream(socket, stdin)
+
+          # while the container has something to say
+          # send data back to user
+          IO.copy_stream(stdout, socket)
+
+          exit_status = wait_thr.value
+          break if exit_status.exited?
+        end
+      ensure
+        socket.close
+        stdin.close
+        stdout.close
+      end
+    end
+  end
+
   def find_app
     if app = App.where(id: params[:id]).first
       @app = app
