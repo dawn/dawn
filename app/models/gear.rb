@@ -16,7 +16,7 @@ class Gear
     opts = logshuttle.map {|key, val| "-#{key}=#{val.inspect}" }.join(" ")
     command = %{/bin/bash -c '/start #{type} 2>&1 | /opt/log-shuttle/log-shuttle #{opts}'}
                                                            # FUGLY, FIX!
-    gear.container_id = `docker run -d -e PORT=#{port} #{app.releases.last.image} #{command}`
+    gear.container_id = `docker run -d -e PORT=#{port} #{app.releases.last.image} #{command}`.chomp
 
     info = JSON.parse(`docker inspect #{container_id}`).first
     gear.ip = info["NetworkSettings"]["IPAddress"]
