@@ -24,7 +24,7 @@ class Api::GearsController < ApiController
   end
 
   def find_app
-    if app = App.find_by(id: app_params[:id])
+    if app = App.find_by(id: params[:app][:id])
       @app = app
     else
       head 404
@@ -33,22 +33,12 @@ class Api::GearsController < ApiController
   private :find_app
 
   def find_gear
-    if gear = @app.gears.find_by(id: gear_params[:id])
+    if gear = @app.gears.find_by(id: params[:id])
       @gear = gear
     else
       head 404
     end
   end
   private :find_gear
-
-  def app_params
-    params.require(:app).permit(:name, :git)
-  end
-  private :app_params
-
-  def gear_params
-    params.require(:gear).permit(:id, :name)
-  end
-  private :gear_params
 
 end
