@@ -24,7 +24,7 @@ class Api::GearsController < ApiController
   end
 
   def find_app
-    if app = App.find_by(id: params[:app][:id])
+    if app = App.where(id: params[:id]).first
       @app = app
     else
       head 404
