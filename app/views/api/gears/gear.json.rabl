@@ -1,3 +1,3 @@
 object @gear
-node(:name) { @gear.name }
+node(:name) { |gear| gear.name }
 attributes :id, :type, :number
