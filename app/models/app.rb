@@ -33,7 +33,7 @@ class App
 
   # after_update = don't do this on create
   after_update do # rebuild and redeploy if config was changed
-    if config_changed?
+    if env_changed?
       build
       deploy!
     end
