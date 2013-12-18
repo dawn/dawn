@@ -5,27 +5,29 @@ class Api::GearsController < ApiController
 
   def index
     @gears = @app.gears
-    render
+    render status: 200
   end
 
   def show
-    render 'gear'
+    render 'gear', status: 200
   end
 
   def destroy
     @gear.restart
+    head 200
   end
 
   def destroy_all
     @gears = @app.gears
     @gears.each(&:restart)
+    head 200
   end
 
   def find_app
     if app = App.find_by(id: app_params[:id])
       @app = app
     else
-      render status: 404
+      head 404
     end
   end
   private :find_app
@@ -34,7 +36,7 @@ class Api::GearsController < ApiController
     if gear = @app.gears.find_by(id: gear_params[:id])
       @gear = gear
     else
-      render status: 404
+      head 404
     end
   end
   private :find_gear
