@@ -1,2 +1,3 @@
 object @gear
-attributes :type, :number, :port, :ip, :container_id
+node(:name) { @gear.name }
+attributes :id, :type, :number
