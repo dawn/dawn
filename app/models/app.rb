@@ -40,7 +40,7 @@ class App
   end
 
   field :name, type: String
-  field :config, type: Hash, default: {} # master env config (on change, build new release)
+  field :env, type: Hash, default: {} # master env config (on change, build new release)
   field :git, type: String # git repo location
 
   field :formation, type: Hash, default: {web: 1} # formation - how many gears of what type do we have
