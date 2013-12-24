@@ -39,7 +39,7 @@ class Api::AppsController < ApiController
     end
   end
 
-  def env
+  def get_env
     render 'env', status: 200
   end
 
@@ -73,7 +73,6 @@ class Api::AppsController < ApiController
     render status: 200
   end
 
-  require 'open3'
   # starts a one-off container session
   def run
     head 400 unless params[:command]
@@ -82,27 +81,17 @@ class Api::AppsController < ApiController
       env['rack.hijack'].call
 
       socket = env['rack.hijack_io']
-
-      docker = "docker run  -i -t -rm #{@app.releases.last.image} #{params[:command]}"
-      stdin, stdout, wait_thr = Open3.popen2e(docker)
-
       begin
-        while true
-          # while we're recieving from the user
-          # send the data back to the container
-          IO.copy_stream(socket, stdin)
-
-          # while the container has something to say
-          # send data back to user
-          IO.copy_stream(stdout, socket)
-
-          exit_status = wait_thr.value
-          break if exit_status.exited?
-        end
+        socket.write("hello!\n")
+        socket.flush
+        socket.sync = true
+        socket.write("docker run  -i -t -rm #{@app.releases.last.image} #{params[:command]}\n")
+        socket.write("params: #{params}\n")
+        docker = "docker run  -i -t -rm #{@app.releases.last.image} #{params[:command]}"
+        pid = Process.spawn({}, docker, {in: socket, out: socket, err: socket})
+        Process.wait(pid)
       ensure
         socket.close
-        stdin.close
-        stdout.close
       end
     end
   end

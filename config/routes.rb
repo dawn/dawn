@@ -51,7 +51,7 @@ Dawn::Application.routes.draw do
         get '/scale',    to: 'apps#formation'
         post '/scale',   to: 'apps#scale'
 
-        get '/env',      to: 'apps#env'
+        get '/env',      to: 'apps#get_env'
         put '/env',      to: 'apps#update_env'
 
         get '/logs',     to: 'apps#logs'
