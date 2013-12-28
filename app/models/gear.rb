@@ -38,16 +38,25 @@ class Gear
 
   validates_uniqueness_of :container_id, :ip # :name
 
-  field :type, type: Symbol # worker type: web/...
-  field :number, type: Integer # 1,2,3
-
-  field :port, type: Integer # outbound port of the container
-  field :ip, type: String # network IP of the container
-  field :container_id, type: String # pid/identifier of the Docker container
+  field :type,         type: Symbol  # worker type: web/...
+  field :number,       type: Integer # 1,2,3
+  field :port,         type: Integer # outbound port of the container
+  field :ip,           type: String  # network IP of the container
+  field :container_id, type: String  # pid/identifier of the Docker container
+  field :started_at,   type: Time
 
   def name # full name: web.1, mailer.3 (type.number)
     "#{type}.#{number}"
   end
+
+  def uptime
+    started_at ? Time.now - started_at : 0
+  end
+
+  def reset_started_at
+    update(started_at: Time.now)
+  end
+  private :reset_started_at
 
   def kill
     `docker kill #{container_id}`
@@ -55,6 +64,7 @@ class Gear
 
   def start
     `docker start #{container_id}`
+    reset_started_at
   end
 
   def stop
@@ -63,6 +73,7 @@ class Gear
 
   def restart # use docker restart
     `docker restart #{container_id}`
+    reset_started_at
   end
 
   belongs_to :app
