@@ -1,3 +1,5 @@
+require 'sshkey'
+
 class Api::Account::KeysController < ApiController
 
   before_action :find_key, only: [:show, :destroy]
