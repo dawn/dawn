@@ -33,7 +33,7 @@ class Gear
   end
 
   after_destroy do # destroy the accompanying docker container
-    stop
+    stop && remove
   end
 
   validates_uniqueness_of :container_id, :ip # :name
@@ -74,6 +74,10 @@ class Gear
   def restart # use docker restart
     `docker restart #{container_id}`
     reset_started_at
+  end
+
+  def remove
+    `docker rm #{container_id}`
   end
 
   belongs_to :app
