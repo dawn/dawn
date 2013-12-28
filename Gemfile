@@ -31,6 +31,8 @@ gem 'rfc822', '~> 0.1.4' # email verification gem
 
 gem 'forgery', '~> 0.5.0' # random name generation
 
+gem 'sshkey', '~> 1.6.1' # SSHKey Generation
+
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
