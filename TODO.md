@@ -5,7 +5,7 @@ Things we still need to finish, to get to a usable platform.
 * besides killing, we should also remove the container
 * manually calculate ssh fingerprint
 * dawn run: one-off containers running a single command then getting destroyed
-* dawn ps should list uptime as well
+~~* dawn ps should list uptime as well~~
 * logging: allow us to specify drains (uses logplex drains to post logs to a drain)
 * Integrate the [gitlab-shell](https://github.com/gitlabhq/gitlab-shell) or an OpenSSH patch, so we can allow per-repository/(per-branch) access control.
 * Validate the scale parameters using a proctype list that combines the Procfile with the default process types from buildpacks
