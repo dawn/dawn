@@ -2,7 +2,7 @@
 
 Things we still need to finish, to get to a usable platform.
 
-* besides killing, we should also remove the container
+* ~~besides killing, we should also remove the container~~
 * manually calculate ssh fingerprint
 * dawn run: one-off containers running a single command then getting destroyed
 * ~~dawn ps should list uptime as well~~
