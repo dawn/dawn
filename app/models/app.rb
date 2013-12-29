@@ -77,7 +77,7 @@ class App
           # create profile.d
           Dir.mkdir(".profile.d")
           # write dawn.env variables file
-          File.open(".profile.d/dawn.env", "w"){|f|env.each{|k,v|f.puts("#{k}=#{v}")}}
+          File.open(".profile.d/dawn.env", "w"){|f|env.each{|k,v|f.puts("export #{k}=#{v}")}}
           # concate .profile.d to archive
           `tar -rf #{tarname} .profile.d`
         ensure
