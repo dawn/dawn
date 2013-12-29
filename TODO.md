@@ -20,7 +20,7 @@ Things we still need to finish, to get to a usable platform.
       end
 
 * Services: db, queues, caches, mail servers, file storage
-* Inject the ENV config into the releases
+* ~~Inject the ENV config into the releases~~
 * Replace shelling out with calls to [Docker API](https://github.com/swipely/docker-api)
 * Resource limiting: constraints on CPU, memory, bandwidth, disk space...
 * Par app metrics
