@@ -17,7 +17,6 @@ class Gear
     command = %{/bin/bash -c '/start #{type} 2>&1 | /opt/log-shuttle/log-shuttle #{opts}'}
                                                            # FUGLY, FIX!
     gear.container_id = `docker run -d -e PORT=#{port} #{app.releases.last.image} #{command}`.chomp
-    gear.started_at = Time.now
 
     info = JSON.parse(`docker inspect #{container_id}`).first
     gear.ip = info["NetworkSettings"]["IPAddress"]
@@ -44,7 +43,7 @@ class Gear
   field :port,         type: Integer # outbound port of the container
   field :ip,           type: String  # network IP of the container
   field :container_id, type: String  # pid/identifier of the Docker container
-  field :started_at,   type: Time
+  field :started_at,   type: Time,   default: Proc.new { Time.now }
 
   def name # full name: web.1, mailer.3 (type.number)
     "#{type}.#{number}"
