@@ -70,24 +70,25 @@ class App
 
     Dir.chdir "#{Dir.home("git")}/#{git}" do
       begin
-        tarname = "app-#{Time.now.to_i}.tar"
-        begin
-          # .. import ENV config
-          `git archive #{git_ref} -o #{tarname}`
-          # create profile.d
-          Dir.mkdir(".profile.d")
-          # write dawn.env variables file
-          File.open(".profile.d/dawn.env", "w"){|f|env.each{|k,v|f.puts("#{k}=#{v}")}}
-          # concate .profile.d to archive
-          `tar -rf #{tarname} .profile.d`
-        ensure
-          FileUtils.rm_rf(".profile.d") # we no longer need the profile.d so remove it
-        end
-        IO.popen "cat #{tarname} | /#{Rails.root}/script/buildstep #{image_name}" do |fd|
+        #tarname = "app-#{Time.now.to_i}.tar"
+        #begin
+        #  # .. import ENV config
+        #  `git archive #{git_ref} -o #{tarname}`
+        #  # create profile.d
+        #  Dir.mkdir(".profile.d")
+        #  # write dawn.env variables file
+        #  File.open(".profile.d/dawn.env", "w"){|f|env.each{|k,v|f.puts("#{k}=#{v}")}}
+        #  # concate .profile.d to archive
+        #  `tar -rf #{tarname} .profile.d`
+        #ensure
+        #  FileUtils.rm_rf(".profile.d") # we no longer need the profile.d so remove it
+        #end
+        #IO.popen "cat #{tarname} | /#{Rails.root}/script/buildstep #{image_name}" do |fd|
+        IO.popen "git archive #{git_ref} | /#{Rails.root}/script/buildstep #{image_name}" do |fd|
           puts "\e[1G#{fd.readline}" until fd.eof? # \e[1G gets rid of that pesky 'remote:' text
         end
-      ensure
-        FileUtils.rm_rf("#{tarname}")
+      #ensure
+        #FileUtils.rm_rf("#{tarname}")
       end
     end
 
