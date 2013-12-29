@@ -8,7 +8,7 @@ Things we still need to finish, to get to a usable platform.
 * ~~dawn ps should list uptime as well~~
 * logging: allow us to specify drains (uses logplex drains to post logs to a drain)
 * Integrate the [gitlab-shell](https://github.com/gitlabhq/gitlab-shell) or an OpenSSH patch, so we can allow per-repository/(per-branch) access control.
-* Validate the scale parameters using a proctype list that combines the Procfile with the default process types from buildpacks
+* ~~Validate the scale parameters using a proctype list that combines the Procfile with the default process types from buildpacks~~
 
       #"git show master:Procfile" --> to retrieve the procfile and parse it [git show <ref>:<file>]
       def proctypes
