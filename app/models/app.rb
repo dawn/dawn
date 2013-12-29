@@ -124,10 +124,26 @@ class App
     gears.each(&:restart)
   end
 
+  def proctypes
+    Dir.chdir "#{Dir.home("git")}/#{git}" do
+      default_procfile_name = '/app/tmp/heroku-buildpack-release-step.yml'
+      image_name = releases.last.image
+      def_proc = YAML.safe_load(`docker run -i -t -rm "#{image_name}" cat "#{default_proc_name}"`)['default_process_types']
+      app_proc = YAML.safe_load(`git show master:Procfile`)
+      return def_proc.with_indifferent_access.merge(app_proc.with_indifferent_access)
+    end
+  end
+
   # scales the application to a particular size (in gears)
   def scale(options)
+    # retrieve the App's Procfile data
+    app_proctypes = proctypes
+    # we only want the proc types, which is the keys
+    allowed_proctypes = app_proctypes.keys
     old_formation = self.formation.with_indifferent_access
     options.each do |gear_type, count|
+      # if we don't have this proc type listed in our allowed types, skip it
+      next unless allowed_proctypes.include?(gear_type.to_s)
       if o = old_formation[gear_type]
         diff = count - o
       else
