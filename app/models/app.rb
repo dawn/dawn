@@ -141,11 +141,10 @@ class App
     # we only want the proc types, which is the keys
     allowed_proctypes = app_proctypes.keys
     old_formation = self.formation.with_indifferent_access
-
-    options.each do |gear_type, count|
-      # if we don't have this proc type listed in our allowed types, skip it
-      next unless allowed_proctypes.include?(gear_type.to_s)
-      if o = old_formation[gear_type]
+    allowed_proctypes.each do |gear_type|
+      old_count = old_formation[gear_type]
+      count = options[gear_type] || old_count || 0
+      if o = old_count
         diff = count - o
       else
         diff = count
