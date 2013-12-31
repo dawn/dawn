@@ -8,9 +8,8 @@ class Api::Account::KeysController < ApiController
     pbkey       = params[:key]
     fingerprint = SSHKey.new(pbkey).fingerprint
     if !Key.where(fingerprint: fingerprint).exists?
-      Key.create!(user: current_user,
-                  key: pbkey,
-                  fingerprint: fingerprint)
+      @key = Key.create!(user: current_user, key: pbkey,
+                                             fingerprint: fingerprint)
       render 'key', status: 200
     else
       head 409
