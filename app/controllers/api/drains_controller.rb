@@ -6,7 +6,7 @@ class Api::DrainsController < ApiController
   def create
     drain_url = params[:drain_url]
     if !@app.drains.where(url: drain_url).exists?
-      @app.drains.create!(app: @app, url: drain_url)
+      @drain = @app.drains.create!(app: @app, url: drain_url)
       render 'drain', status: 200
     else
       head 409
