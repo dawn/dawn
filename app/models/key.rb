@@ -10,7 +10,7 @@ class Key # SSH public key representation
 
   before_destroy do # remove the key from authorized_keys (HAXX)
     Dir.chdir Dir.home("git") do
-      File.open('.ssh/authorized_keys', 'a') do |io|
+      File.open('.ssh/authorized_keys', 'w+') do |io|
         contents = io.read.sub(key, '')
         io.write contents
       end
