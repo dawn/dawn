@@ -5,8 +5,9 @@ class Api::Account::KeysController < ApiController
   before_action :find_key, only: [:show, :destroy]
 
   def create
-    pbkey = params[:key]
-    fingerprint = SSHKey.new(pbkey).fingerprint
+    pbkey       = params[:key]
+    fingerprint = params[:fingerprint]
+    #fingerprint = SSHKey.new(pbkey).fingerprint
     if !Key.where(fingerprint: fingerprint).exists?
       Key.create!(user: current_user,
                   key: pbkey,
