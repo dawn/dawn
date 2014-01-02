@@ -1,0 +1,8 @@
+---
+- hosts: dawndev
+  remote_user: dawn
+  vars_files:
+    - vars/main.yml
+    - vars/service.yml
+  roles:
+    - { role: gitlab,   tags: ["gitlab"]   }
