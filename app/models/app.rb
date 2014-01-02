@@ -193,7 +193,9 @@ class App
     if name.blank?
       loop do
         self.name = Forgery(:dawn).app_name
-        break name if valid?
+        break if name.size.between?(3, 16) &&
+                 name =~ /\A[a-z][a-z\d-]+\z/ &&
+                 !App.where(name: name).exists?
       end
     end
   end
