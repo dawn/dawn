@@ -25,6 +25,7 @@ class App
   before_validation :create_logplex_channel, unless: ->(model){ model.persisted? }
 
   before_create do
+    self.git = "#{name}.git"
     create_git_repo
   end
 
@@ -205,23 +206,18 @@ class App
   end
   private :gitlab_projects
 
-  def gitname
-    "#{name}.git"
-  end
-  private :gitname
-
   def repo_path
     "#{Dir.home("git")}/repositories/#{git}"
   end
   private :repo_path
 
   def create_git_repo
-    gitlab_projects("add-project #{gitname}")
+    gitlab_projects("add-project #{git}")
   end
   private :create_git_repo
 
   def delete_git_repo
-    gitlab_projects("rm-project #{gitname}")
+    gitlab_projects("rm-project #{git}")
   end
   private :delete_git_repo
 
