@@ -1,6 +1,18 @@
 class Gear
+
   include Mongoid::Document
   include Mongoid::Timestamps
+
+  belongs_to :app
+
+  field :type,         type: Symbol  # worker type: web/...
+  field :number,       type: Integer # 1,2,3
+  field :port,         type: Integer # outbound port of the container
+  field :ip,           type: String  # network IP of the container
+  field :container_id, type: String  # pid/identifier of the Docker container
+  field :started_at,   type: Time,   default: ->{ Time.now }
+
+  validates_uniqueness_of :container_id, :ip # :name
 
   # before_create create a docker container and run the worker, set port/ip/container_id
   before_create do |gear|
@@ -35,15 +47,6 @@ class Gear
   after_destroy do # destroy the accompanying docker container
     stop && remove
   end
-
-  validates_uniqueness_of :container_id, :ip # :name
-
-  field :type,         type: Symbol  # worker type: web/...
-  field :number,       type: Integer # 1,2,3
-  field :port,         type: Integer # outbound port of the container
-  field :ip,           type: String  # network IP of the container
-  field :container_id, type: String  # pid/identifier of the Docker container
-  field :started_at,   type: Time,   default: Proc.new { Time.now }
 
   def name # full name: web.1, mailer.3 (type.number)
     "#{type}.#{number}"
@@ -80,5 +83,4 @@ class Gear
     `docker rm #{container_id}`
   end
 
-  belongs_to :app
 end
