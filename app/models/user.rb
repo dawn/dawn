@@ -8,9 +8,6 @@ class User
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :apps
-  has_many :keys
-
   field :username,               type: String
 
   ## Database authenticatable
@@ -60,5 +57,8 @@ class User
     end
   end
   private :generate_api_key
+
+  has_many :apps
+  has_many :keys
 
 end

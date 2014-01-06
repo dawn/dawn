@@ -4,9 +4,6 @@ class Drain
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  ## ownership
-  belongs_to :app
-
   ## attributes
   field :name, type: String # Should drains even have a name? eg. McSwirly
   field :url,  type: String # Where does this drain lead?
@@ -25,5 +22,7 @@ class Drain
       end
     end
   end
+
+  belongs_to :app
 
 end

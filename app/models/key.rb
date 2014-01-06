@@ -3,8 +3,6 @@ class Key # SSH public key representation
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  belongs_to :user
-
   field :key,         type: String
   field :fingerprint, type: String
 
@@ -20,5 +18,7 @@ class Key # SSH public key representation
   before_destroy do # remove the key from authorized_keys (HAXX)
     gitlab_keys("rm-key #{key}")
   end
+
+  belongs_to :user
 
 end

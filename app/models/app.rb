@@ -5,12 +5,6 @@ class App
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  belongs_to :user
-
-  has_many :releases, order: :created_at.desc
-  has_many :gears,    dependent: :destroy
-  has_many :drains,   dependent: :destroy
-
   field :name,           type: String
   field :env,            type: Hash,    default: {}       # master env config (on change, build new release)
   field :git,            type: String                     # git repo location
@@ -225,5 +219,11 @@ class App
     gitlab_projects("rm-project #{gitname}")
   end
   private :delete_git_repo
+
+  belongs_to :user
+
+  has_many :releases, order: :created_at.desc
+  has_many :gears,    dependent: :destroy
+  has_many :drains,   dependent: :destroy
 
 end

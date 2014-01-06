@@ -3,8 +3,6 @@ class Gear
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  belongs_to :app
-
   field :type,         type: Symbol  # worker type: web/...
   field :number,       type: Integer # 1,2,3
   field :port,         type: Integer # outbound port of the container
@@ -82,5 +80,7 @@ class Gear
   def remove
     `docker rm #{container_id}`
   end
+
+  belongs_to :app
 
 end

@@ -3,8 +3,6 @@ class Release
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  belongs_to :app
-
   # the docker image name of the release (typically <user>/<app>:v<number>)
   field :image, type: String
   field :version, type: Integer
@@ -15,5 +13,7 @@ class Release
   #after_create do # replace with after_add in app?
     #app.deploy!
   #end
+
+  belongs_to :app
 
 end
