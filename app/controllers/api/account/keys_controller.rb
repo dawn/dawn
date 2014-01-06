@@ -6,7 +6,7 @@ class Api::Account::KeysController < ApiController
 
   def create
     pbkey       = params[:key]
-    fingerprint = SSHKey.new(pbkey).fingerprint
+    fingerprint = SSHKey.fingerprint(pbkey)
     if !Key.where(fingerprint: fingerprint).exists?
       @key = Key.create!(user: current_user, key: pbkey,
                                              fingerprint: fingerprint)
