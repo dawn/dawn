@@ -68,7 +68,7 @@ class App
     # build image using buildpacks (buildstep)
     git_ref = 'master'
 
-    Dir.chdir "#{Dir.home("git")}/#{git}" do
+    Dir.chdir repo_path do
       begin
         tarname = "app-#{Time.now.to_i}.tar"
         begin
@@ -125,7 +125,7 @@ class App
   end
 
   def proctypes
-    Dir.chdir "#{Dir.home("git")}/#{git}" do
+    Dir.chdir repo_path do
       default_procfile_name = '/app/tmp/heroku-buildpack-release-step.yml'
       image_name = releases.last.image
       def_proc = YAML.safe_load(`docker run -i -t -rm "#{image_name}" cat "#{default_proc_name}"`)['default_process_types']
@@ -209,6 +209,11 @@ class App
     "#{name}.git"
   end
   private :gitname
+
+  def repo_path
+    "#{Dir.home("git")}/repositories/#{git}"
+  end
+  private :repo_path
 
   def create_git_repo
     gitlab_projects("add-project #{gitname}")
