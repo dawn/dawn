@@ -200,27 +200,23 @@ class App
     end
   end
 
+  def gitlab_projects(arg)
+    system("/opt/gitlab-shell/bin/gitlab-projects #{arg}")
+  end
+  private :gitlab_projects
+
+  def gitname
+    "#{name}.git"
+  end
+  private :gitname
+
   def create_git_repo
-    Dir.chdir Dir.home("git") do
-      folder = "#{name}.git"
-      raise "Repo exists!" if Dir.exists? folder
-
-      FileUtils.mkdir_p(folder)
-      system("git init --bare --shared #{folder}")
-      self.git = folder
-
-      # add git hook to catch pushes
-      hook = File.join(folder, 'hooks', 'post-receive')
-      File.symlink(File.join(Rails.root, 'hooks', 'post-receive'), hook)
-      FileUtils.chown_R(nil , ENV['DAWN_GROUP'], folder)
-    end
+    gitlab_projects("add-project #{gitname}")
   end
   private :create_git_repo
 
   def delete_git_repo
-    Dir.chdir Dir.home("git") do
-      FileUtils.rm_rf(git)
-    end
+    gitlab_projects("rm-project #{gitname}")
   end
   private :delete_git_repo
 
