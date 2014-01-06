@@ -9,13 +9,22 @@
 
 ### from a special fork
 - name: get gitlab-shell
+  sudo: yes
   git: repo=https://github.com/IceDragon200/gitlab-shell depth=1 dest=/opt/gitlab-shell
 
 - name: config gitlab-shell
+  sudo: yes
   copy: src=config.yml dest=/opt/gitlab-shell/config.yml
+
+- name: fix permissions for gitlab-shell
+  sudo: yes
+  file: path=/opt/gitlab-shell
+        group={{ group_main }}
+        #recurse=yes
+        state=directory
+        mode=0770
 
 ##
 # for some reason, this freezes
 - name: install gitlab-shell
-  sudo: yes
   shell: ./bin/install chdir=/opt/gitlab-shell
