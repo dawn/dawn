@@ -11,12 +11,12 @@ class Key # SSH public key representation
   end
   private :gitlab_keys
 
-  after_create do # add the key to authorized_keys
-    gitlab_keys("add-key #{key}")
+  after_create do
+    gitlab_keys("add-key #{id} \"#{key}\"")
   end
 
-  before_destroy do # remove the key from authorized_keys (HAXX)
-    gitlab_keys("rm-key #{key}")
+  before_destroy do
+    gitlab_keys("rm-key \"#{id}\"")
   end
 
   belongs_to :user
