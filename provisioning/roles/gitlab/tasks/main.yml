@@ -9,13 +9,13 @@
 
 ### from a special fork
 - name: get gitlab-shell
-  git: repo=https://github.com/IceDragon200/gitlab-shell depth=1 dest=/home/git/gitlab-shell
+  git: repo=https://github.com/IceDragon200/gitlab-shell depth=1 dest=/opt/gitlab-shell
 
 - name: config gitlab-shell
-  copy: src=config.yml dest=/home/git/gitlab-shell/config.yml
+  copy: src=config.yml dest=/opt/gitlab-shell/config.yml
 
 ##
 # for some reason, this freezes
 - name: install gitlab-shell
   sudo: yes
-  shell: ./bin/install chdir=/home/git/gitlab-shell
+  shell: ./bin/install chdir=/opt/gitlab-shell
