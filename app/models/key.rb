@@ -1,8 +1,9 @@
 class Key # SSH public key representation
+
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  field :key, type: String
+  field :key,         type: String
   field :fingerprint, type: String
 
   def gitlab_keys(arg)
@@ -19,4 +20,5 @@ class Key # SSH public key representation
   end
 
   belongs_to :user
+
 end
