@@ -22,9 +22,10 @@
         group={{ group_main }}
         #recurse=yes
         state=directory
-        mode=0770
+        mode=0775
 
 ##
 # for some reason, this freezes
 - name: install gitlab-shell
+  sudo: yes
   shell: ./bin/install chdir=/opt/gitlab-shell
