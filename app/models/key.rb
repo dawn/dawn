@@ -12,11 +12,11 @@ class Key # SSH public key representation
   private :gitlab_keys
 
   after_create do
-    gitlab_keys("add-key #{id} \"#{key}\"")
+    gitlab_keys("add-key key-#{id} \"#{key}\"")
   end
 
   before_destroy do
-    gitlab_keys("rm-key \"#{id}\"")
+    gitlab_keys("rm-key \"key-#{id}\"")
   end
 
   belongs_to :user
