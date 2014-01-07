@@ -26,8 +26,11 @@ class Api::Account::KeysController < ApiController
   end
 
   def destroy
-    @key.destroy
-    head 204
+    if @key.destroy
+      head 204
+    else
+      head 500
+    end
   end
 
   def find_key
