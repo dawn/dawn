@@ -70,10 +70,8 @@ Dawn::Application.routes.draw do
     end
   end
 
-  namespace :git do
-    post '/api/git/hook',    to: 'api/git/stream#hook', constraints: { ip: /127.0.0.1/ }
-    post '/api/git/allowed', to: 'api/git/git#allowed', constraints: { ip: /127.0.0.1/ }
-  end
+  post '/api/git/hook',    to: 'api/git/stream#hook', constraints: { ip: /127.0.0.1/ }
+  post '/api/git/allowed', to: 'api/git/git#allowed', constraints: { ip: /127.0.0.1/ }
   # catch git pushes locally
 
   devise_for :users, :path => '/', :path_names => {:sign_in => 'login', :sign_out => 'logout', :sign_up => 'register'}
