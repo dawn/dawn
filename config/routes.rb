@@ -64,14 +64,18 @@ Dawn::Application.routes.draw do
     post '/login', to: 'session#create'
 
     namespace :account do
-      get '/', to: 'account#index'
+      get '/',   to: 'account#index'
       patch '/', to: 'account#update'
       resources :keys
+    end
+
+    namespace :git do
+      post '/hook',    to: 'stream#hook', constraints: { ip: /127.0.0.1/ }
+      post '/allowed', to: 'git#allowed', constraints: { ip: /127.0.0.1/ }
     end
   end
 
   # catch git pushes locally
-  post '/api/githook', to: 'api/stream#githook', :constraints => {:ip => /127.0.0.1/}
 
   devise_for :users, :path => '/', :path_names => {:sign_in => 'login', :sign_out => 'logout', :sign_up => 'register'}
 
