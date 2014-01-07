@@ -28,4 +28,5 @@
 # for some reason, this freezes
 - name: install gitlab-shell
   sudo: yes
+  sudo_user: "{{ user_git }}"
   shell: ./bin/install chdir=/opt/gitlab-shell
