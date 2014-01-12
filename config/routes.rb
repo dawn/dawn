@@ -1,7 +1,7 @@
 Dawn::Application.routes.draw do
 
   def subdomain name, options = {}
-    options = {path: '/', constraints: {subdomain: name.to_s}}.merge!(options)
+    options = { path: '/', constraints: { subdomain: name.to_s } }.deep_merge(options)
     namespace(name, options) { yield }
   end
 
