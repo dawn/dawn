@@ -16,7 +16,7 @@ class Api::Git::GitController < ActionController::Metal
     key = Key.where(id: params[:key_id]).first
     return head 404 unless key
     user = key.user
-    render text: { 'name' => user.username }, status: 200
+    render text: { 'name' => user.username }.to_json, status: 200
   end
 
 end
