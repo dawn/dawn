@@ -22,7 +22,7 @@
         group={{ group_main }}
         #recurse=yes
         state=directory
-        mode=0775
+        mode=0755
 
 ##
 # for some reason, this freezes
