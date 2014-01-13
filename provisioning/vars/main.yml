@@ -7,4 +7,4 @@ user_main: dawn
 path_home_git: /home/{{ user_git }}
 path_home_main: /home/{{ user_main }}
 path_app: /app
-project_repo: git@bitbucket.org:Speechless/paas.git
+project_repo: git@bitbucket.org:Speechless/dawn.git
