@@ -12,4 +12,11 @@ class Api::Git::GitController < ActionController::Metal
     render text: 'true', status: 200
   end
 
+  def discover
+    key = Key.where(id: params[:key_id]).first
+    return head 404 unless key
+    user = key.user
+    render text: { 'name' => user.username }, status: 200
+  end
+
 end
