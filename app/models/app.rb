@@ -202,7 +202,9 @@ class App
   end
 
   def gitlab_projects(arg)
-    system("/opt/gitlab-shell/bin/gitlab-projects #{arg}")
+    result = `/opt/gitlab-shell/bin/gitlab-projects #{arg} 2>&1`
+    Rails.logger.tagged("GITLAB::APP") { logger.info(result) } unless result.empty?
+    $?.success?
   end
   private :gitlab_projects
 
