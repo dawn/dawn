@@ -14,7 +14,8 @@ class Gear
 
   # before_create create a docker container and run the worker, set port/ip/container_id
   before_create do |gear|
-    gear.number = app.gears.where(type: type).count + 1 # TEMP? might not be cross process safe, need to make it Atomic
+    # TEMP? might not be cross process safe, need to make it Atomic
+    gear.number = app.gears.where(type: type).count + 1
     gear.port = 5000 # temp?
 
     logshuttle = {
@@ -28,7 +29,7 @@ class Gear
                                                            # FUGLY, FIX!
     gear.container_id = `docker run -d -e PORT=#{port} #{app.releases.last.image} #{command}`.chomp
 
-    info = JSON.parse(`docker inspect #{container_id}`).first
+    info = gear.send(:docker_container).json
     gear.ip = info["NetworkSettings"]["IPAddress"]
 
     # update Hipache with the new gear IP/ports (only add web gears)
@@ -59,26 +60,31 @@ class Gear
   end
   private :reset_started_at
 
+  def docker_container
+    Docker::Container.get(container_id)
+  end
+  private :docker_container
+
   def kill
-    `docker kill #{container_id}`
+    docker_container.kill
   end
 
   def start
-    `docker start #{container_id}`
+    docker_container.start
     reset_started_at
   end
 
   def stop
-    `docker stop #{container_id}`
+    docker_container.stop
   end
 
   def restart # use docker restart
-    `docker restart #{container_id}`
+    docker_container.restart
     reset_started_at
   end
 
   def remove
-    `docker rm #{container_id}`
+    docker_container.delete
   end
 
   belongs_to :app
