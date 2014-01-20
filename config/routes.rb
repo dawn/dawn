@@ -75,6 +75,8 @@ Dawn::Application.routes.draw do
   get '/api/git/discover', to: 'api/git/git#discover', constraints: { ip: /127.0.0.1/ }
   # catch git pushes locally
 
-  devise_for :users, :path => '/', :path_names => {:sign_in => 'login', :sign_out => 'logout', :sign_up => 'register'}
+  devise_for :users, path: '/', path_names: { sign_in: 'login',
+                                              sign_out: 'logout',
+                                              sign_up: 'register' }
 
 end
