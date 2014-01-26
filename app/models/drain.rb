@@ -12,7 +12,7 @@ class Drain
   validates :url, #uniqueness: true,
                   presence: true
   ## validation-callback
-  before_validation :ensure_name, unless: Proc.new { |model| model.persisted? }
+  before_validation :ensure_name, unless: ->(model){ model.persisted? }
 
   def ensure_name
     if name.blank?
