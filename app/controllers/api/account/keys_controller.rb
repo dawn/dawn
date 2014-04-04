@@ -36,13 +36,12 @@ class Api::Account::KeysController < ApiController
     end
   end
 
-  def find_key
+  private def find_key
     if key = current_user.keys.where(id: params[:id]).first
       @key = key
     else
       head 404
     end
   end
-  private :find_key
 
 end

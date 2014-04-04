@@ -54,15 +54,13 @@ class Gear
     started_at ? Time.now - started_at : 0
   end
 
-  def reset_started_at
+  private def reset_started_at
     update(started_at: Time.now)
   end
-  private :reset_started_at
 
-  def clear_started_at
+  private def clear_started_at
     update(started_at: nil)
   end
-  private :clear_started_at
 
   def kill
     `docker kill #{container_id}`

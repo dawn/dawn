@@ -27,22 +27,20 @@ class Api::DrainsController < ApiController
     head 204
   end
 
-  def find_app
+  private def find_app
     if app = App.where(id: params[:app_id]).first
       @app = app
     else
       head 404
     end
   end
-  private :find_app
 
-  def find_drain
+  private def find_drain
     if drain = @app.drains.where(id: params[:id]).first
       @drain = drain
     else
       head 404
     end
   end
-  private :find_drain
 
 end

@@ -201,27 +201,23 @@ class App
     Logplex.delete(path: "/v2/channels/#{logplex_id}")
   end
 
-  def gitlab_projects(arg)
+  private def gitlab_projects(arg)
     result = `/opt/gitlab-shell/bin/gitlab-projects #{arg} 2>&1`
     Rails.logger.tagged("GITLAB::APP") { logger.info(result) } unless result.empty?
     $?.success?
   end
-  private :gitlab_projects
 
-  def repo_path
+  private def repo_path
     "#{Dir.home("git")}/repositories/#{git}"
   end
-  private :repo_path
 
-  def create_git_repo
+  private def create_git_repo
     gitlab_projects("add-project #{git}")
   end
-  private :create_git_repo
 
-  def delete_git_repo
+  private def delete_git_repo
     gitlab_projects("rm-project #{git}")
   end
-  private :delete_git_repo
 
   belongs_to :user
 

@@ -14,14 +14,12 @@ class Api::AccountController < ApiController
     end
   end
 
-  def find_account
+  private def find_account
     @account = current_user
   end
-  private :find_account
 
-  def account_params
+  private def account_params
     params.require(:account).permit(:username, :password)
   end
-  private :account_params
 
 end

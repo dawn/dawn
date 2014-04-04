@@ -50,13 +50,12 @@ class User
     end
   end
 
-  def generate_api_key
+  private def generate_api_key
     loop do
       key = Devise.friendly_token
       break key unless User.where(api_key: key).exists?
     end
   end
-  private :generate_api_key
 
   has_many :apps
   has_many :keys

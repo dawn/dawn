@@ -96,20 +96,18 @@ class Api::AppsController < ApiController
     end
   end
 
-  def find_app
+  private def find_app
     if app = App.where(id: params[:id]).first
       @app = app
     else
       head 404
     end
   end
-  private :find_app
 
-  def verify_app_owner
+  private def verify_app_owner
     unless @app.user == current_user
       head 401
     end
   end
-  private :verify_app_owner
 
 end
