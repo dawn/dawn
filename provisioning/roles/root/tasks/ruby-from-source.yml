@@ -15,7 +15,7 @@
   file: state=directory path=/tmp/ruby
 
 - name: download ruby
-  get_url: url=ftp://ftp.ruby-lang.org/pub/ruby/2.0/{{ ruby }}.tar.bz2 dest=/tmp/ruby
+  get_url: url=ftp://ftp.ruby-lang.org/pub/ruby/2.1/{{ ruby }}.tar.bz2 dest=/tmp/ruby
 
 - name: extract ruby
   shell: tar -xf {{ruby}}.tar.bz2 chdir=/tmp/ruby creates={{ ruby }}

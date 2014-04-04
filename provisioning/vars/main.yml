@@ -1,5 +1,5 @@
 ---
-ruby: ruby-2.0.0-p247
+ruby: ruby-2.1.1
 gem_bin_path: ~/.rvm/gems/{{ ruby }}/bin
 group_main: dawnusers
 user_git: git
