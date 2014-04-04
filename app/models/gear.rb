@@ -59,8 +59,14 @@ class Gear
   end
   private :reset_started_at
 
+  def clear_started_at
+    update(started_at: nil)
+  end
+  private :clear_started_at
+
   def kill
     `docker kill #{container_id}`
+    clear_started_at
   end
 
   def start
@@ -70,6 +76,7 @@ class Gear
 
   def stop
     `docker stop #{container_id}`
+    clear_started_at
   end
 
   def restart # use docker restart
@@ -79,6 +86,7 @@ class Gear
 
   def remove
     `docker rm #{container_id}`
+    clear_started_at
   end
 
   belongs_to :app
