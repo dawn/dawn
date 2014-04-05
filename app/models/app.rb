@@ -188,7 +188,7 @@ class App
       expects: 201,
       path: '/channels',
       body: {tokens: [:app, :dawn]}.to_json,
-      headers: { "Content-Type" => "application/x-www-form-urlencoded" }
+      headers: { 'Content-Type' => 'application/x-www-form-urlencoded' }
     )
     resp = JSON.parse(resp.body)
 
@@ -223,6 +223,6 @@ class App
 
   has_many :releases, order: :created_at.desc
   has_many :gears,    dependent: :destroy
-  has_many :drains,   dependent: :destroy
+  has_many :drains,   dependent: :delete # since deleting the chan deletes the drains, don't trigger callback
 
 end

@@ -1,2 +1,2 @@
 object @drain
-attributes :id, :created_at, :name, :url
+attributes :id, :created_at, :url,  :drain_id, :token

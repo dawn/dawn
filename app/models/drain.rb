@@ -1,26 +1,35 @@
 class Drain
 
-  ## mixins
   include Mongoid::Document
   include Mongoid::Timestamps
 
   ## attributes
-  field :name, type: String # Should drains even have a name? eg. McSwirly
   field :url,  type: String # Where does this drain lead?
 
-  ## validation
-  validates :url, #uniqueness: true,
-                  presence: true
-  ## validation-callback
-  before_validation :ensure_name, unless: ->(model){ model.persisted? }
+  field :drain_id, type: Integer # id of the drain inside Logplex
+  field :token, type: String # identifier token inside Logplex
 
-  def ensure_name
-    if name.blank?
-      loop do
-        self.name = Forgery(:dawn).drain_name
-        break name if valid?
-      end
-    end
+  ## validation
+  validates :url, presence: true
+
+  before_create :create_logplex_drain
+  before_destroy :destroy_logplex_drain
+
+  private def create_logplex_drain
+    resp = Logplex.post(
+      expects: 201,
+      path: "/v2/channels/#{app.logplex_id}/drains",
+      body: {url: self.url}.to_json,
+      headers: { 'Content-Type' => 'application/x-www-form-urlencoded' }
+    )
+    resp = JSON.parse(resp.body)
+
+    self.drain_id = resp['id']
+    self.token = resp['token']
+  end
+
+  private def destroy_logplex_drain
+    Logplex.delete(path: "/v2/channels/#{app.logplex_id}/drains/#{drain_id}")
   end
 
   belongs_to :app
