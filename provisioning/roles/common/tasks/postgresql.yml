@@ -2,5 +2,8 @@
 - name: install postgresql
   apt: pkg=postgresql state=present
 
+- name: setup postgresql user
+  postgresql_user: user=dawn password=NULL role_attr_flags=CREATEDB,SUPERUSER state=present
+
 - name: start postgresql
   service: name=postgresql state=started
