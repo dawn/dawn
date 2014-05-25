@@ -9,7 +9,9 @@
   sudo: yes
 - include: ssh.yml
   sudo: yes
-- include: mongodb.yml
+#- include: mongodb.yml
+#  sudo: yes
+- include: postgresql.yml
   sudo: yes
 - include: redis.yml
   sudo: yes

@@ -1,0 +1,6 @@
+---
+- name: install postgresql
+  apt: pkg=postgresql state=present
+
+- name: start postgresql
+  service: name=postgresql state=started
