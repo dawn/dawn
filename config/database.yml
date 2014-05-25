@@ -1,0 +1,15 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: dawn_development
+  pool: 5
+  username: dawn
+  password:
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: dawn_test
+  pool: 5
+  username: dawn
+  password:

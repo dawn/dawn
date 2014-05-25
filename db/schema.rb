@@ -9,110 +9,83 @@
 # from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
-# It's strongly recommended to check this file into your version control system.
+# It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 1) do
-  enable_extension 'hstore'
+ActiveRecord::Schema.define(version: 20140525224610) do
 
-  create_table :apps do |t|
-    t.timestamps
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+  enable_extension "hstore"
 
-    t.string  :name
-    t.hstore  :env,       default: {}
-    t.string  :git        # path to the git repository
-    t.hstore  :formation, default: {web: 1} # how many gears of what type do we have
-    t.integer :version,   default: 0 # release version tracker
-
-    t.integer :logplex_id
-    t.hstore  :logplex_tokens, default: {}
-
-    t.belongs_to :user
+  create_table "apps", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+    t.hstore   "env",            default: {}
+    t.string   "git"
+    t.hstore   "formation",      default: {"web"=>"1"}
+    t.integer  "version",        default: 0
+    t.integer  "logplex_id"
+    t.hstore   "logplex_tokens", default: {}
+    t.integer  "user_id"
   end
 
-  create_table :gears do |t|
-    t.timestamps
-
-    # type ? needs a different name because of the way fields stored polymorphic + is a symbol
-    t.integer :number
-    t.integer :port
-    t.string  :ip
-    t.string  :container_id # pid/identifier of the Docker container
-    t.time    :started_at # default val Time.now
-
-    t.belongs_to :app
+  create_table "drains", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "url"
+    t.integer  "drain_id"
+    t.string   "token"
+    t.integer  "app_id"
   end
 
-  create_table :releases do |t|
-    t.timestamps
-
-    t.string  :image # the docker image name (typically <user>/<app>:v<number>)
-    t.integer :version
-
-    t.belongs_to :app
+  create_table "gears", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "number"
+    t.integer  "port"
+    t.string   "ip"
+    t.string   "container_id"
+    t.time     "started_at"
+    t.integer  "app_id"
+    t.string   "type"
   end
 
-  create_table :drains do |t|
-    t.timestamps
-
-    t.string  :url
-    t.integer :drain_id
-    t.string  :token
-
-    t.belongs_to :app
+  create_table "keys", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "key"
+    t.string   "fingerprint"
+    t.integer  "user_id"
   end
 
-  create_table :keys do |t|
-    t.timestamps
-
-    t.string :key
-    t.string :fingerprint
-
-    t.belongs_to :user
+  create_table "releases", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "image"
+    t.integer  "version"
+    t.integer  "app_id"
   end
 
-  create_table :users do |t|
-    t.timestamps
-
-    t.string :username
-
-    ## Database authenticatable
-    t.string :email,  default: ""
-    t.string :encrypted_password,  default: ""
-
-    ## Recoverable
-    t.string :reset_password_token
-    t.time   :reset_password_sent_at
-
-    ## Rememberable
-    t.time :remember_created_at
-
-    ## Trackable
-    t.integer :sign_in_count, default: 0
-    t.time    :current_sign_in_at
-    t.time    :last_sign_in_at
-    t.string  :current_sign_in_ip
-    t.string  :last_sign_in_ip
-
-    ## Confirmable
-    # t.string :confirmation_token
-    # t.time :confirmed_at
-    # t.time :confirmation_sent_at
-    # t.string :unconfirmed_email # Only if using reconfirmable
-
-    ## Lockable
-    # t.integer :failed_attempts, default: 0 # Only if lock strategy is :failed_attempts
-    # t.string :unlock_token # Only if unlock strategy is :email or :both
-    # t.time :locked_at
-
-    t.string :api_key # TODO: defaults to proc...
-
-    t.belongs_to :user
+  create_table "users", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "username"
+    t.string   "email",                  default: ""
+    t.string   "encrypted_password",     default: ""
+    t.string   "reset_password_token"
+    t.time     "reset_password_sent_at"
+    t.time     "remember_created_at"
+    t.integer  "sign_in_count",          default: 0
+    t.time     "current_sign_in_at"
+    t.time     "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.string   "api_key"
+    t.integer  "user_id"
   end
 
-  add_index :users, :email,                unique: true
-  add_index :users, :reset_password_token, unique: true
-  # add_index :users, :confirmation_token,   unique: true
-  # add_index :users, :unlock_token,         unique: true
-
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end
