@@ -1,12 +1,4 @@
-class Release
-
-  include Mongoid::Document
-  include Mongoid::Timestamps
-
-  # the docker image name of the release (typically <user>/<app>:v<number>)
-  field :image, type: String
-  field :version, type: Integer
-
+class Release< ActiveRecord::Base
   validates_presence_of :image, :version
 
   # if a new release was added, redeploy (destroy all gears and recreate)
@@ -15,5 +7,4 @@ class Release
   #end
 
   belongs_to :app
-
 end

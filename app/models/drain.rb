@@ -1,15 +1,4 @@
-class Drain
-
-  include Mongoid::Document
-  include Mongoid::Timestamps
-
-  ## attributes
-  field :url,  type: String # Where does this drain lead?
-
-  field :drain_id, type: Integer # id of the drain inside Logplex
-  field :token, type: String # identifier token inside Logplex
-
-  ## validation
+class Drain < ActiveRecord::Base
   validates :url, presence: true
 
   before_create :create_logplex_drain
@@ -33,5 +22,4 @@ class Drain
   end
 
   belongs_to :app
-
 end

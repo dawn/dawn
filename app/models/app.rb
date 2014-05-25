@@ -1,18 +1,6 @@
 require 'fileutils'
 
-class App
-
-  include Mongoid::Document
-  include Mongoid::Timestamps
-
-  field :name,           type: String
-  field :env,            type: Hash,    default: {}       # master env config (on change, build new release)
-  field :git,            type: String                     # git repo location
-  field :formation,      type: Hash,    default: {web: 1} # formation - how many gears of what type do we have
-  field :version,        type: Integer, default: 0        # release version tracker
-  field :logplex_id,     type: Integer
-  field :logplex_tokens, type: Hash
-
+class App < ActiveRecord::Base
   validates :name, uniqueness: true,
                    presence: true,
                    format: { with: /\A[a-z][a-z\d-]+\z/ }, # a-z + 0-9 + -, must start with a-z

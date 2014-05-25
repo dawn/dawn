@@ -1,16 +1,9 @@
-class Gear
-
-  include Mongoid::Document
-  include Mongoid::Timestamps
-
-  field :type,         type: Symbol  # worker type: web/...
-  field :number,       type: Integer # 1,2,3
-  field :port,         type: Integer # outbound port of the container
-  field :ip,           type: String  # network IP of the container
-  field :container_id, type: String  # pid/identifier of the Docker container
-  field :started_at,   type: Time,   default: ->{ Time.now }
-
+class Gear < ActiveRecord::Base
   validates_uniqueness_of :container_id, :ip # :name
+
+  before_create do |gear|  # initialize started_at
+    gear.started_at = Time.now
+  end
 
   # before_create create a docker container and run the worker, set port/ip/container_id
   before_create do |gear|
@@ -88,5 +81,4 @@ class Gear
   end
 
   belongs_to :app
-
 end
