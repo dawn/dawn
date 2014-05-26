@@ -1,5 +1,5 @@
 ---
-- hosts: dawndev
+- hosts: vagrant
   remote_user: dawn
   vars_files:
     - vars/main.yml
