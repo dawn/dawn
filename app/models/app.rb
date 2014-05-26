@@ -100,7 +100,7 @@ class App < ActiveRecord::Base
       image_name = releases.last.image
       def_proc = YAML.safe_load(`docker run -i -t -rm "#{image_name}" cat "#{default_proc_name}"`)['default_process_types']
       app_proc = YAML.safe_load(`git show master:Procfile`)
-      return def_proc.with_indifferent_access.merge(app_proc.with_indifferent_access)
+      return def_proc.stringify_keys.merge(app_proc.stringify_keys)
     end
   end
 
@@ -110,7 +110,8 @@ class App < ActiveRecord::Base
     app_proctypes = proctypes
     # we only want the proc types, which is the keys
     allowed_proctypes = app_proctypes.keys
-    old_formation = self.formation.with_indifferent_access
+    old_formation = self.formation
+
     allowed_proctypes.each do |gear_type|
       old_count = old_formation[gear_type]
       count = options[gear_type] || old_count || 0
@@ -127,8 +128,9 @@ class App < ActiveRecord::Base
         gears.where(type: gear_type).order_by(:number.desc).limit(diff.abs).destroy
       end
     end
-    # we keep missing values and overwrite duplicates with
-    # new ones --> Hash#merge
+
+    # we keep missing values and overwrite duplicates with new ones
+    # --> Hash#merge
     self.formation = old_formation.merge(options)
     self.save!
   end
