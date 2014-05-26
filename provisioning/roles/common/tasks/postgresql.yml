@@ -7,6 +7,7 @@
     - libpq-dev # for pg gem
 
 - name: setup postgresql user
+  sudo_user: postgres
   postgresql_user: user=dawn password=NULL role_attr_flags=CREATEDB,SUPERUSER state=present
 
 - name: start postgresql
