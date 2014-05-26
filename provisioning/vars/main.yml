@@ -1,5 +1,5 @@
 ---
-ruby: ruby-2.1.1
+ruby: ruby-2.1.2
 gem_bin_path: ~/.rvm/gems/{{ ruby }}/bin
 group_main: dawnusers
 user_git: git
