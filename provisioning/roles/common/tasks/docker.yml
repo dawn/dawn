@@ -15,3 +15,4 @@
 
 - name: install buildstep
   shell: docker build -t progrium/buildstep github.com/progrium/buildstep
+  tags: [skip]

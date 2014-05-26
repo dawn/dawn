@@ -1,22 +1,24 @@
 ---
-- name: add erlang to local key chain
-  apt_key: url=http://packages.erlang-solutions.com/debian/erlang_solutions.asc
-  sudo: yes
+#- name: add erlang to local key chain
+#  apt_key: url=http://packages.erlang-solutions.com/debian/erlang_solutions.asc
+#  sudo: yes
 
-- name: add erlang repository
-  apt_repository: repo='deb http://packages.erlang-solutions.com/debian raring contrib' state=present
-  sudo: yes
+#- name: add erlang repository
+#  apt_repository: repo='deb http://packages.erlang-solutions.com/debian raring contrib' state=present
+#  sudo: yes
 
-- name: install erlang (R16B02 or newer)
-  apt: pkg=erlang state=present update_cache=yes
-  sudo: yes
+#- name: install erlang (R16B02)
+#  apt: pkg=erlang=1:16.b.2 state=present update_cache=yes
+#  sudo: yes
 
 - name: download logplex
   git: repo=https://github.com/heroku/logplex.git dest=/opt/logplex
   sudo: yes
 
 - name: compile logplex
-  shell: ./rebar --config public.rebar.config get-deps compile chdir=/opt/logplex
+  shell: >
+    executable=/bin/bash source /usr/lib/kerl/installs/default/activate;
+    ./rebar --config public.rebar.config get-deps compile chdir=/opt/logplex creates=/opt/logplex/bin/logplex
   sudo: yes
 
 - name: add logplex service to Upstart
@@ -41,6 +43,7 @@
 
 - name: start logplex
   service: name=logplex state=started
+  sudo: yes
 
 # to build log-shuttle
   # git clone https://github.com/heroku/log-shuttle.git

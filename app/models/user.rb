@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
   validates :email, format: { with: RFC822::EMAIL_REGEXP_WHOLE }, uniqueness: true
 
-  validates_uniqueness_of :username, :reset_password_token
+  # validates_uniqueness_of :username, :reset_password_token
 
   # TODO: validate min password length
 

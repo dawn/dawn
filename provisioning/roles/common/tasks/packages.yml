@@ -1,6 +1,7 @@
 ---
 - name: upgrade packages
   apt: upgrade=yes update_cache=yes
+  tags: [skip]
   sudo: true
 
 - name: install userspace packages

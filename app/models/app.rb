@@ -211,8 +211,8 @@ class App < ActiveRecord::Base
 
   belongs_to :user
 
-  has_many :releases, order: :created_at.desc
+  has_many :releases, -> { order(created_at: :desc) }
   has_many :gears,    dependent: :destroy
-  has_many :drains,   dependent: :delete # since deleting the chan deletes the drains, don't trigger callback
+  has_many :drains,   dependent: :delete_all # since deleting the chan deletes the drains, don't trigger callback
 
 end

@@ -26,3 +26,20 @@ Things you may want to cover:
 
 Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.
+
+
+# Logplex
+
+```
+INSTANCE_NAME=`hostname` \
+  LOGPLEX_CONFIG_REDIS_URL="redis://localhost:6379" \
+  LOGPLEX_REDGRID_REDIS_URL="redis://localhost:6379" \
+  LOCAL_IP="127.0.0.1" \
+  LOGPLEX_COOKIE=dawnplex \
+  LOGPLEX_AUTH_KEY=123 \
+  erl -name logplex@`hostname` -pa ebin -env ERL_LIBS deps -s logplex_app -setcookie ${LOGPLEX_COOKIE} -config sys
+```
+
+```
+logplex_cred:store(logplex_cred:grant('full_api', logplex_cred:grant('any_channel', logplex_cred:rename(<<"Local-Test">>, logplex_cred:new(<<"dawn">>, <<"salvorhardin">>))))).
+```

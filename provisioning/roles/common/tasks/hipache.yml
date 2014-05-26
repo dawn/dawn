@@ -1,6 +1,6 @@
 ---
 - name: install hipache
-  shell: npm install hipache -g creates=~/usr/local/bin/hipache
+  shell: npm install hipache -g creates=/usr/bin/hipache
 
 - name: add hipache configuration
   copy: src=hipache/hipache.json dest=/etc/hipache.json

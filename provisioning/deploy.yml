@@ -6,6 +6,7 @@
     - vars/service.yml
   roles:
     - { role: common,   tags: ["common"]   }
+    - { role: erlang,   tags: ["erlang"]   }
     - { role: logplex,  tags: ["logplex"]  }
     - { role: git,      tags: ["git"]      }
     - { role: gitlab,   tags: ["gitlab"]   }
