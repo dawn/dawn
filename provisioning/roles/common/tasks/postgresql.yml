@@ -1,6 +1,10 @@
 ---
 - name: install postgresql
-  apt: pkg=postgresql state=present
+  apt: pkg={{ item }} state=present
+  with_items:
+    - postgresql
+    - python-psycopg2 # needed for postgresql_user
+    - libpq-dev # for pg gem
 
 - name: setup postgresql user
   postgresql_user: user=dawn password=NULL role_attr_flags=CREATEDB,SUPERUSER state=present
