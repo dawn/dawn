@@ -8,4 +8,5 @@
     - { role: common,   tags: ["common"]   }
     - { role: logplex,  tags: ["logplex"]  }
     - { role: git,      tags: ["git"]      }
+    - { role: gitlab,   tags: ["gitlab"]   }
     - { role: rails,    tags: ["rails"]    }

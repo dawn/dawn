@@ -1,3 +1,0 @@
-#!/bin/bash
-# provision-git
-ansible-playbook provisioning/deploy-git.yml -i provisioning/hosts -k "$@"

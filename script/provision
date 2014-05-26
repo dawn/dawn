@@ -1,6 +1,6 @@
 #!/bin/bash
 # provision
 # First Password prompt: use the root password here
-ansible-playbook provisioning/deploy-root.yml -i provisioning/hosts -k "$@"
+ansible-playbook provisioning/deploy-root.yml -e 'host_key_checking=False' -c paramiko -i provisioning/hosts -k "$@"
 # Second Password prompt: use the user password here (user=dawn password=rubyx)
-ansible-playbook provisioning/deploy.yml -i provisioning/hosts -k -K "$@"
+ansible-playbook provisioning/deploy.yml -e 'host_key_checking=False' -c paramiko -i provisioning/hosts -k -K "$@"

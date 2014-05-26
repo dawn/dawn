@@ -1,3 +1,3 @@
 #!/bin/bash
 # provision-user
-ansible-playbook provisioning/deploy.yml -i provisioning/hosts -k "$@"
+ansible-playbook provisioning/deploy.yml -e 'host_key_checking=False' -c paramiko -i provisioning/hosts -k -K "$@"

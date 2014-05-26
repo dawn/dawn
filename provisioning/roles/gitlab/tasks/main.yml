@@ -20,9 +20,9 @@
   sudo: yes
   file: path=/opt/gitlab-shell
         group={{ group_main }}
-        #recurse=yes
         state=directory
         mode=0755
+        #recurse=yes
 
 ##
 # for some reason, this freezes
