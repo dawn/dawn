@@ -1,6 +1,36 @@
 ---
-- include: create-users.yml
-  tags: create_users
-- include: ruby-from-source.yml
-#- include: rvm.yml
-- include: gem-foreman.yml
+- name: create user group
+  tags: group
+  group: name={{ group_main }}
+         state=present
+
+- name: create docker group
+  tags: group
+  group: name=docker
+         state=present
+
+- name: create dawn user
+  tags: user
+  user: name={{ user_main }}
+        shell=/bin/bash
+        state=present
+        group={{ group_main }}
+        groups="docker"
+        password=$1$salt$wEFEXlsqMhUc7RwxISKiy0
+
+- name: create git user
+  tags: user
+  user: name={{ user_git }}
+        state=present
+        home={{ path_home_git }}
+        shell=/usr/bin/git-shell
+        group={{ group_main }}
+
+- name: setup /home/git access for group_main
+  tags: group_main
+  sudo: yes
+  file: path={{ path_home_git }}
+        group={{ group_main }}
+        recurse=yes
+        state=directory
+        mode=0770

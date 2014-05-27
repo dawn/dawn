@@ -9,15 +9,12 @@
 
 ### from a special fork
 - name: get gitlab-shell
-  sudo: yes
   git: repo=https://github.com/IceDragon200/gitlab-shell depth=1 dest=/opt/gitlab-shell
 
 - name: config gitlab-shell
-  sudo: yes
   copy: src=config.yml dest=/opt/gitlab-shell/config.yml
 
 - name: fix permissions for gitlab-shell
-  sudo: yes
   file: path=/opt/gitlab-shell
         user=git
         group={{ group_main }}
@@ -28,6 +25,8 @@
 ##
 # for some reason, this freezes
 - name: install gitlab-shell
-  sudo: yes
   sudo_user: "{{ user_git }}"
   shell: ./bin/install chdir=/opt/gitlab-shell
+
+- name: symlink post-receive hook into gitlab-shell
+  file: src=/app/hooks/post-receive dest=/opt/gitlab-shell/hooks/post-receive owner=dawn group=dawnusers state=link

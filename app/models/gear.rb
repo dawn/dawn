@@ -70,7 +70,7 @@ class Gear < ActiveRecord::Base
     clear_started_at
   end
 
-  def restart # use docker restart
+  def restart
     `docker restart #{container_id}`
     reset_started_at
   end

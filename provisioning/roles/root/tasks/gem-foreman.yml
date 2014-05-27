@@ -1,3 +1,0 @@
----
-- name: install global foreman
-  command: gem install foreman

@@ -1,11 +1,9 @@
 ---
 - name: upgrade packages
   apt: upgrade=yes update_cache=yes
-  tags: [skip]
-  sudo: true
+  tags: [skip,upgrade]
 
 - name: install userspace packages
-  sudo: yes
   apt: pkg={{ item }} state=present
   tags: [packages]
   with_items:

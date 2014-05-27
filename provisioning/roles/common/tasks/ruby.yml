@@ -13,9 +13,35 @@
 #- name: install rubinius
 #  shell: ~/.rvm/bin/rvm install rbx
 
-- name: setup system gemrc
-  sudo: yes
-  copy: src=gemrc-system dest=/etc/gemrc
+- name: ensure we have the build tools and dependencies needed
+  apt: pkg={{ item }} state=present update_cache=yes
+  with_items:
+  - build-essential
+  - zlib1g-dev
+  - libyaml-dev
+  - libssl-dev
+  - libgdbm-dev
+  - libreadline-dev
+  - libncurses5-dev
+  - libffi-dev
 
-- name: setup user gemrc
-  copy: src=gemrc-user dest=/home/{{ user_main }}/.gemrc
+- name: ensure directory /tmp/ruby is present
+  file: state=directory path=/tmp/ruby
+
+- name: download ruby
+  get_url: url=ftp://ftp.ruby-lang.org/pub/ruby/2.1/{{ ruby }}.tar.bz2 dest=/tmp/ruby
+
+- name: extract ruby
+  shell: tar -xf {{ruby}}.tar.bz2 chdir=/tmp/ruby creates={{ ruby }}
+
+- name: configure ruby
+  shell: ./configure --with-readline-dir=/usr/local chdir=/tmp/ruby/{{ ruby }} creates=Makefile
+
+- name: build ruby
+  shell: make chdir=/tmp/ruby/{{ ruby }} creates=ruby
+
+- name: install ruby
+  shell: make install chdir=/tmp/ruby/{{ ruby }} creates=/usr/local/bin/ruby
+
+- name: setup system gemrc
+  copy: src=gemrc dest=/etc/gemrc

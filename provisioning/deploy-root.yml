@@ -1,8 +1,0 @@
----
-- hosts: vagrant
-  remote_user: root
-  vars_files:
-    - vars/main.yml
-    - vars/service.yml
-  roles:
-    - root

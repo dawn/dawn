@@ -1,6 +1,0 @@
----
-- name: install root RVM
-  shell: \curl -L https://get.rvm.io | bash -s stable --autolibs=3 creates=/usr/local/rvm
-
-- name: install {{ ruby }}
-  shell: /usr/local/rvm/bin/rvm install {{ ruby }} --default
