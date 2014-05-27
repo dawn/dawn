@@ -15,7 +15,7 @@
 
 - name: build dawn/buildstep
   command: docker build -t dawn/buildstep . chdir={{ path_app }}
-  sudo_user: {{ user_main }}
+  sudo_user: "{{ user_main }}"
 
 - name: install global foreman
   command: gem install foreman
@@ -26,11 +26,11 @@
 - name: bundle install
   command: bundle install chdir={{ path_app }}
   tags: bundle-install
-  sudo_user: {{ user_main }}
+  sudo_user: "{{ user_main }}"
 
 - name: setup database
   command: bin/rake db:create db:migrate db:seed chdir={{ path_app }}
-  sudo_user: {{ user_main }}
+  sudo_user: "{{ user_main }}"
 
 - name: export Procfile to Upstart
   command: foreman export -f {{ path_app }}/Procfile upstart /etc/init -a dawn chdir={{ path_app }}

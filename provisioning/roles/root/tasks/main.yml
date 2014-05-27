@@ -2,6 +2,7 @@
 - name: create user group
   tags: group
   group: name={{ group_main }}
+         gid=453
          state=present
 
 - name: create docker group
@@ -14,6 +15,7 @@
   user: name={{ user_main }}
         shell=/bin/bash
         state=present
+        uid=453
         group={{ group_main }}
         groups="docker"
         password=$1$salt$wEFEXlsqMhUc7RwxISKiy0
