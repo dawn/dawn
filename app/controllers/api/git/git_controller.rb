@@ -1,6 +1,7 @@
 class Api::Git::GitController < ActionController::Metal
 
   include ActionController::Head        # for header only responses
+  include AbstractController::Rendering
   include ActionController::Rendering   # enables rendering
 
   def allowed

@@ -6,7 +6,8 @@
 # STRIPE_API_KEY: EdAvEPVEC3LuaTg5Q3z6WbDVqZlcBQ8Z
 # STRIPE_PUBLIC_KEY: pk_BRgD57O8fHja9HxduJUszhef6jCyS
 
-DAWN_HOST: "dawn.dev"
+DAWN_HOST: "localhost"
+DAWN_APP_HOST: "dawn.dev"
 DAWN_GROUP: "dawnusers"
 
 LOGPLEX_SECRET: "hd4Dna3UGxqXqtuVkMYF"

@@ -19,9 +19,10 @@
 - name: fix permissions for gitlab-shell
   sudo: yes
   file: path=/opt/gitlab-shell
+        user=git
         group={{ group_main }}
         state=directory
-        mode=0755
+        mode=0775
         #recurse=yes
 
 ##

@@ -1,4 +1,5 @@
 class ApiController < ActionController::Metal
+  include AbstractController::Rendering
   include ActionController::Rendering   # enables rendering
   include ActionController::Head        # for header only responses
   include AbstractController::Callbacks # callbacks for authentication logic (before_action, etc..)
@@ -10,6 +11,8 @@ class ApiController < ActionController::Metal
 
   include ActionController::Helpers
   include Devise::Controllers::Helpers # helper methods
+
+  include ActionView::Layouts # for views
 
   # This is our new function that comes before Devise's one
   before_action :authenticate_user_from_api_key!

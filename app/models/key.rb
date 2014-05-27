@@ -10,4 +10,6 @@ class Key < ActiveRecord::Base # SSH public key representation
   before_destroy do
     gitlab_keys("rm-key \"key-#{id}\"")
   end
+
+  belongs_to :user
 end

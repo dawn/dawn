@@ -31,9 +31,9 @@ class App < ActiveRecord::Base
   end
 
   def build
-    self.inc(version: 1) # increment current version
+    self.increment!(:version) # increment current version
 
-    image_name = "#{user.username}/#{name}"
+    image_name = "#{user.username.downcase}/#{name}"
 
     # build image using buildpacks (buildstep)
     git_ref = 'master'
@@ -54,7 +54,7 @@ class App < ActiveRecord::Base
           FileUtils.rm_rf(".profile.d") # we no longer need the profile.d so remove it
         end
         #IO.popen "git archive #{git_ref} | /#{Rails.root}/script/buildstep #{image_name}" do |fd|
-        IO.popen "cat #{tarname} | /#{Rails.root}/script/buildstep #{image_name}" do |fd|
+        IO.popen "cat #{tarname} | #{Rails.root}/script/buildstep #{image_name}" do |fd|
           puts "\e[1G#{fd.readline}" until fd.eof? # \e[1G gets rid of that pesky 'remote:' text
         end
       ensure
@@ -82,9 +82,9 @@ class App < ActiveRecord::Base
     # ... recreate hipache list
     $redis.rpush(redis_key, name)
 
-    formation.each do |type, count| # generate new gears (they autostart/deploy)
-      count.times do
-        gear = gears.create!(type: type)
+    formation.each do |proctype, count| # generate new gears (they autostart/deploy)
+      count.to_i.times do
+        gear = gears.create!(proctype: proctype)
       end
     end
   end
@@ -112,9 +112,9 @@ class App < ActiveRecord::Base
     allowed_proctypes = app_proctypes.keys
     old_formation = self.formation
 
-    allowed_proctypes.each do |gear_type|
-      old_count = old_formation[gear_type]
-      count = options[gear_type] || old_count || 0
+    allowed_proctypes.each do |gear_proctype|
+      old_count = old_formation[gear_proctype]
+      count = options[gear_proctype] || old_count || 0
       if o = old_count
         diff = count - o
       else
@@ -122,10 +122,10 @@ class App < ActiveRecord::Base
       end
       # determine whether we need to add or remove gears
       if diff > 0
-        diff.times { gears.create!(type: gear_type) }
+        diff.times { gears.create!(proctype: gear_proctype) }
       elsif diff < 0
         # get rid of diff number of gears, from the highest worker number down
-        gears.where(type: gear_type).order_by(:number.desc).limit(diff.abs).destroy
+        gears.where(type: gear_proctype).order_by(:number.desc).limit(diff.abs).destroy
       end
     end
 
@@ -154,7 +154,7 @@ class App < ActiveRecord::Base
   end
 
   def url
-    "#{name}.#{ENV['DAWN_HOST']}"
+    "#{name}.#{ENV['DAWN_APP_HOST']}"
   end
 
   def to_param # override for correct link_to routing

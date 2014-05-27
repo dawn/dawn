@@ -28,7 +28,7 @@
   tags: bundle-install
 
 - name: setup database
-  command: bin/rake db:create db:migrate chdir={{ path_app }}
+  command: bin/rake db:create db:migrate db:seed chdir={{ path_app }}
 
 - name: export Procfile to Upstart
   sudo: yes

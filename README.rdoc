@@ -32,8 +32,8 @@ Please feel free to use a different markup language if you do not plan to run
 
 ```
 INSTANCE_NAME=`hostname` \
-  LOGPLEX_CONFIG_REDIS_URL="redis://localhost:6379" \
-  LOGPLEX_REDGRID_REDIS_URL="redis://localhost:6379" \
+  LOGPLEX_CONFIG_REDIS_URL="redis://localhost:6733" \
+  LOGPLEX_REDGRID_REDIS_URL="redis://localhost:6733" \
   LOCAL_IP="127.0.0.1" \
   LOGPLEX_COOKIE=dawnplex \
   LOGPLEX_AUTH_KEY=123 \
@@ -41,5 +41,5 @@ INSTANCE_NAME=`hostname` \
 ```
 
 ```
-logplex_cred:store(logplex_cred:grant('full_api', logplex_cred:grant('any_channel', logplex_cred:rename(<<"Local-Test">>, logplex_cred:new(<<"dawn">>, <<"salvorhardin">>))))).
+logplex_cred:store(logplex_cred:grant('full_api', logplex_cred:grant('any_channel', logplex_cred:rename(<<"dawn">>, logplex_cred:new(<<"dawn">>, <<"salvorhardin">>))))).
 ```

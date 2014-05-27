@@ -5,7 +5,7 @@
         "workers": 2,
         "maxSockets": 100,
         "deadBackendTTL": 30,
-        "address": ["127.0.0.1"],
+        "address": ["0.0.0.0"],
         "address6": ["::1"]
     }
 }
