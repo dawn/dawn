@@ -14,7 +14,7 @@ class Gear < ActiveRecord::Base
     logshuttle = {
       procid: name,
       :'logplex-token' => app.logplex_tokens['app'],
-      :'logs-url' => "http://#{ENV['DAWN_HOST']}:8601/logs"
+      :'logs-url' => "http://#{ENV['DAWN_LOGPLEX_URL']}:8601/logs"
     }
 
     opts = logshuttle.map {|key, val| "-#{key}=#{val.inspect}" }.join(" ")
