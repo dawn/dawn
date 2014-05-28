@@ -32,6 +32,10 @@
   command: bin/rake db:create db:migrate db:seed chdir={{ path_app }}
   sudo_user: "{{ user_main }}"
 
+- name: setup logplex
+  command: script/logplex chdir={{ path_app }}
+  sudo_user: "{{ user_main }}"
+
 - name: export Procfile to Upstart
   command: foreman export -f {{ path_app }}/Procfile upstart /etc/init -a dawn chdir={{ path_app }}
   tags: export-services

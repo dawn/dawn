@@ -1,0 +1,15 @@
+#! /usr/bin/env ruby
+require 'redis'
+require 'yaml'
+
+cfg = YAML.load_file('config/application.yml')
+
+credentials = {
+  pass: cfg["LOGPLEX_PASSWORD"],
+  name: cfg["LOGPLEX_USER"],
+  channel: "any",
+  full_api: "1"
+}
+
+redis = Redis.new(port: 6733)
+redis.mapped_hmset "cred:#{credentials[:name]}", credentials
