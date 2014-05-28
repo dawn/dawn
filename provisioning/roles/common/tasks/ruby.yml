@@ -43,5 +43,6 @@
 - name: install ruby
   shell: make install chdir=/tmp/ruby/{{ ruby }} creates=/usr/local/bin/ruby
 
+# https://github.com/rubygems/rubygems/issues/827
 - name: setup system gemrc
-  copy: src=gemrc dest=/etc/gemrc
+  copy: src=gemrc dest=/usr/local/etc/gemrc
