@@ -18,9 +18,7 @@
   file: path=/opt/gitlab-shell
         owner=git
         group={{ group_main }}
-        state=directory
-        mode=0775
-        #recurse=yes
+        recurse=yes
 
 ##
 # for some reason, this freezes
