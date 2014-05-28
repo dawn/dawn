@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140527161442) do
+ActiveRecord::Schema.define(version: 20140528174411) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,8 @@ ActiveRecord::Schema.define(version: 20140527161442) do
     t.integer  "app_id"
     t.string   "proctype"
   end
+
+  add_index "gears", ["number", "proctype"], name: "index_gears_on_number_and_proctype", unique: true, using: :btree
 
   create_table "keys", force: true do |t|
     t.datetime "created_at"

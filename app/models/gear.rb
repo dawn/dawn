@@ -1,5 +1,6 @@
 class Gear < ActiveRecord::Base
-  validates_uniqueness_of :container_id, :ip # :name
+  validates_uniqueness_of :container_id, :ip
+  validates_uniqueness_of :number, scope: :proctype # only one number with the same proctype
 
   before_create do |gear|  # initialize started_at
     gear.started_at = Time.now
