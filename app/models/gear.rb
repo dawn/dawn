@@ -63,12 +63,8 @@ class Gear < ActiveRecord::Base
   private :docker_container
 
   def kill
-<<<<<<< HEAD
-    `docker kill #{container_id}`
     clear_started_at
-=======
     docker_container.kill
->>>>>>> remotes/origin/docker-api
   end
 
   def start
@@ -77,30 +73,18 @@ class Gear < ActiveRecord::Base
   end
 
   def stop
-<<<<<<< HEAD
-    `docker stop #{container_id}`
     clear_started_at
-  end
-
-  def restart
-    `docker restart #{container_id}`
-=======
     docker_container.stop
   end
 
-  def restart # use docker restart
+  def restart
     docker_container.restart
->>>>>>> remotes/origin/docker-api
     reset_started_at
   end
 
   def remove
-<<<<<<< HEAD
-    `docker rm #{container_id}`
     clear_started_at
-=======
     docker_container.delete
->>>>>>> remotes/origin/docker-api
   end
 
   belongs_to :app
