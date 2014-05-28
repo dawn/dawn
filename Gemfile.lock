@@ -115,6 +115,7 @@ GEM
       activesupport (>= 3.0, < 4.2)
       railties (>= 3.0, < 4.2)
       slim (~> 2.0)
+    spring (1.1.3)
     sprockets (2.11.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -164,6 +165,7 @@ DEPENDENCIES
   rfc822 (~> 0.1.5)
   sass-rails (~> 4.0.3)
   slim-rails (~> 2.1.4)
+  spring (~> 1.1.3)
   sshkey (~> 1.6.1)
   turbolinks
   uglifier (>= 2.5.0)

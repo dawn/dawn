@@ -18,4 +18,7 @@
 # Ignore application configuration
 /config/application.yml
 
+# Ignore vendored gems
+/vendor/bundle
+
 .vagrant

@@ -37,4 +37,5 @@ gem 'sshkey', '~> 1.6.1' # SSHKey Generation
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'spring', '~> 1.1.3'
 end
