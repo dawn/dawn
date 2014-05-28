@@ -14,7 +14,7 @@
 - name: compile logplex
   shell: >
     executable=/bin/bash source /usr/lib/kerl/installs/default/activate;
-    ./rebar --config public.rebar.config get-deps compile chdir=/opt/logplex creates=/opt/logplex/bin/logplex
+    ./rebar --config public.rebar.config get-deps compile chdir=/opt/logplex creates=/opt/logplex/ebin
 
 - name: add logplex service to Upstart
   copy: src=upstart.conf dest=/etc/init/logplex.conf

@@ -16,7 +16,7 @@
 
 - name: fix permissions for gitlab-shell
   file: path=/opt/gitlab-shell
-        user=git
+        owner=git
         group={{ group_main }}
         state=directory
         mode=0775

@@ -60,7 +60,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ansible.playbook = "provisioning/deploy.yml"
     ansible.inventory_path = "provisioning/hosts"
     ansible.limit = :all
-    #ansible.ask_sudo_pass = true
-    #ansible.verbose = 'vvvv'
+    ansible.ask_sudo_pass = true
+    #ansible.verbose = 'vvv'
   end
 end
