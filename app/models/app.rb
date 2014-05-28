@@ -98,6 +98,7 @@ class App < ActiveRecord::Base
     Dir.chdir repo_path do
       default_procfile_name = '/app/tmp/heroku-buildpack-release-step.yml'
       image_name = releases.last.image
+      # A Docker::Container#run may not work here since we want the output from the command
       def_proc = YAML.safe_load(`docker run -i -t -rm "#{image_name}" cat "#{default_proc_name}"`)['default_process_types']
       app_proc = YAML.safe_load(`git show master:Procfile`)
       return def_proc.stringify_keys.merge(app_proc.stringify_keys)

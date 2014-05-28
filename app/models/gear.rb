@@ -8,7 +8,8 @@ class Gear < ActiveRecord::Base
 
   # before_create create a docker container and run the worker, set port/ip/container_id
   before_create do |gear|
-    gear.number = app.gears.where(proctype: proctype).count + 1 # TEMP? might not be cross process safe, need to make it Atomic
+   # TEMP? might not be cross process safe, need to make it Atomic
+    gear.number = app.gears.where(proctype: proctype).count + 1
     gear.port = 5000 # temp?
 
     logshuttle = {
@@ -22,7 +23,7 @@ class Gear < ActiveRecord::Base
                                                            # FUGLY, FIX!
     gear.container_id = `docker run -d -e PORT=#{port} #{app.releases.first.image} #{command}`.chomp
 
-    info = JSON.parse(`docker inspect #{container_id}`).first
+    info = gear.send(:docker_container).json
     gear.ip = info["NetworkSettings"]["IPAddress"]
 
     # update Hipache with the new gear IP/ports (only add web gears)
@@ -56,29 +57,50 @@ class Gear < ActiveRecord::Base
     update(started_at: nil)
   end
 
+  def docker_container
+    Docker::Container.get(container_id)
+  end
+  private :docker_container
+
   def kill
+<<<<<<< HEAD
     `docker kill #{container_id}`
     clear_started_at
+=======
+    docker_container.kill
+>>>>>>> remotes/origin/docker-api
   end
 
   def start
-    `docker start #{container_id}`
+    docker_container.start
     reset_started_at
   end
 
   def stop
+<<<<<<< HEAD
     `docker stop #{container_id}`
     clear_started_at
   end
 
   def restart
     `docker restart #{container_id}`
+=======
+    docker_container.stop
+  end
+
+  def restart # use docker restart
+    docker_container.restart
+>>>>>>> remotes/origin/docker-api
     reset_started_at
   end
 
   def remove
+<<<<<<< HEAD
     `docker rm #{container_id}`
     clear_started_at
+=======
+    docker_container.delete
+>>>>>>> remotes/origin/docker-api
   end
 
   belongs_to :app
