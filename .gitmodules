@@ -1,0 +1,3 @@
+[submodule "provisioning/roles/erlang"]
+path = provisioning/roles/erlang
+url = https://github.com/stwind/ansible-erlang.git
