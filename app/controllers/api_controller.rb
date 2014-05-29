@@ -49,7 +49,7 @@ class ApiController < ActionController::Metal
       if token && user = User.find_by(api_key: token)
         self.current_user = user
       else
-        request_http_token_authentication
+        false
       end
     end
   end
