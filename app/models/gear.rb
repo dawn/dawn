@@ -19,9 +19,15 @@ class Gear < ActiveRecord::Base
     }
 
     opts = logshuttle.map {|key, val| "-#{key}=#{val.inspect}" }.join(" ")
-    command = %{/bin/bash -c '/start #{proctype} 2>&1 | /opt/log-shuttle/log-shuttle #{opts}'}
-                                                           # FUGLY, FIX!
-    gear.container_id = `docker run -d -e PORT=#{port} #{app.releases.first.image} #{command}`.chomp
+
+    container = Docker::Container.create(
+      'Image' => app.releases.first.image,
+      'Cmd'   => ["/bin/bash", "-c", "/start #{proctype} 2>&1 | /opt/log-shuttle/log-shuttle #{opts}"],
+      'Env'   => ["PORT=#{port}"]
+    )
+    container.start
+
+    gear.container_id = container.id
 
     info = gear.send(:docker_container).json
     gear.ip = info["NetworkSettings"]["IPAddress"]
