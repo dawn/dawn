@@ -13,6 +13,11 @@
 - name: install docker
   apt: update_cache=yes pkg=lxc-docker state=present
 
+- shell: docker images
+  sudo_user: "{{ user_main }}"
+  register: docker_images
+
 - name: install buildstep
   shell: docker build -t progrium/buildstep github.com/progrium/buildstep
+  when: docker_images.stdout.find('buildstep') == -1
   tags: [skip]
