@@ -6,6 +6,6 @@
         "maxSockets": 100,
         "deadBackendTTL": 30,
         "address": ["0.0.0.0"],
-        "address6": ["::1"]
+        "address6": ["::"]
     }
 }
