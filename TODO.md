@@ -11,9 +11,9 @@ Things we still need to finish, to get to a usable platform.
 * ~~Validate the scale parameters using a proctype list that combines the Procfile with the default process types from buildpacks~~
 * Services: db, queues, caches, mail servers, file storage
 * ~~Inject the ENV config into the releases~~
-* Replace shelling out with calls to [Docker API](https://github.com/swipely/docker-api)
+* ~~Replace shelling out with calls to [Docker API](https://github.com/swipely/docker-api)~~
 * Resource limiting: constraints on CPU, memory, bandwidth, disk space...
-* Par app metrics
+* Per app metrics
 * Metrics: global!, so we can monitor the entire server
 * Monitoring: restart any crashed gear
 * Adding custom domains

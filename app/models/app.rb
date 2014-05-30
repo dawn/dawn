@@ -53,9 +53,24 @@ class App < ActiveRecord::Base
         ensure
           FileUtils.rm_rf(".profile.d") # we no longer need the profile.d so remove it
         end
-        #IO.popen "git archive #{git_ref} | /#{Rails.root}/script/buildstep #{image_name}" do |fd|
-        IO.popen "cat #{tarname} | #{Rails.root}/script/buildstep #{image_name}" do |fd|
-          puts "\e[1G#{fd.readline}" until fd.eof? # \e[1G gets rid of that pesky 'remote:' text
+
+        buildstep = Docker::Container.create({
+          'Image'     => 'dawn/buildstep',
+          'Cmd'       => ['/bin/bash', '-c', 'mkdir -p /app && tar -xC /app && /build/builder'],
+          'OpenStdin' => true,
+          'StdinOnce' => true
+        }, Docker::Connection.new('unix:///var/run/docker.sock', {:chunk_size => 1})) # tempfix for streaming
+
+        File.open(tarname) do |tarball|
+          buildstep.tap(&:start).attach(stdin: tarball) do |stream, chunk|
+            puts "\e[1G#{chunk}" if chunk != "\n" # \e[1G gets rid of that pesky 'remote:' text, skip empty lines
+          end
+        end
+
+        if buildstep.wait['StatusCode'] == 0
+          buildstep.commit(repo: image_name)
+        else
+          raise "Buildstep returned a non-zero exit code."
         end
       ensure
         FileUtils.rm_rf("#{tarname}")

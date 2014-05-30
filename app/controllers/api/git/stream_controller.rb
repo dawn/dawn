@@ -20,10 +20,11 @@ class Api::Git::StreamController < ActionController::Base#ApiController
 
     app = App.find_by(git: params[:git])
     app.build
+    $stdout.write "\e[1G\n"
     $stdout.write "\e[1G-----> Launching... " # no newline
     app.deploy!
-    $stdout.write "\e[1Gdone, v#{app.releases.last.version}\n"
-    puts "\e[1G       #{app.url} deployed to Dawn.io" #.dawn.io
+    $stdout.write "done, v#{app.releases.last.version}\n"
+    puts "\e[1G       http://#{app.url} deployed to Dawn.io" #.dawn.io
   rescue IOError
   ensure
     response.stream.close

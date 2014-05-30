@@ -1,3 +1,13 @@
+GIT
+  remote: https://github.com/lmars/docker-api
+  revision: c6879348823a2e51f23e1431d418c3d35bc1ec7d
+  branch: attach-stdin
+  specs:
+    docker-api (1.10.10)
+      archive-tar-minitar
+      excon (>= 0.28)
+      json
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -27,6 +37,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
+    archive-tar-minitar (0.5.2)
     arel (5.0.1.20140414130214)
     bcrypt (3.1.7)
     better_errors (1.1.0)
@@ -151,6 +162,7 @@ DEPENDENCIES
   binding_of_caller
   coffee-rails (~> 4.0.1)
   devise (~> 3.2.4)
+  docker-api!
   excon (~> 0.33.0)
   figaro (~> 0.7.0)
   flot-rails (~> 0.0.6)

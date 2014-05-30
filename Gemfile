@@ -34,7 +34,7 @@ gem 'forgery', '~> 0.6.0' # random name generation
 
 gem 'sshkey', '~> 1.6.1' # SSHKey Generation
 
-gem 'docker-api', '~> 1.7.6', require: 'docker' # Docker api
+gem 'docker-api', git: 'https://github.com/lmars/docker-api', branch: 'attach-stdin', require: 'docker' # Docker api
 
 group :development do
   gem 'better_errors'
