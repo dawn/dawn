@@ -1,4 +1,7 @@
-#! /usr/bin/env ruby
+#!/usr/bin/env ruby
+require "bundler/setup"
+Bundler.setup
+
 require 'redis'
 require 'yaml'
 
