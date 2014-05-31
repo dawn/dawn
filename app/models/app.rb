@@ -114,7 +114,7 @@ class App < ActiveRecord::Base
       default_procfile_name = '/app/tmp/heroku-buildpack-release-step.yml'
       image_name = releases.last.image
       # A Docker::Container#run may not work here since we want the output from the command
-      def_proc = YAML.safe_load(`docker run -i -t -rm "#{image_name}" cat "#{default_proc_name}"`)['default_process_types']
+      def_proc = YAML.safe_load(`docker run -i -t --rm "#{image_name}" cat "#{default_procfile_name}"`)['default_process_types']
       app_proc = YAML.safe_load(`git show master:Procfile`)
       return def_proc.stringify_keys.merge(app_proc.stringify_keys)
     end
@@ -141,7 +141,7 @@ class App < ActiveRecord::Base
         diff.times { gears.create!(proctype: gear_proctype) }
       elsif diff < 0
         # get rid of diff number of gears, from the highest worker number down
-        gears.where(type: gear_proctype).order_by(:number.desc).limit(diff.abs).destroy
+        gears.where(type: gear_proctype).order(number: :desc).limit(diff.abs).destroy
       end
     end
 
