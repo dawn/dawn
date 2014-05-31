@@ -25,8 +25,6 @@ module Dawn
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    config.assets.paths << "#{Rails.root}/vendor/assets/fonts"
-
     config.to_prepare do # login layout for Login page
       Devise::RegistrationsController.layout proc{ |controller| user_signed_in? ? "dashboard" : "application" }
       Devise::SessionsController.layout proc{ |controller| action_name == 'new' ? "login" : "dashboard" }
