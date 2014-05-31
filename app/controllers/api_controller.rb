@@ -3,23 +3,17 @@ class ApiController < ActionController::Metal
   include ActionController::Rendering   # enables rendering
   include ActionController::Head        # for header only responses
   include AbstractController::Callbacks # callbacks for authentication logic (before_action, etc..)
+  #include ActionController::Helpers    # helpers
+  include ActionView::Layouts           # for views (render method)
 
-  include ActionController::ForceSSL # secure API by forcing SSL in production
+  include ActionController::ForceSSL    # secure API by forcing SSL in production
 
   # Authentication: Token
   include ActionController::HttpAuthentication::Token::ControllerMethods
 
-  include ActionController::Helpers
-  include Devise::Controllers::Helpers # helper methods
-
-  include ActionView::Layouts # for views
-
-  # This is our new function that comes before Devise's one
   before_action :authenticate_user_from_api_key!
-
-  force_ssl if: :ssl_configured?
-
   before_action :set_default_response_format # force json
+  force_ssl if: :ssl_configured?
 
   append_view_path "#{Rails.root}/app/views" # you have to specify your views location as well
 
@@ -33,17 +27,9 @@ class ApiController < ActionController::Metal
     !Rails.env.development?
   end
 
-  # Hand-rolled api key login functions, so that we achieve lightweight
-  # "bare metal" fuctionality and avoid triggering stuff like increasing
-  # the sign_in_count, etc.
+  # Bare metal authentication using Authentication: Token
+  attr_accessor :current_user
 
-  def current_user=(user)
-    @current_user = user
-  end
-
-  # For this example, we are simply using token authentication
-  # via parameters. However, anyone could use Rails's token
-  # authentication features to get the token from a header.
   def authenticate_user_from_api_key!
     authenticate_or_request_with_http_token do |token, options|
       if token && user = User.find_by(api_key: token)
