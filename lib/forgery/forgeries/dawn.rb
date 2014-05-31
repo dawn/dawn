@@ -6,10 +6,4 @@ class Forgery::Dawn < Forgery
      rand(100)].join("-")
   end
 
-  def self.drain_name
-    [dictionaries[:drain_left].random,
-     dictionaries[:drain_right].random,
-     rand(100)].join("-")
-  end
-
 end

@@ -33,14 +33,16 @@ class Gear < ActiveRecord::Base
     gear.ip = info["NetworkSettings"]["IPAddress"]
 
     # update Hipache with the new gear IP/ports (only add web gears)
+    return unless gear.proctype == "web"
     redis_key = "frontend:#{app.url}"
-    $redis.rpush(redis_key, "http://#{gear.ip}:#{gear.port}") if gear.proctype == "web"
+    $redis.rpush(redis_key, "http://#{gear.ip}:#{gear.port}")
   end
 
   before_destroy do |gear|
+    return unless gear.proctype == "web"
     # remove gear from Hipache
     redis_key = "frontend:#{app.url}"
-    $redis.lrem(redis_key, 1, "http://#{gear.ip}:#{gear.port}") if gear.proctype == "web"
+    $redis.lrem(redis_key, 1, "http://#{gear.ip}:#{gear.port}")
   end
 
   before_destroy do # destroy the accompanying docker container
