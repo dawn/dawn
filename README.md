@@ -1,154 +1,93 @@
 Dawn
 ====
 
-Hello, welcome to dawn a paas using ruby on rails and Docker.
+Hello, welcome to Dawn, a PaaS that leverages Ruby on Rails and Docker. It implements a Heroku-like interface,
+with an API-first approach. Initial development started in October 2013 intending to be launched as a commercial
+service eventually, however due to the increasing competition in the PaaS market, and the lack of time, we've
+released it as open-source. Enjoy!
 
-## System Requirements
-* 64 Bit System, capable of running 64 bit VMs
-* Quad Core CPU (vagrant gets pretty mean with lower cpus)
-* Linux or Mac, we have not tested this on Windows.
-* Ruby 1.9.x, 2.0.x, 2.1.x (recommended)
-* Docker
+Our current development stack is ubuntu 14.04, running docker, ruby 2.1.2 (rails 4.1.1), postgresql, redis, logplex and hipache.
+
+Future goal is to port the platform onto coreOS, and split the app into several containers (using a similar setup
+to what userspace apps will use -- dogfeeding us our own stack). Doing so will make the platform more modular, easier
+to deploy and scale, and faster to provision.
+
+## Features
+
+* Releasing apps onto the platform via git
+* Building app containers via Buildstep
+* Importing ENV variables into the app space
+* Retrieving app logs, and setting up drain urls, to which logs can be submitted via HTTP POST
+* Scaling per-proctype
+
+## Prerequisites
+* A system capable of running amd64 VMs (for our development box)
 * Vagrant >= 1.6.2
 * Ansible >= 1.6.2
-* Network Connection (for initial installation)
-* Patience (if you have a bad network connection and or not so fancy computer)
-
-
-
+* Patience (if you have a bad network connection and/or not so fancy computer)
 
 ## Installation (Development)
 
+Setting up a development environment is pretty easy, as Vagrant automatically runs the Ansible playbooks provided.
+All it takes to get the box up and running is:
 
-### dawn GET
 ```shell
-git clone https://github.com/dawn/dawn.git
+vagrant up
 ```
 
+The initial provisioning run might take a while, because we pull and compile several dependencies.
 
-### ansible GET
-#### Linux
-Arch users:
+In case you need to run the provisioning again in the future:
+
 ```shell
-pacman -S ansible
-```
-
-
-### vagrant GET
-#### Linux
-Arch users:
-```shell
-pacman -S vagrant
-```
-
-
-### dawn setup vagrant box
-```shell
-cd <where_dawn_is>
-vagrant up --provision
-# in the case that the above fails, try re-running the provisioning
 vagrant provision
 ```
 
+### dnsmasq
+The box IP needs to resolve to dawn.dev (configurable in config/application.yml). You can add an alias to
+/etc/resolv.conf, or use your own method of doing so. We suggest using dnsmasq, with the following line
+in it's configuration:
 
-### dnsmasq! or some other method of IP routing
-We used dnsmasq in development
 ```
 # /etc/dnsmasq.conf
 ...
 address=/dev/192.168.33.10
 ```
 
+All set! Your box is now ready to use. Point your browser to http://dawn.dev:5000, and it should show a landing page.
 
-### test the dawn ip
-```shell
-curl dawn.dev:5000
-```
-This should output some jumbled html, if not, check the troublshoot section.
+[Our client](https://github.com/dawn/dawn) is recommended currently, as it's the most feature complete, however, a
+web interface is also in the works, available under (dashboard.dawn.dev)[http://dashboard.dawn.dev:5000].
 
+## Proposed features
 
+* [ ] dawn run: one-off containers running a single command then getting destroyed
+* [ ] Adding custom domains
+* [ ] Services: db, queues, caches, mail servers, file storage
+* [ ] Rollback to a specific release
+* [X] Inject the ENV config into the releases
+* [ ] Resource limiting: constraints on CPU, memory, bandwidth, disk space...
+* [ ] Per app metrics
+* [ ] Global server metrics, so we can monitor the entire server
+* [ ] Monitoring: restart any crashed gear
+* [ ] Manage different release environments
 
+* [ ] Use a grsecurity patched kernel (or coreOS)
 
-## Troubleshoot
+* [ ] Use OAuth2 to make a provider for token generation, authentication and authorization
+  * https://devcenter.heroku.com/articles/oauth
+
+* [ ] Logging: allow us to specify drains (uses logplex drains to post logs to a drain)
+
+## FAQ
 ### vagrant provision stalls at dawn/buildstep
 Buildstep takes quite a bit to build, in the case that it shows no sign of
-movement:
+movement, you can also try to build it manually:
 ```shell
 dawn$ vagrant ssh
 vagrant@ubuntu-14:~$ cd /app
 vagrant@ubuntu-14:/app$ docker build -t dawn/buildstep .
 ```
 
-
 ### bundle install fails in a SSL error
-Try running the provisioning again.
-```shell
-vagrant provision
-```
-
-OR:
-```shell
-dawn$ vagrant ssh
-vagrant@ubuntu-14:~$ cd /app
-vagrant@ubuntu-14:/app$ bundle install --path vendor/bundle
-```
-
-
-### logplex "default already exists"
-This has been fixed recently, however in the case the error strikes again:
-```shell
-# insert fix here
-```
-
-
-
-
-
-
-And now back to the original README
-== README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* ~~Ruby version~~
-
-* ~~System dependencies~~
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
-
-
-# Logplex
-
-```
-INSTANCE_NAME=`hostname` \
-  LOGPLEX_CONFIG_REDIS_URL="redis://localhost:6733" \
-  LOGPLEX_REDGRID_REDIS_URL="redis://localhost:6733" \
-  LOCAL_IP="127.0.0.1" \
-  LOGPLEX_COOKIE=dawnplex \
-  LOGPLEX_AUTH_KEY=123 \
-  erl -name logplex@`hostname` -pa ebin -env ERL_LIBS deps -s logplex_app -setcookie ${LOGPLEX_COOKIE} -config sys
-```
-
-```
-logplex_cred:store(logplex_cred:grant('full_api', logplex_cred:grant('any_channel', logplex_cred:rename(<<"dawn">>, logplex_cred:new(<<"dawn">>, <<"salvorhardin">>))))).
-```
-
+Try running the provisioning again, it's probably a network error.
