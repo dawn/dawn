@@ -29,7 +29,7 @@ class Gear < ActiveRecord::Base
 
     gear.container_id = container.id
 
-    info = gear.send(:docker_container).json
+    info = gear.send(:container).json
     gear.ip = info["NetworkSettings"]["IPAddress"]
 
     # update Hipache with the new gear IP/ports (only add web gears)
@@ -63,34 +63,34 @@ class Gear < ActiveRecord::Base
     update(started_at: nil)
   end
 
-  def docker_container
+  def container
     Docker::Container.get(container_id)
   end
-  private :docker_container
+  private :container
 
   def kill
     clear_started_at
-    docker_container.kill
+    container.kill
   end
 
   def start
-    docker_container.start
+    container.start
     reset_started_at
   end
 
   def stop
     clear_started_at
-    docker_container.stop
+    container.stop
   end
 
   def restart
-    docker_container.restart
+    container.restart
     reset_started_at
   end
 
   def remove
     clear_started_at
-    docker_container.delete
+    container.delete
   end
 
   belongs_to :app
