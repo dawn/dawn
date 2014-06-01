@@ -41,22 +41,12 @@ class App < ActiveRecord::Base
     Dir.chdir repo_path do
       begin
         tarname = "app-#{Time.now.to_i}.tar"
-        begin
-          # .. import ENV config
-          `git archive #{git_ref} -o #{tarname}`
-          # create profile.d
-          Dir.mkdir(".profile.d")
-          # write dawn.env variables file
-          File.open(".profile.d/dawn.env", "w"){|f|env.each{|k,v|f.puts("export #{k}=#{v}")}}
-          # concate .profile.d to archive
-          `tar -rf #{tarname} .profile.d`
-        ensure
-          FileUtils.rm_rf(".profile.d") # we no longer need the profile.d so remove it
-        end
+        `git archive #{git_ref} -o #{tarname}`
 
         buildstep = Docker::Container.create({
           'Image'     => 'dawn/buildstep',
           'Cmd'       => ['/bin/bash', '-c', 'mkdir -p /app && tar -xC /app && /build/builder'],
+          'Env'       => env.map { |k,v| "#{k}=#{v}" }
           'OpenStdin' => true,
           'StdinOnce' => true
         }, Docker::Connection.new('unix:///var/run/docker.sock', {:chunk_size => 1})) # tempfix for streaming
