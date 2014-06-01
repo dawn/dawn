@@ -1,8 +1,0 @@
-#devise
-  h2 Resend confirmation mail
-  = form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post }) do |f|
-    = devise_error_messages!
-    = f.label :email
-    = f.email_field :email
-    = f.button "Resend confirmation mail", :class => 'btn'
-  = render "devise/shared/links"

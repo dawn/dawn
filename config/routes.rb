@@ -14,32 +14,6 @@ Dawn::Application.routes.draw do
     root to: 'home#index'
   end
 
-  subdomain :dashboard do
-    resources :apps, param: :name, except: [:show] do # param maps to :name, not :id
-      member do
-        get 'controls'
-        get 'metrics'
-        get 'services'
-        get 'environment'
-        get 'domains'
-        get 'ssl'
-        get 'logs'
-        get 'settings'
-      end
-    end
-
-    get '/', to: redirect('/apps')
-    # get '/settings' ?
-  end
-
-  subdomain :docs do
-
-  end
-
-  subdomain :help do
-
-  end
-
   # subdomain with a namespace under root --> api.dawn.io/apps --> Api::AppsController, not AppsController
   subdomain :api do
     resources :apps do
@@ -74,9 +48,5 @@ Dawn::Application.routes.draw do
   get '/api/git/allowed',  to: 'api/git/git#allowed',  constraints: { ip: /127.0.0.1/ }
   get '/api/git/discover', to: 'api/git/git#discover', constraints: { ip: /127.0.0.1/ }
   # catch git pushes locally
-
-  devise_for :users, path: '/', path_names: { sign_in: 'login',
-                                              sign_out: 'logout',
-                                              sign_up: 'register' }
 
 end

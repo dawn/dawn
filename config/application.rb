@@ -24,11 +24,5 @@ module Dawn
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
-
-    config.to_prepare do # login layout for Login page
-      Devise::RegistrationsController.layout proc{ |controller| user_signed_in? ? "dashboard" : "application" }
-      Devise::SessionsController.layout proc{ |controller| action_name == 'new' ? "login" : "dashboard" }
-      Devise::PasswordsController.layout "login"
-    end
   end
 end
