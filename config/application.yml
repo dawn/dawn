@@ -6,12 +6,12 @@
 # STRIPE_API_KEY: EdAvEPVEC3LuaTg5Q3z6WbDVqZlcBQ8Z
 # STRIPE_PUBLIC_KEY: pk_BRgD57O8fHja9HxduJUszhef6jCyS
 
-DAWN_HOST: "localhost"
-DAWN_APP_HOST: "dawn.dev"
-DAWN_LOGPLEX_URL: "172.17.42.1" # docker0, parent interface
-DAWN_GROUP: "dawnusers"
+DAWN_HOST:         "dawn.dev"
+DAWN_APP_HOST:     "dawnapp.dev"
+DAWN_LOGPLEX_HOST: "localhost" # used inside the VM, dawn.dev doesn't exist
+DAWN_LOGPLEX_URL:  "172.17.42.1" # docker0, parent interface
 
-LOGPLEX_SECRET: "hd4Dna3UGxqXqtuVkMYF"
-LOGPLEX_COOKIE: "dawnplex"
-LOGPLEX_USER: "dawn"
+LOGPLEX_SECRET:   "hd4Dna3UGxqXqtuVkMYF"
+LOGPLEX_COOKIE:   "dawnplex"
+LOGPLEX_USER:     "dawn"
 LOGPLEX_PASSWORD: "salvorhardin"

@@ -44,7 +44,7 @@ vagrant provision
 ```
 
 ### dnsmasq
-The box IP needs to resolve to dawn.dev (configurable in config/application.yml). You can add an alias to
+The box IP needs to resolve to dawn.dev and dawnapp.dev (configurable in config/application.yml). You can add an alias to
 /etc/resolv.conf, or use your own method of doing so. We suggest using dnsmasq, with the following line
 in it's configuration:
 
@@ -54,10 +54,10 @@ in it's configuration:
 address=/dev/192.168.33.10
 ```
 
-All set! Your box is now ready to use. Point your browser to http://dawn.dev:5000, and it should show a landing page.
+All set! Your box is now ready to use. Point your browser to http://dawn.dev, and it should show a landing page.
 
 [Our client](https://github.com/dawn/dawn-cli) is recommended currently, as it's the most feature complete, however, a
-web interface is also in the works, available under [dashboard.dawn.dev}(http://dashboard.dawn.dev:5000).
+web interface is also in the works, available under [dashboard.dawn.dev](http://dashboard.dawn.dev).
 
 ## Proposed features
 

@@ -36,6 +36,11 @@
   command: script/logplex chdir={{ path_app }}
   sudo_user: "{{ user_main }}"
 
+- name: setup hipache proxying for dawn.dev
+  command: script/logplex chdir={{ path_app }}
+  sudo_user: "{{ user_main }}"
+
+
 - name: export Procfile to Upstart
   command: foreman export -f {{ path_app }}/Procfile upstart /etc/init -a dawn chdir={{ path_app }}
   tags: export-services
