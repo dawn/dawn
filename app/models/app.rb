@@ -87,8 +87,6 @@ class App < ActiveRecord::Base
   # using the latest release, destroy old gears and
   # generate new ones
   def deploy!
-    image = releases.last.image # TEMP: unused?
-
     gears.destroy_all # destroy old gears
 
     # ... destroy old hipache node entries
@@ -123,16 +121,14 @@ class App < ActiveRecord::Base
   # scales the application to a particular size (in gears)
   def scale(options)
     # retrieve the App's Procfile data
-    app_proctypes = proctypes
-    # we only want the proc types, which is the keys
-    allowed_proctypes = app_proctypes.keys
+    allowed_proctypes = proctypes.keys
     old_formation = self.formation
 
     allowed_proctypes.each do |gear_proctype|
-      old_count = old_formation[gear_proctype]
-      count = options[gear_proctype] || old_count || 0
-      if o = old_count
-        diff = count - o
+      old_count = old_formation[gear_proctype].to_i
+      count = options[gear_proctype].to_i || old_count || 0
+      if old_count
+        diff = count - old_count
       else
         diff = count
       end
