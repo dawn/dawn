@@ -1,0 +1,42 @@
+body {
+  background-color: #fafafa;
+  background-color: #f4f8f0; /*alternatively*/
+  background: url('/images/cork_1.png');
+  font-family: Source Sans Pro;
+  line-height: 1.6;
+  color: #313131;
+}
+
+h1, h2, h3 {
+  margin: 10px 0;
+  font-weight: bold;
+  line-height: 20px;
+  color: inherit;
+  text-rendering: optimizeLegibility;
+
+  color: #15191B;
+  color: #FF2746;
+  text-shadow: 0 1px white;
+  font-weight: 300;
+}
+
+h1, h2, h3 {line-height: 40px}
+h1 {font-size: 38.5px}
+h2 {font-size: 31.5px}
+h3 {font-size: 24.5px}
+
+p {
+  margin: 0 0 1em;
+  line-height: 1.6;
+}
+
+body {
+  text-align: center;
+  font-family: 'Helvetica Neue';
+  color: gray;
+  text-shadow: 0 1px white;
+
+  padding: 2rem 0;
+}
+
+p { font-weight: 300 }

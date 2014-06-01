@@ -11,9 +11,6 @@ gem 'devise', '~> 3.2.4'
 gem 'excon', '~> 0.33.0'
 gem 'rabl', '~> 0.10.0'
 
-# assets
-gem 'sass-rails', '~> 4.0.3'
-
 gem 'rfc822', '~> 0.1.5'  # email verification gem
 gem 'forgery', '~> 0.6.0' # random name generation
 gem 'sshkey', '~> 1.6.1'  # SSHKey Generation
