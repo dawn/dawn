@@ -1,4 +1,4 @@
-require 'fileutils'
+require 'tempfile'
 
 class App < ActiveRecord::Base
   validates :name, uniqueness: true,
@@ -30,40 +30,33 @@ class App < ActiveRecord::Base
     end
   end
 
+  # build image using buildpacks (buildstep)
   def build
-    self.increment!(:version) # increment current version
+    self.increment!(:version)
 
     image_name = "#{user.username.downcase}/#{name}"
-
-    # build image using buildpacks (buildstep)
     git_ref = 'master'
 
-    Dir.chdir repo_path do
-      begin
-        tarname = "app-#{Time.now.to_i}.tar"
-        `git archive #{git_ref} -o #{tarname}`
+    Tempfile.new(image_name) do |tarball| # use a tempfile to not store in memory
+      pid = spawn("git archive #{git_ref}", :out => tarball, chdir: repo_path)
+      Process.wait(pid)
 
-        buildstep = Docker::Container.create({
-          'Image'     => 'dawn/buildstep',
-          'Cmd'       => ['/bin/bash', '-c', 'mkdir -p /app && tar -xC /app && /build/builder'],
-          'Env'       => env.map { |k,v| "#{k}=#{v}" }
-          'OpenStdin' => true,
-          'StdinOnce' => true
-        }, Docker::Connection.new('unix:///var/run/docker.sock', {:chunk_size => 1})) # tempfix for streaming
+      buildstep = Docker::Container.create({
+        'Image'     => 'dawn/buildstep',
+        'Cmd'       => ['/bin/bash', '-c', 'mkdir -p /app && tar -xC /app && /build/builder'],
+        'Env'       => env.map { |k,v| "#{k}=#{v}" }
+        'OpenStdin' => true,
+        'StdinOnce' => true
+      }, Docker::Connection.new('unix:///var/run/docker.sock', {:chunk_size => 1})) # tempfix for streaming
 
-        File.open(tarname) do |tarball|
-          buildstep.tap(&:start).attach(stdin: tarball) do |stream, chunk|
-            puts "\e[1G#{chunk}" if chunk != "\n" # \e[1G gets rid of that pesky 'remote:' text, skip empty lines
-          end
-        end
+      buildstep.tap(&:start).attach(stdin: tarball) do |stream, chunk|
+        puts "\e[1G#{chunk}" if chunk != "\n" # \e[1G gets rid of that pesky 'remote:' text, skip empty lines
+      end
 
-        if buildstep.wait['StatusCode'] == 0
-          buildstep.commit(repo: image_name)
-        else
-          raise "Buildstep returned a non-zero exit code."
-        end
-      ensure
-        FileUtils.rm_rf("#{tarname}")
+      if buildstep.wait['StatusCode'] == 0
+        buildstep.commit(repo: image_name)
+      else
+        raise "Buildstep returned a non-zero exit code."
       end
     end
 
