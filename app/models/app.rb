@@ -63,6 +63,12 @@ class App < ActiveRecord::Base
     # .. tag the current image commit with version (user/image:v3, etc., the ':v3' part)
     # `docker tag #{self.image} `
 
+    # clean up
+    begin
+      buildstep.kill.delete force: true
+    rescue Docker::Error::NotFoundError
+    end
+
     # set the release version to the counter
     releases.create!(image: image_name, version: version)
   end

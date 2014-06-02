@@ -23,7 +23,7 @@ class Gear < ActiveRecord::Base
     container = Docker::Container.create(
       'Image' => app.releases.first.image,
       'Cmd'   => ["/bin/bash", "-c", "/start #{proctype} 2>&1 | /opt/log-shuttle/log-shuttle #{opts}"],
-      'Env'   => ["PORT=#{port}"]
+      'Env'   => app.env.map { |k,v| "#{k}=#{v}" }.concat(["PORT=#{port}"])
     )
     container.start
 
