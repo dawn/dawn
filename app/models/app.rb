@@ -78,13 +78,12 @@ class App < ActiveRecord::Base
   def deploy!
     gears.destroy_all # destroy old gears
 
-    # ... destroy old hipache node entries
+    # recreate hipache node
     redis_key = "frontend:#{url}"
     $redis.del(redis_key)
-    # ... recreate hipache list
     $redis.rpush(redis_key, name)
 
-    formation.each do |proctype, count| # generate new gears (they autostart/deploy)
+    formation.each do |proctype, count| # generate new gears
       count.to_i.times do
         gear = gears.create!(proctype: proctype)
       end
@@ -99,11 +98,22 @@ class App < ActiveRecord::Base
   def proctypes
     Dir.chdir repo_path do
       default_procfile_name = '/app/tmp/heroku-buildpack-release-step.yml'
-      image_name = releases.last.image
-      # A Docker::Container#run may not work here since we want the output from the command
-      def_proc = YAML.safe_load(`docker run -i -t --rm "#{image_name}" cat "#{default_procfile_name}"`)['default_process_types']
+
+      app_container = Docker::Container.create(
+        'Image' => releases.last.image,
+        'Cmd'   => ['cat', default_procfile_name]
+      )
+      yml = app_container.tap(&:start).attach[0][0] # attach[0][0] the format is so weird..
+
+      def_proc = YAML.safe_load(yml)['default_process_types']
       app_proc = YAML.safe_load(`git show master:Procfile`)
-      return def_proc.stringify_keys.merge(app_proc.stringify_keys)
+
+      begin
+        app_container.kill.delete force: true
+      rescue Docker::Error::NotFoundError, Excon::Errors::SocketError
+      end
+
+      return def_proc.merge(app_proc)
     end
   end
 
@@ -156,10 +166,6 @@ class App < ActiveRecord::Base
 
   def url
     "#{name}.#{ENV['DAWN_APP_HOST']}"
-  end
-
-  def to_param # override for correct link_to routing
-    name
   end
 
   def ensure_name

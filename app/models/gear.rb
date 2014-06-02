@@ -8,41 +8,40 @@ class Gear < ActiveRecord::Base
 
   # before_create create a docker container and run the worker, set port/ip/container_id
   before_create do |gear|
-   # TEMP? might not be cross process safe, need to make it Atomic
+    # TEMP? might not be cross process safe, need to make it Atomic
     gear.number = app.gears.where(proctype: proctype).count + 1
     gear.port = 5000 # temp?
 
+    spawn
+
+    # update Hipache with the new gear IP/ports (only add web gears)
+    return unless gear.proctype == "web"
+    $redis.rpush("frontend:#{app.url}", url)
+  end
+
+  def spawn
     logshuttle = {
       procid: name,
       :'logplex-token' => app.logplex_tokens['app'],
       :'logs-url' => "http://#{ENV['DAWN_LOGPLEX_URL']}:8601/logs"
-    }
-
-    opts = logshuttle.map {|key, val| "-#{key}=#{val.inspect}" }.join(" ")
+    }.map {|key, val| "-#{key}=#{val.inspect}" }.join(" ")
 
     container = Docker::Container.create(
       'Image' => app.releases.first.image,
-      'Cmd'   => ["/bin/bash", "-c", "/start #{proctype} 2>&1 | /opt/log-shuttle/log-shuttle #{opts}"],
+      'Cmd'   => ["/bin/bash", "-c", "/start #{proctype} 2>&1 | /opt/log-shuttle/log-shuttle #{logshuttle}"],
       'Env'   => app.env.map { |k,v| "#{k}=#{v}" }.concat(["PORT=#{port}"])
-    )
-    container.start
+    ).start
 
     gear.container_id = container.id
+    gear.ip = container.json["NetworkSettings"]["IPAddress"]
 
-    info = gear.send(:container).json
-    gear.ip = info["NetworkSettings"]["IPAddress"]
-
-    # update Hipache with the new gear IP/ports (only add web gears)
-    return unless gear.proctype == "web"
-    redis_key = "frontend:#{app.url}"
-    $redis.rpush(redis_key, "http://#{gear.ip}:#{gear.port}")
+    save! if new_record?
   end
 
   before_destroy do |gear|
+    # remove web gears from Hipache
     return unless gear.proctype == "web"
-    # remove gear from Hipache
-    redis_key = "frontend:#{app.url}"
-    $redis.lrem(redis_key, 1, "http://#{gear.ip}:#{gear.port}")
+    $redis.lrem("frontend:#{app.url}", 1, url)
   end
 
   before_destroy do # destroy the accompanying docker container
@@ -55,6 +54,10 @@ class Gear < ActiveRecord::Base
 
   def uptime
     started_at ? Time.now - started_at : 0
+  end
+
+  def url
+    "http://#{gear.ip}:#{gear.port}"
   end
 
   private def reset_started_at
