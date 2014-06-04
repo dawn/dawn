@@ -1,5 +1,4 @@
 class Api::SessionController < ApiController
-
   skip_before_action :authenticate_user_from_api_key!
 
   def create
@@ -11,5 +10,4 @@ class Api::SessionController < ApiController
       head 400
     end
   end
-
 end

@@ -1,26 +1,17 @@
 class Api::DrainsController < ApiController
-
-  before_action :find_drain, only: [:show, :destroy]
-
-  def create
-    head 403
-  end
-
-  def index
-    @drains = Drains.all
-    render status: 200
-  end
+  before_action :find_drain, only: [:show, :update, :destroy]
 
   def show
     render 'drain', status: 200
   end
 
   def update
-    head 403
+    head 501
   end
 
   def destroy
-    head 403
+    @drain.destroy
+    head 200
   end
 
   private def find_drain
@@ -32,5 +23,4 @@ class Api::DrainsController < ApiController
       render json: response, status: 404
     end
   end
-
 end

@@ -1,14 +1,12 @@
 require 'sshkey'
 
 class Api::Account::KeysController < ApiController
-
   before_action :find_key, only: [:show, :destroy]
 
   def create
-    pbkey       = params[:key]
-    fingerprint = SSHKey.fingerprint(pbkey)
+    fingerprint = SSHKey.fingerprint(params[:key])
     if !Key.where(fingerprint: fingerprint).exists?
-      @key = current_user.keys.build(key: pbkey, fingerprint: fingerprint)
+      @key = current_user.keys.build(key: params[:key], fingerprint: fingerprint)
       if @key.save
         render 'key', status: 200
       else
@@ -43,5 +41,4 @@ class Api::Account::KeysController < ApiController
       head 404
     end
   end
-
 end

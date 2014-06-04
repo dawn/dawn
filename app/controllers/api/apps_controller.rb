@@ -1,5 +1,4 @@
 class Api::AppsController < ApiController
-
   actions = [:index, :create]
   before_action :find_app, except: actions
   before_action :verify_app_owner, except: actions
@@ -36,7 +35,7 @@ class Api::AppsController < ApiController
     if @app.update(name: params[:name])
       render 'app', status: 200
     else
-      head 422 # 422 could work too
+      head 500
     end
   end
 
@@ -75,6 +74,7 @@ class Api::AppsController < ApiController
   end
 
   # starts a one-off container session
+  require 'shellwords'
   def run
     head 400 unless params[:command]
 
@@ -83,18 +83,84 @@ class Api::AppsController < ApiController
 
       socket = env['rack.hijack_io']
       begin
-        socket.write("hello!\n")
         socket.flush
         socket.sync = true
-        socket.write("docker run  -i -t -rm #{@app.releases.last.image} #{params[:command]}\n")
-        socket.write("params: #{params}\n")
-        docker = "docker run  -i -t -rm #{@app.releases.last.image} #{params[:command]}"
-        pid = Process.spawn({}, docker, {in: socket, out: socket, err: socket})
-        Process.wait(pid)
+
+        container = Docker::Container.create(
+          'Image'     => @app.releases.last.image,
+          'Cmd'       => Shellwords.split(params[:command]),
+          'Tty'       => true,
+          'OpenStdin' => true,
+          'StdinOnce' => false
+        )
+
+        socket.write "#{params} started\n"
+
+        container.tap(&:start).attach(stdin: socket, tty: true) do |type, msg|
+          socket.write(msg)
+        end
+
+        socket.write "returned\n"
       ensure
         socket.close
       end
     end
+  end
+
+  # -- new subresources
+  def create_gear
+    head 
+  end
+
+  def create_drain
+    if !@app.drains.where(url: params[:url]).exists?
+      @drain = @app.drains.create(app: @app, url: params[:url])
+      if @domain.save
+        render 'drains/drain', status: 200
+      else
+        # :TODO: handle save error
+        head 500
+      end
+    else
+      head 409
+    end
+  end
+
+  def create_domain
+    if !@app.domains.where(url: params[:url]).exists?
+      @domain = @app.domains.create(app: @app, url: params[:url])
+      if @domain.save
+        render 'domains/domain', status: 200
+      else
+        # :TODO: handle save error
+        head 500
+      end
+    else
+      response = { id: 'domain.exists',
+                   message: "Domain #{params[:url]} exists" }
+      render json: response, status: 409
+    end
+  end
+
+  # fetch scoped subresources
+  def gears
+    @gears = @app.gears
+    render 'gears/index', status: 200
+  end
+
+  def drains
+    @drains = @app.drains
+    render 'drains/index', status: 200
+  end
+
+  def domains
+    @domains = @app.domains
+    render 'domains/index', status: 200
+  end
+
+  def gears_restart
+    @app.gears.each &:restart
+    head 200
   end
 
   private def find_app
@@ -112,5 +178,4 @@ class Api::AppsController < ApiController
       head 401
     end
   end
-
 end

@@ -23,23 +23,19 @@ Dawn::Application.routes.draw do
         post '/restart', to: 'gears#restart'
       end
     end
-    #post '/gears/restart', to: 'apps/gears#restart_all' # admin only
-    resources :domains
-    resources :drains
+
+    resources :domains, except: [:index, :create]
+    resources :drains,  except: [:index, :create]
 
     resources :apps do
-      resources :gears,   to: "apps/gears" do
-        post '/restart', to: 'apps/gears#restart'
-      end
-      post '/gears/restart', to: 'apps/gears#restart_all'
-      resources :domains, to: "apps/domains"
-      resources :drains,  to: "apps/drains"
-
       member do
-
-        #get '/gears',    to: 'apps#get_gears'   #
-        #get '/domains',  to: 'apps#get_domains' #
-        #get '/drains',   to: 'apps#get_drains'  #
+        post '/gears',   to: 'apps#create_gear'
+        post '/domains', to: 'apps#create_domain'
+        post '/drains',  to: 'apps#create_drain'
+        get '/gears',    to: 'apps#gears'
+        get '/domains',  to: 'apps#domains'
+        get '/drains',   to: 'apps#drains'
+        post '/gears/restart', to: 'apps#gears_restart'
 
         get '/scale',    to: 'apps#formation'
         put '/scale',    to: 'apps#scale'

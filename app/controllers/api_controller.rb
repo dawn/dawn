@@ -1,5 +1,4 @@
 class ApiController < ActionController::Metal
-
   include AbstractController::Rendering
   include ActionController::Rendering   # enables rendering
   include ActionController::Head        # for header only responses
@@ -40,5 +39,4 @@ class ApiController < ActionController::Metal
       end
     end
   end
-
 end

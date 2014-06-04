@@ -11,7 +11,6 @@ end
 # Controller for methods needing a stream
 
 class Api::Git::StreamController < ActionController::Base#ApiController
-
   include ActionController::Live
 
   def hook
@@ -30,5 +29,4 @@ class Api::Git::StreamController < ActionController::Base#ApiController
     response.stream.close
     $stdout = real_stdout
   end
-
 end

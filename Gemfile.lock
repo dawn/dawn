@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/lmars/docker-api
-  revision: 406a2d63fa7bd2fd055a0d94a1b2bdbbbef32223
-  branch: attach-stdin
+  revision: 980939fc38261cae421e0e15ec3f2bb7bfb0943f
+  branch: tty-support
   specs:
-    docker-api (1.10.11)
+    docker-api (1.11.0)
       archive-tar-minitar
       excon (>= 0.34.0)
       json

@@ -1,30 +1,17 @@
 class Api::DomainsController < ApiController
-
-  before_action :find_domain, only: [:show, :destroy]
-
-  def create
-    # creating a Domain outside of an App is forbidden (for now)
-    head 403
-  end
-
-  def index
-    @domains = Domain.all
-    render status: 200
-  end
+  before_action :find_domain, only: [:show, :update, :destroy]
 
   def show
     render 'domain', status: 200
   end
 
   def update
-    # updating a Domain outside of an App is forbidden
-    head 403
+    head 501
   end
 
   def destroy
-    #@domain.destroy
-    #head 200
-    head 403
+    @domain.destroy
+    head 200
   end
 
   private def find_domain
@@ -36,5 +23,4 @@ class Api::DomainsController < ApiController
       render json: response, status: 404
     end
   end
-
 end
