@@ -1,4 +1,4 @@
-class Api::GearsController < ApiController
+class Api::GearsController < Api::AppsubController
 
   before_action :find_app, only: [:index, :show, :destroy, :destroy_all]
   before_action :find_gear, only: [:show, :destroy]
@@ -20,15 +20,7 @@ class Api::GearsController < ApiController
   def destroy_all
     @gears = @app.gears
     @gears.each(&:restart)
-    head 204
-  end
-
-  private def find_app
-    if app = App.where(id: params[:app_id]).first
-      @app = app
-    else
-      head 404
-    end
+    head 200
   end
 
   private def find_gear

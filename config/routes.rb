@@ -19,9 +19,11 @@ Dawn::Application.routes.draw do
     resources :apps do
       # build, deploy, logs...
       resources :gears
+      delete '/gears', to: 'gears#destroy_all'
+
       resources :domains
       resources :drains
-      delete '/gears', to: 'gears#destroy_all'
+
       member do
         get '/scale',    to: 'apps#formation'
         post '/scale',   to: 'apps#scale'

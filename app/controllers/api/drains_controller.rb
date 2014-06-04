@@ -1,4 +1,4 @@
-class Api::DrainsController < ApiController
+class Api::DrainsController < Api::AppsubController
 
   before_action :find_app, only: [:index, :show, :destroy]
   before_action :find_drain, only: [:show, :destroy]
@@ -26,15 +26,7 @@ class Api::DrainsController < ApiController
 
   def destroy
     @drain.destroy
-    head 204
-  end
-
-  private def find_app
-    if app = App.where(id: params[:app_id]).first
-      @app = app
-    else
-      head 404
-    end
+    head 200
   end
 
   private def find_drain
