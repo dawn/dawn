@@ -1,10 +1,13 @@
-class Api::GearsController < Api::AppsubController
+class Api::GearsController < ApiController
 
-  before_action :find_app, only: [:index, :show, :destroy, :destroy_all]
   before_action :find_gear, only: [:show, :destroy]
 
+  def create
+    head 403
+  end
+
   def index
-    @gears = @app.gears
+    @gears = Gears.all
     render status: 200
   end
 
@@ -12,22 +15,21 @@ class Api::GearsController < Api::AppsubController
     render 'gear', status: 200
   end
 
-  def destroy
-    @gear.restart
-    head 200
+  def update
+    head 403
   end
 
-  def destroy_all
-    @gears = @app.gears
-    @gears.each(&:restart)
-    head 200
+  def destroy
+    head 403
   end
 
   private def find_gear
-    if gear = @app.gears.where(id: params[:id]).first
+    if gear = Gear.where(id: params[:id]).first
       @gear = gear
     else
-      head 404
+      response = { id: "gear.not_exist",
+                   message: "Gear (id: #{params[:id]}) does not exist" }
+      render json: response, status: 404
     end
   end
 

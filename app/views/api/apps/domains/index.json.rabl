@@ -1,0 +1,1 @@
+extends 'api/domains/index'

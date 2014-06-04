@@ -1,22 +1,13 @@
-class Api::DrainsController < Api::AppsubController
+class Api::DrainsController < ApiController
 
-  before_action :find_app, only: [:index, :show, :destroy]
   before_action :find_drain, only: [:show, :destroy]
 
   def create
-    drain_url = params[:url]
-
-    if !@app.drains.where(url: drain_url).exists?
-      @drain = @app.drains.create!(app: @app, url: drain_url)
-      render 'drain', status: 200
-    else
-      response = { id: "drain.exists", message: "Drain #{url} exists" }
-      render json: response, status: 409
-    end
+    head 403
   end
 
   def index
-    @drains = @app.drains
+    @drains = Drains.all
     render status: 200
   end
 
@@ -24,16 +15,21 @@ class Api::DrainsController < Api::AppsubController
     render 'drain', status: 200
   end
 
+  def update
+    head 403
+  end
+
   def destroy
-    @drain.destroy
-    head 200
+    head 403
   end
 
   private def find_drain
-    if drain = @app.drains.where(id: params[:id]).first
+    if drain = Drain.where(id: params[:id]).first
       @drain = drain
     else
-      head 404
+      response = { id: "drain.not_exist",
+                   message: "Drain (id: #{params[:id]}) does not exist" }
+      render json: response, status: 404
     end
   end
 

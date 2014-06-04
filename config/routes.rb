@@ -14,22 +14,40 @@ Dawn::Application.routes.draw do
     root to: 'home#index'
   end
 
-  # subdomain with a namespace under root --> api.dawn.io/apps --> Api::AppsController, not AppsController
+  # subdomain with a namespace under root -->
+  #   api.dawn.io/apps -->
+  #   Api::AppsController, not AppsController
   subdomain :api do
-    resources :apps do
-      # build, deploy, logs...
-      resources :gears
-      delete '/gears', to: 'gears#destroy_all'
+    resources :gears do
+      member do
+        post '/restart', to: 'gears#restart'
+      end
+    end
+    #post '/gears/restart', to: 'apps/gears#restart_all' # admin only
+    resources :domains
+    resources :drains
 
-      resources :domains
-      resources :drains
+    resources :apps do
+      resources :gears,   to: "apps/gears" do
+        post '/restart', to: 'apps/gears#restart'
+      end
+      post '/gears/restart', to: 'apps/gears#restart_all'
+      resources :domains, to: "apps/domains"
+      resources :drains,  to: "apps/drains"
 
       member do
+
+        #get '/gears',    to: 'apps#get_gears'   #
+        #get '/domains',  to: 'apps#get_domains' #
+        #get '/drains',   to: 'apps#get_drains'  #
+
         get '/scale',    to: 'apps#formation'
+        put '/scale',    to: 'apps#scale'
         post '/scale',   to: 'apps#scale'
 
         get '/env',      to: 'apps#get_env'
         put '/env',      to: 'apps#update_env'
+        post '/env',     to: 'apps#update_env'
 
         get '/logs',     to: 'apps#logs'
 

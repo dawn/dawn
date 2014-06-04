@@ -1,25 +1,14 @@
-class Api::DomainsController < Api::AppsubController
+class Api::DomainsController < ApiController
 
-  before_action :find_app, only: [:index, :show, :destroy]
+  before_action :find_domain, only: [:show, :destroy]
 
   def create
-    domain = params[:name]
-    if !@app.domains.include?(domain)
-      @app.domains.push domain
-      if @app.save
-        @domain = domain
-        render 'domain', status: 200
-      else
-        # handle error
-        head 400
-      end
-    else
-      head 409
-    end
+    # creating a Domain outside of an App is forbidden (for now)
+    head 403
   end
 
   def index
-    @domains = @app.domains
+    @domains = Domain.all
     render status: 200
   end
 
@@ -27,13 +16,24 @@ class Api::DomainsController < Api::AppsubController
     render 'domain', status: 200
   end
 
+  def update
+    # updating a Domain outside of an App is forbidden
+    head 403
+  end
+
   def destroy
-    @app.domains.delete params[:name]
-    if @app.save
-      head 200
+    #@domain.destroy
+    #head 200
+    head 403
+  end
+
+  private def find_domain
+    if domain = Domain.where(id: params[:id]).first
+      @domain = domain
     else
-      # handle error
-      head 400
+      response = { id: "domain.not_exist",
+                   message: "Domain (id: #{params[:id]}) does not exist" }
+      render json: response, status: 404
     end
   end
 

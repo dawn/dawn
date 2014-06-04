@@ -36,7 +36,7 @@ class Api::AppsController < ApiController
     if @app.update(name: params[:name])
       render 'app', status: 200
     else
-      head 500 # 422 could work too
+      head 422 # 422 could work too
     end
   end
 
