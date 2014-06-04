@@ -16,7 +16,8 @@ class Api::AppsController < ApiController
   def create
     appname = params[:name]
     if App.where(name: appname).first
-      head 409
+      response = { id: "app.exists", message: "App #{appname} already exists" }
+      render json: response, status: 409
     else
       @app = App.new(name: appname, user: current_user)
       if @app.save
@@ -53,7 +54,7 @@ class Api::AppsController < ApiController
 
   def destroy
     @app.destroy
-    head 204
+    head 200
   end
 
   def formation
@@ -97,10 +98,13 @@ class Api::AppsController < ApiController
   end
 
   private def find_app
-    if app = App.where(id: params[:id]).first
+    app_id = params[:id]
+    if app = App.where(id: app_id).first
       @app = app
     else
-      head 404
+      response = { id: "app.not_exist",
+                   message: "App (id: #{app_id}) does not exist" }
+      render json: response, status: 404
     end
   end
 

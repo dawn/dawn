@@ -14,7 +14,7 @@ class Api::GearsController < ApiController
 
   def destroy
     @gear.restart
-    head 204
+    head 200
   end
 
   def destroy_all

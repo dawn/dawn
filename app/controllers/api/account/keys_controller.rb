@@ -30,7 +30,7 @@ class Api::Account::KeysController < ApiController
 
   def destroy
     if @key.destroy
-      head 204
+      head 200
     else
       head 500
     end

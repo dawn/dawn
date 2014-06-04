@@ -4,12 +4,14 @@ class Api::DrainsController < ApiController
   before_action :find_drain, only: [:show, :destroy]
 
   def create
-    drain_url = params[:drain_url]
+    drain_url = params[:url]
+
     if !@app.drains.where(url: drain_url).exists?
       @drain = @app.drains.create!(app: @app, url: drain_url)
       render 'drain', status: 200
     else
-      head 409
+      response = { id: "drain.exists", message: "Drain #{url} exists" }
+      render json: response, status: 409
     end
   end
 
