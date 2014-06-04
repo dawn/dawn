@@ -145,17 +145,17 @@ class Api::AppsController < ApiController
   # fetch scoped subresources
   def gears
     @gears = @app.gears
-    render 'gears/index', status: 200
+    render '/api/gears/index', status: 200
   end
 
   def drains
     @drains = @app.drains
-    render 'drains/index', status: 200
+    render '/api/drains/index', status: 200
   end
 
   def domains
     @domains = @app.domains
-    render 'domains/index', status: 200
+    render '/api/domains/index', status: 200
   end
 
   def gears_restart
