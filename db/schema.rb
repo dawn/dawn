@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140528190327) do
+ActiveRecord::Schema.define(version: 20140602022717) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20140528190327) do
     t.integer  "logplex_id"
     t.hstore   "logplex_tokens", default: {}
     t.integer  "user_id"
+    t.string   "domains",        default: [],           array: true
   end
 
   create_table "drains", force: true do |t|
