@@ -1,2 +1,2 @@
 object @domain
-node(:name) { |domain| domain }
+attributes :id, :url
