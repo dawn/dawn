@@ -1,6 +1,6 @@
 class Api::Apps::GearsController < Api::AppsubController
 
-  before_action :find_app, only: [:index, :show, :restart, :restart_all, :destroy]
+  before_action :find_app, only: [:index, :show, :update, :restart, :restart_all, :destroy]
   before_action :find_gear, only: [:show, :update, :restart, :destroy]
 
   def create

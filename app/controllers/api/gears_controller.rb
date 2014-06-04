@@ -1,6 +1,6 @@
 class Api::GearsController < ApiController
 
-  before_action :find_gear, only: [:show, :destroy]
+  before_action :find_gear, only: [:show, :update, :restart, :destroy]
 
   def create
     head 403
@@ -17,6 +17,17 @@ class Api::GearsController < ApiController
 
   def update
     head 403
+  end
+
+  def restart
+    @gear.restart
+    head 200
+  end
+
+  def restart_all
+    @gears = Gear.all
+    @gears.each &:restart
+    head 200
   end
 
   def destroy
