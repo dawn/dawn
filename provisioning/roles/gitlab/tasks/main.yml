@@ -18,6 +18,7 @@
   file: path=/opt/gitlab-shell
         owner=git
         group={{ group_main }}
+        mode=0775
         recurse=yes
 
 ##
