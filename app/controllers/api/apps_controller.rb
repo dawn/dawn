@@ -98,12 +98,11 @@ class Api::AppsController < ApiController
   end
 
   private def find_app
-    app_id = params[:id]
-    if app = App.where(id: app_id).first
+    if app = App.where(id: params[:id]).first
       @app = app
     else
       response = { id: "app.not_exist",
-                   message: "App (id: #{app_id}) does not exist" }
+                   message: "App (id: #{params[:id]}) does not exist" }
       render json: response, status: 404
     end
   end
