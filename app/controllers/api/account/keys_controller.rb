@@ -10,7 +10,7 @@ class Api::Account::KeysController < ApiController
       if @key.save
         render 'key', status: 200
       else
-        head 500
+        head 422
       end
     else
       head 409

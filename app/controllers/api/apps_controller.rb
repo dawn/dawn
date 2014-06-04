@@ -22,7 +22,7 @@ class Api::AppsController < ApiController
       if @app.save
         render 'app', status: 200
       else
-        head 500
+        head 422
       end
     end
   end
@@ -35,7 +35,7 @@ class Api::AppsController < ApiController
     if @app.update(name: params[:name])
       render 'app', status: 200
     else
-      head 500
+      head 422
     end
   end
 
@@ -47,7 +47,7 @@ class Api::AppsController < ApiController
     if @app.update(env: params[:env])
       render 'env', status: 200
     else
-      head 500
+      head 422
     end
   end
 
@@ -109,7 +109,7 @@ class Api::AppsController < ApiController
 
   # -- new subresources
   def create_gear
-    head 
+    head
   end
 
   def create_drain
@@ -119,7 +119,7 @@ class Api::AppsController < ApiController
         render 'drains/drain', status: 200
       else
         # :TODO: handle save error
-        head 500
+        head 422
       end
     else
       head 409
@@ -133,7 +133,7 @@ class Api::AppsController < ApiController
         render 'domains/domain', status: 200
       else
         # :TODO: handle save error
-        head 500
+        head 422
       end
     else
       response = { id: 'domain.exists',
