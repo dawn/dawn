@@ -1,4 +1,5 @@
 class Release< ActiveRecord::Base
+
   validates_presence_of :image, :version
 
   # if a new release was added, redeploy (destroy all gears and recreate)
@@ -7,4 +8,5 @@ class Release< ActiveRecord::Base
   #end
 
   belongs_to :app
+
 end

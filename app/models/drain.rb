@@ -1,4 +1,5 @@
 class Drain < ActiveRecord::Base
+
   validates :url, presence: true
 
   before_create :create_logplex_drain
@@ -22,4 +23,5 @@ class Drain < ActiveRecord::Base
   end
 
   belongs_to :app
+
 end

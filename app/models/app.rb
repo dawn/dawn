@@ -1,6 +1,7 @@
 require 'tempfile'
 
 class App < ActiveRecord::Base
+
   validates :name, uniqueness: true,
                    presence: true,
                    format: { with: /\A[a-z][a-z\d-]+\z/ }, # a-z + 0-9 + -, must start with a-z
@@ -209,11 +210,11 @@ class App < ActiveRecord::Base
   end
 
   private def create_git_repo
-    gitlab_projects("add-project #{git}")
+    gitlab_projects "add-project #{git}"
   end
 
   private def delete_git_repo
-    gitlab_projects("rm-project #{git}")
+    gitlab_projects "rm-project #{git}"
   end
 
   belongs_to :user

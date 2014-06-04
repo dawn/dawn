@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -12,9 +13,7 @@ class User < ActiveRecord::Base
 
   before_create :ensure_api_key
   def ensure_api_key
-    if api_key.blank?
-      self.api_key = generate_api_key
-    end
+    self.api_key = generate_api_key if api_key.blank?
   end
 
   private def generate_api_key
@@ -26,4 +25,5 @@ class User < ActiveRecord::Base
 
   has_many :apps
   has_many :keys
+
 end

@@ -1,4 +1,5 @@
 class Key < ActiveRecord::Base # SSH public key representation
+
   private def gitlab_keys(arg)
     system("/opt/gitlab-shell/bin/gitlab-keys #{arg}")
   end
@@ -12,4 +13,5 @@ class Key < ActiveRecord::Base # SSH public key representation
   end
 
   belongs_to :user
+
 end

@@ -1,4 +1,5 @@
 class Gear < ActiveRecord::Base
+
   validates_uniqueness_of :container_id, :ip
   validates_uniqueness_of :number, scope: :proctype # only one number with the same proctype
 
@@ -99,4 +100,5 @@ class Gear < ActiveRecord::Base
   end
 
   belongs_to :app
+
 end
