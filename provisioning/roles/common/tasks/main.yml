@@ -7,5 +7,3 @@
 - include: ssh.yml
 - include: postgresql.yml
 - include: redis.yml
-- shell: ls /usr/lib/kerl/
-  register: ls_kerl
