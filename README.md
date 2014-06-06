@@ -91,3 +91,11 @@ vagrant@ubuntu-14:/app$ docker build -t dawn/buildstep .
 
 ### bundle install fails in a SSL error
 Try running the provisioning again, it's probably a network error.
+
+## API Documentation
+[Docs](http://dawn.github.io/docs/)
+
+## Have Questions?
+Hit us up on the irc on freenode #dawn
+
+But please, don't really *hit us*
