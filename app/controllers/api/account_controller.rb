@@ -7,7 +7,7 @@ class Api::AccountController < ApiController
 
   def update
     if @account.update(account_params)
-      render status: 200
+      render 'account', status: 200
     else
       render status: 422 # 422 could work too
     end
