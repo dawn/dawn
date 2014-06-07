@@ -6,4 +6,8 @@
 - include: hipache.yml
 - include: ssh.yml
 - include: postgresql.yml
+
+- name: spin up postgres
+  command: docker run -d -p 5432:5432 -e POSTGRESQL_USER=dawn -e POSTGRESQL_PASS=dawn --name postgres orchardup/postgresql
+
 - include: redis.yml

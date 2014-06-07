@@ -1,6 +1,9 @@
 ---
-- name: install puma dependency
-  apt: pkg=libssl-dev state=present
+- name: install gem extensions dependencies
+  apt: pkg={{ item }} state=present
+  with_items:
+    - libssl-dev # puma
+    - libpq-dev # for pg gem
 
 #- name: pull source from repository
 #  git: repo={{ project_repo }} dest={{ path_app }}
