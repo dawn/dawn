@@ -1,5 +1,5 @@
 FROM progrium/buildstep
-MAINTAINER speed "blaz.hrast@gmail.com"
+MAINTAINER speed "blaz@roave.com"
 
 RUN apt-get update
 RUN apt-get install -y --force-yes software-properties-common

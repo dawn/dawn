@@ -4,8 +4,9 @@ development:
   database: dawn_development
   template: template0
   pool: 5
+  host: 127.0.0.1
   username: dawn
-  password:
+  password: dawn
 
 test:
   adapter: postgresql
@@ -13,5 +14,6 @@ test:
   database: dawn_test
   template: template0
   pool: 5
+  host: 127.0.0.1
   username: dawn
-  password:
+  password: dawn
