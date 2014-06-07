@@ -35,3 +35,10 @@
         recurse=yes
         state=directory
         mode=0770
+
+- name: create /var/log/dawn for Upstart
+  sudo: yes
+  file: path=/var/log/dawn
+        group={{ group_main }}
+        owner={{ user_main }}
+        state=directory
