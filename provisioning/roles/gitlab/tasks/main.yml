@@ -21,6 +21,12 @@
         mode=0775
         recurse=yes
 
+- name: fix permissions for gitlab-shell.log
+  file: path=/opt/gitlab-shell/gitlab-shell.log
+        owner=git
+        group={{ group_main }}
+        mode=0775
+
 ##
 # for some reason, this freezes
 - name: install gitlab-shell
