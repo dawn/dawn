@@ -37,7 +37,7 @@
   sudo_user: "{{ user_main }}"
 
 - name: setup hipache proxying for dawn.dev
-  command: script/logplex chdir={{ path_app }}
+  command: script/hipache chdir={{ path_app }}
   sudo_user: "{{ user_main }}"
 
 
