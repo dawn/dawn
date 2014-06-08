@@ -32,7 +32,7 @@ Setting up a development environment is pretty easy, as Vagrant automatically ru
 All it takes to get the box up and running is:
 
 ```shell
-vagrant up
+$ vagrant up
 ```
 
 The initial provisioning run might take a while, because we pull and compile several dependencies.
@@ -40,7 +40,7 @@ The initial provisioning run might take a while, because we pull and compile sev
 In case you need to run the provisioning again in the future:
 
 ```shell
-vagrant provision
+$ vagrant provision
 ```
 
 ### dnsmasq
@@ -58,6 +58,45 @@ All set! Your box is now ready to use. Point your browser to http://dawn.dev, an
 
 [Our client](https://github.com/dawn/dawn-cli) is recommended currently, as it's the most feature complete, however, a
 web interface is also in the works, available under [dashboard.dawn.dev](http://dashboard.dawn.dev).
+
+### Using the CLI utility
+
+The client can be easily installed via Rubygems.
+
+```
+$ gem install dawn-cli
+```
+
+A list of all available commands along with descriptions is available under `dawn help`.
+
+Workflow usually looks like this: First we log into our Dawn account.
+
+```
+$ dawn login
+Username: Speed
+Password: test1234
+```
+
+The utility then stores the API token under `~/.netrc` for further use. (Note that our format is currently incompatible with `curl -n`, because we use `Authorization: Token` instead of `Authorization: Basic`. This will change in the near future.)
+
+Next up, we need to add our ssh key, in order to be authorized to push to the platform. This will automatically take your 
+
+```
+dawn key:add
+```
+
+Then, we initialize our project on the Dawn platform.
+
+```
+$ cd my-awesome-git-project
+$ dawn init
+```
+
+And we're done! To build our app, simply push to the `dawn` remote.
+
+```
+$ git push dawn master
+```
 
 ## Proposed features
 
@@ -92,8 +131,19 @@ vagrant@ubuntu-14:/app$ docker build -t dawn/buildstep .
 ### bundle install fails in a SSL error
 Try running the provisioning again, it's probably a network error.
 
-## API Documentation
-[Docs](http://dawn.github.io/docs/)
+### API is not working after a VM reboot
+This is because we're still using the foreman generated upstart files, that don't watch for vagrant-mounted event. This will be resolved in the near future, but for now, ssh into the box and restart the service. It should take about 30-60 seconds to restart.
+
+```
+vagrant ssh
+vagrant@ubuntu-14:~$ sudo restart dawn
+```
+
+### API is not working after a system sleep/hybernation
+Vagrant sometimes seems to unmount the shared folder `/app` on such occasions. Run `vagrant reload`. 
+
+## Documentation
+[API documentation](http://dawn.github.io/docs/) is available. We're in the process of providing online CLI documentation and guides as well.
 
 ## Have Questions?
 Hit us up on the irc on freenode #dawn
