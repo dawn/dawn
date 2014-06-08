@@ -9,7 +9,6 @@
   roles:
     - { role: root, tags: ["root"] }
     - { role: common,   tags: ["common"]   }
-    - { role: erlang,   tags: ["erlang"]   }
     - { role: logplex,  tags: ["logplex"]  }
     - { role: gitlab,   tags: ["gitlab"]   }
     - { role: rails,    tags: ["rails"]    }
