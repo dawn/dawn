@@ -28,6 +28,11 @@ to deploy and scale, and faster to provision.
 
 ## Installation (Development)
 
+First, make sure to initialize git submodules (we currently use a submodule for erlang provisioning).
+```
+git submodule update --init
+```
+
 Setting up a development environment is pretty easy, as Vagrant automatically runs the Ansible playbooks provided.
 All it takes to get the box up and running is:
 
@@ -88,7 +93,7 @@ dawn key:add
 Then, we initialize our project on the Dawn platform.
 
 ```
-$ cd my-awesome-git-project
+$ cd awesome-app
 $ dawn init
 ```
 
@@ -96,6 +101,39 @@ And we're done! To build our app, simply push to the `dawn` remote.
 
 ```
 $ git push dawn master
+Counting objects: 148, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (107/107), done.
+Writing objects: 100% (148/148), 11.90 KiB | 0 bytes/s, done.
+Total 148 (delta 46), reused 0 (delta 0)
+       Ruby app detected
+-----> Compiling Ruby/Rack
+-----> Using Ruby version: ruby-2.1.0
+-----> Installing dependencies using 1.5.2
+       Running: bundle install --without development:test --path vendor/bundle --binstubs vendor/bundle/bin -j4 --deployment
+       Fetching gem metadata from https://rubygems.org/..........
+       Fetching additional metadata from https://rubygems.org/..
+       Installing daemons (1.1.9)
+       Using bundler (1.5.2)
+       Installing tilt (1.4.1)
+       Installing rack (1.5.2)
+       Installing rack-protection (1.5.2)
+       Installing sinatra (1.4.4)
+       Installing eventmachine (1.0.3)
+       Installing thin (1.6.1)
+       Your bundle is complete!
+       Gems in the groups development and test were not installed.
+       It was installed into ./vendor/bundle
+       Bundle completed (20.25s)
+       Cleaning up the bundler cache.
+-----> Discovering process types
+       Procfile declares types -> web
+       Default process types for Ruby -> rake, console, web
+
+-----> Launching... done, v1
+      http://awesome-app.dawnapp.dev deployed to Dawn
+To git@dawn.dev:ruby-sample.git
+ * [new branch]      master -> master
 ```
 
 ## Proposed features
