@@ -1,4 +1,6 @@
 ---
+- include: nodejs.yml
+
 - name: install hipache
   shell: npm install hipache -g creates=/usr/bin/hipache
 
@@ -10,3 +12,9 @@
 
 - name: start hipache
   service: name=hipache state=started
+
+- name: install redis
+  apt: pkg=redis-server state=present
+
+- name: start redis
+  service: name=redis-server state=started

@@ -12,7 +12,3 @@
 
 - name: install docker
   apt: update_cache=yes pkg=lxc-docker state=present
-
-- shell: docker images
-  sudo_user: "{{ user_main }}"
-  register: docker_images
