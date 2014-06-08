@@ -1,20 +1,3 @@
 ---
-- include: nodejs.yml
-
-- name: install hipache
-  shell: npm install hipache -g creates=/usr/bin/hipache
-
-- name: add hipache configuration
-  copy: src=hipache/hipache.json dest=/etc/hipache.json
-
-- name: add hipache service to Upstart
-  copy: src=hipache/upstart.conf dest=/etc/init/hipache.conf
-
-- name: start hipache
-  service: name=hipache state=started
-
-- name: install redis
-  apt: pkg=redis-server state=present
-
-- name: start redis
-  service: name=redis-server state=started
+- name: spin up hipache
+  shell: docker run -d -p 80:80 -p 6379:6379 --name hipache dawn/hipache
