@@ -16,8 +16,6 @@ RUN cd /opt/logplex && ./rebar --config public.rebar.config get-deps compile
 ADD run /usr/local/bin/run
 RUN chmod +x /usr/local/bin/run
 
-# TODO: start and link a redis container, pass in options on run
+EXPOSE 8001 8601
 
-EXPOSE 8001
-
-CMD ['/usr/local/bin/run']
+cmd ["/usr/local/bin/run"]
