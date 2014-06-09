@@ -1,2 +1,2 @@
 object @app
-attributes :id, :created_at, :updated_at, :name, :version, :env, :formation
+attributes :id, :created_at, :updated_at, :name, :version, :env, :git, :formation
