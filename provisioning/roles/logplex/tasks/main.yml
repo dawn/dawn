@@ -1,6 +1,6 @@
 ---
 - name: spin up redis-logplex
-  command: docker run -d -p 6733:6379 --name redis-logplex redis
+  command: docker run -d -p 6733:6379 --name redis-logplex shipyard/redis
 
 - name: spin up logplex
   command: docker run -d -p 8001:8001 -p 8601:8601 --name logplex -h logplex --link redis-logplex:redis dawn/logplex
