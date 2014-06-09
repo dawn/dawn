@@ -13,7 +13,10 @@ class App < ActiveRecord::Base
   before_validation :ensure_name,            unless: ->(model){ model.persisted? }
   before_validation :create_logplex_channel, unless: ->(model){ model.persisted? }
 
-  before_create { create_git_repo }
+  before_create do
+    self.git = "#{name}.git"
+    create_git_repo
+  end
 
   before_destroy do
     delete_git_repo
@@ -200,10 +203,6 @@ class App < ActiveRecord::Base
     result = `/opt/gitlab-shell/bin/gitlab-projects #{arg} 2>&1`
     Rails.logger.tagged("GITLAB::APP") { logger.info(result) } unless result.empty?
     $?.success?
-  end
-
-  private def git
-    "#{name}.git"
   end
 
   private def repo_path
