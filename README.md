@@ -43,6 +43,11 @@ $ script/provision -l vagrant
 
 The initial provisioning run might take a while, because we pull and compile several dependencies.
 
+To provision your own server, simply add it under a different group inside `provisioning/hosts`, then run
+```
+$ script/provision -l <group>
+```
+
 ### dnsmasq
 The box IP needs to resolve to dawn.dev and dawnapp.dev (configurable in config/application.yml). You can add an alias to
 /etc/resolv.conf, or use your own method of doing so. We suggest using dnsmasq, with the following line
