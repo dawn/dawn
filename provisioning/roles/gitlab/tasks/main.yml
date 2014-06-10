@@ -26,7 +26,7 @@
         owner=git
         group={{ group_main }}
         mode=0775
-        state=file
+        state=touch
 
 ##
 # for some reason, this freezes
