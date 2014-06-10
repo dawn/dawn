@@ -4,7 +4,7 @@ development:
   database: dawn_development
   template: template0
   pool: 5
-  host: 127.0.0.1
+  host: localhost
   username: dawn
   password: dawn
 
@@ -14,6 +14,6 @@ test:
   database: dawn_test
   template: template0
   pool: 5
-  host: 127.0.0.1
+  host: localhost
   username: dawn
   password: dawn
