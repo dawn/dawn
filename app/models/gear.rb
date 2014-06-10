@@ -8,7 +8,7 @@ class Gear < ActiveRecord::Base
   end
 
   # before_create create a docker container and run the worker, set port/ip/container_id
-  before_create do |gear|
+  before_validation, unless: ->(model){ model.persisted? } do |gear|
     # TEMP? might not be cross process safe, need to make it Atomic
     gear.number = app.gears.where(proctype: proctype).count + 1
     gear.port = 5000 # temp?
@@ -36,7 +36,7 @@ class Gear < ActiveRecord::Base
     self.container_id = container.id
     self.ip = container.json["NetworkSettings"]["IPAddress"]
 
-    save! if new_record?
+    save! if !new_record?
   end
 
   before_destroy do |gear|
