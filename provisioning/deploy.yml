@@ -4,7 +4,6 @@
   sudo: true
   vars_files:
     - vars/main.yml
-    - vars/main.yml
     - vars/service.yml
   roles:
     - { role: root, tags: ["root"] }
@@ -12,4 +11,28 @@
     - { role: erlang,   tags: ["erlang"]   }
     - { role: logplex,  tags: ["logplex"]  }
     - { role: gitlab,   tags: ["gitlab"]   }
+
+- hosts: all:!vagrant
+  remote_user: "{{ lookup('env', 'USER') }}"
+  sudo: true
+  vars_files:
+    - vars/main.yml
+  tasks:
+    - name: pull source from repository
+      git: repo={{ project_repo }} dest={{ path_app }}
+      tags: app-get
+    - name: setup app directory
+      file: path={{ path_app }}
+            owner={{ user_main }}
+            state=directory
+            mode=0755
+      tags: app-get
+
+- hosts: all
+  remote_user: "{{ lookup('env', 'USER') }}"
+  sudo: true
+  vars_files:
+    - vars/main.yml
+    - vars/service.yml
+  roles:
     - { role: rails,    tags: ["rails"]    }
