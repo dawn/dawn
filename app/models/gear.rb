@@ -8,7 +8,7 @@ class Gear < ActiveRecord::Base
   end
 
   # before_create create a docker container and run the worker, set port/ip/container_id
-  before_validation, unless: ->(model){ model.persisted? } do |gear|
+  before_validation unless: ->(model){ model.persisted? } do |gear|
     # TEMP? might not be cross process safe, need to make it Atomic
     gear.number = app.gears.where(proctype: proctype).count + 1
     gear.port = 5000 # temp?
