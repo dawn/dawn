@@ -4,7 +4,6 @@
   sudo: true
   vars_files:
     - vars/main.yml
-    - vars/main.yml
     - vars/service.yml
   roles:
     - { role: root, tags: ["root"] }
@@ -26,6 +25,11 @@
             state=directory
             mode=0755
       tags: app-get
+    - name: give dawn ownership of the app directory
+      file: path={{ path_app }}
+            owner={{ user_main }}
+            group={{ group_main }}
+            recurse=yes
 
 - hosts: all
   remote_user: "{{ lookup('env', 'USER') }}"
