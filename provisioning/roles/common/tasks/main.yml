@@ -16,7 +16,9 @@
 
 - include: ruby.yml
 - include: docker.yml
-- include: hipache.yml
+
+- name: spin up hipache
+  shell: docker run -d -p 80:80 -p 6379:6379 --name hipache dawn/hipache
 
 - name: spin up postgres
   command: docker run -d -p 5432:5432 -e POSTGRESQL_USER=dawn -e POSTGRESQL_PASS=dawn --name postgres orchardup/postgresql
