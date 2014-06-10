@@ -13,7 +13,7 @@ class Gear < ActiveRecord::Base
     gear.number = app.gears.where(proctype: proctype).count + 1
     gear.port = 5000 # temp?
 
-    spawn
+    gear.spawn
 
     # update Hipache with the new gear IP/ports (only add web gears)
     return unless gear.proctype == "web"
@@ -33,8 +33,8 @@ class Gear < ActiveRecord::Base
       'Env'   => app.env.map { |k,v| "#{k}=#{v}" }.concat(["PORT=#{port}"])
     ).start
 
-    gear.container_id = container.id
-    gear.ip = container.json["NetworkSettings"]["IPAddress"]
+    self.container_id = container.id
+    self.ip = container.json["NetworkSettings"]["IPAddress"]
 
     save! if new_record?
   end
