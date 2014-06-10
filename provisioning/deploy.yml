@@ -1,21 +1,28 @@
 ---
 - hosts: vagrant
-  #remote_user: root
   remote_user: vagrant
   sudo: true
   vars_files:
     - vars/main.yml
-  roles:
-    - { role: root, tags: ["root"] }
-
-- hosts: vagrant
-  #remote_user: dawn # env USER even
-  remote_user: vagrant
-  sudo: true
-  vars_files:
     - vars/main.yml
     - vars/service.yml
   roles:
+    - { role: root, tags: ["root"] }
+    - { role: common,   tags: ["common"]   }
+    - { role: erlang,   tags: ["erlang"]   }
+    - { role: logplex,  tags: ["logplex"]  }
+    - { role: gitlab,   tags: ["gitlab"]   }
+    - { role: rails,    tags: ["rails"]    }
+
+- hosts: all:!vagrant
+  remote_user: "{{ lookup('env', 'USER') }}"
+  sudo: true
+  vars_files:
+    - vars/main.yml
+    - vars/main.yml
+    - vars/service.yml
+  roles:
+    - { role: root, tags: ["root"] }
     - { role: common,   tags: ["common"]   }
     - { role: logplex,  tags: ["logplex"]  }
     - { role: gitlab,   tags: ["gitlab"]   }
