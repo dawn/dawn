@@ -1,5 +1,17 @@
+---
+test:
+  adapter: postgresql
+  host: localhost
+  encoding: unicode
+  database: dawn_test
+  template: template0
+  pool: 5
+  username: dawn
+  password:
+
 development:
   adapter: postgresql
+  host: localhost
   encoding: unicode
   database: dawn_development
   template: template0
@@ -7,10 +19,11 @@ development:
   username: dawn
   password:
 
-test:
+production:
   adapter: postgresql
+  host: localhost
   encoding: unicode
-  database: dawn_test
+  database: dawn_production
   template: template0
   pool: 5
   username: dawn
