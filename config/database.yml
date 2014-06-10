@@ -16,7 +16,6 @@ development:
   database: dawn_development
   template: template0
   pool: 5
-  host: localhost
   username: dawn
   password: dawn
 
@@ -29,8 +28,4 @@ production:
   pool: 5
   host: localhost
   username: dawn
-<<<<<<< HEAD
   password: dawn
-=======
-  password:
->>>>>>> origin/patches
