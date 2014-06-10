@@ -24,11 +24,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.customize ["modifyvm", :id, "--memory", "1024"]
   end
 
-  config.vm.provision :ansible do |ansible|
-    ansible.playbook = "provisioning/deploy.yml"
-    ansible.inventory_path = "provisioning/hosts"
-    ansible.limit = :all
-    ansible.ask_sudo_pass = true
-    #ansible.verbose = 'vvv'
-  end
+  #config.vm.provision :ansible do |ansible|
+  #  ansible.playbook = "provisioning/deploy.yml"
+  #  ansible.inventory_path = "provisioning/hosts"
+  #  ansible.limit = :all
+  #  ansible.ask_sudo_pass = true
+  #  #ansible.verbose = 'vvv'
+  #end
 end
