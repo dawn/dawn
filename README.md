@@ -1,5 +1,7 @@
 Dawn
 ====
+[![Dependency Status](https://gemnasium.com/dawn/dawn.svg)](https://gemnasium.com/dawn/dawn)
+[![Code Climate](https://codeclimate.com/github/dawn/dawn.png)](https://codeclimate.com/github/dawn/dawn)
 
 Hello, welcome to Dawn, a PaaS that leverages Ruby on Rails and Docker. It implements a Heroku-like interface,
 with an API-first approach. Initial development started in October 2013 intending to be launched as a commercial
@@ -84,7 +86,7 @@ Password: test1234
 
 The utility then stores the API token under `~/.netrc` for further use. (Note that our format is currently incompatible with `curl -n`, because we use `Authorization: Token` instead of `Authorization: Basic`. This will change in the near future.)
 
-Next up, we need to add our ssh key, in order to be authorized to push to the platform. This will automatically take your 
+Next up, we need to add our ssh key, in order to be authorized to push to the platform. This will automatically take your
 
 ```
 dawn key:add
@@ -178,10 +180,16 @@ vagrant@ubuntu-14:~$ sudo restart dawn
 ```
 
 ### API is not working after a system sleep/hybernation
-Vagrant sometimes seems to unmount the shared folder `/app` on such occasions. Run `vagrant reload`. 
+Vagrant sometimes seems to unmount the shared folder `/app` on such occasions. Run `vagrant reload`.
 
 ## Documentation
 [API documentation](http://dawn.github.io/docs/) is available. We're in the process of providing online CLI documentation and guides as well.
+
+
+## Known Problems
+- dashboard.dawn.dev doesn't work
+#7
+[Dawn Dashboard](https://github.com/dawn/dawn-dashboard)
 
 ## Have Questions?
 Hit us up on the irc on freenode #dawn
