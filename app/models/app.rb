@@ -38,17 +38,17 @@ class App < ActiveRecord::Base
     image_name = "#{user.username.downcase}/#{name}"
     git_ref = 'master'
 
+    buildstep = Docker::Container.create({
+      'Image'     => 'dawn/buildstep',
+      'Cmd'       => ['/bin/bash', '-c', 'mkdir -p /app && tar -xC /app && /build/builder'],
+      'Env'       => env.map { |k,v| "#{k}=#{v}" },
+      'OpenStdin' => true,
+      'StdinOnce' => true
+    }, Docker::Connection.new('unix:///var/run/docker.sock', {:chunk_size => 1})) # tempfix for streaming
+
     Tempfile.open(name) do |tarball| # use a tempfile to not store in memory
       pid = spawn("git archive #{git_ref}", :out => tarball, chdir: repo_path)
       Process.wait(pid)
-
-      buildstep = Docker::Container.create({
-        'Image'     => 'dawn/buildstep',
-        'Cmd'       => ['/bin/bash', '-c', 'mkdir -p /app && tar -xC /app && /build/builder'],
-        'Env'       => env.map { |k,v| "#{k}=#{v}" },
-        'OpenStdin' => true,
-        'StdinOnce' => true
-      }, Docker::Connection.new('unix:///var/run/docker.sock', {:chunk_size => 1})) # tempfix for streaming
 
       buildstep.tap(&:start).attach(stdin: tarball) do |stream, chunk|
         puts "\e[1G#{chunk}" if chunk != "\n" # \e[1G gets rid of that pesky 'remote:' text, skip empty lines
