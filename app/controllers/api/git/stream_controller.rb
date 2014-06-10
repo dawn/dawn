@@ -17,7 +17,7 @@ class Api::Git::StreamController < ActionController::Base#ApiController
     response.headers['Content-Type'] = 'text/stream'
     real_stdout, $stdout = $stdout, response.stream
 
-    app = App.find_by(git: params[:git])
+    app = App.find_by(name: params[:name])
     app.build
     $stdout.write "\e[1G\n"
     $stdout.write "\e[1G-----> Launching... " # no newline
