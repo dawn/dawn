@@ -17,8 +17,11 @@
 - include: ruby.yml
 - include: docker.yml
 
+- name: spin up redis-hipache
+  command: docker run -d -p 6379:6379 --name redis-hipache shipyard/redis
+
 - name: spin up hipache
-  shell: docker run -d -p 80:80 -p 6379:6379 --name hipache dawn/hipache
+  command: docker run -d -p 80:80 --name hipache --link redis-hipache:redis shipyard/router
 
 - name: spin up postgres
   command: docker run -d -p 5432:5432 -e POSTGRESQL_USER=dawn -e POSTGRESQL_PASS=dawn --name postgres orchardup/postgresql
