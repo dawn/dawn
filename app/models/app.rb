@@ -14,7 +14,6 @@ class App < ActiveRecord::Base
   before_validation :create_logplex_channel, unless: ->(model){ model.persisted? }
 
   before_create do
-    self.git = "#{name}.git"
     create_git_repo
   end
 
@@ -25,10 +24,22 @@ class App < ActiveRecord::Base
 
   # after_update = don't do this on create
   after_update do # rebuild and redeploy if config was changed
+    if name_changed?
+      refresh_name_change
+    end
     if env_changed?
       build
       deploy!
     end
+  end
+
+  def gitname
+    "#{name}.git"
+  end
+
+  def refresh_name_change
+    oldname, newname = *name_change
+    move_git_repo oldname, newname
   end
 
   # build image using buildpacks (buildstep)
@@ -206,15 +217,19 @@ class App < ActiveRecord::Base
   end
 
   private def repo_path
-    "#{Dir.home("git")}/repositories/#{git}"
+    "#{Dir.home("git")}/repositories/#{gitname}"
   end
 
   private def create_git_repo
-    gitlab_projects "add-project #{git}"
+    gitlab_projects "add-project #{gitname}"
+  end
+
+  private def move_git_repo(oldname, newname)
+    gitlab_projects "mv-project #{oldname} #{newname}"
   end
 
   private def delete_git_repo
-    gitlab_projects "rm-project #{git}"
+    gitlab_projects "rm-project #{gitname}"
   end
 
   belongs_to :user
