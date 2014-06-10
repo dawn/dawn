@@ -6,11 +6,12 @@ while line = STDIN.gets
   old_rev, new_rev, refname = line.split
 
   if refname == 'refs/heads/master'
-    name = Dir.pwd.split("/").last
+    name = Dir.pwd
+    name = File.basename(name, File.extname(name))
 
     http = Net::HTTP.new('localhost', 5000)
     http.read_timeout = 60*5
-    http.request_post '/api/git/hook', "git=#{name}" do |response|
+    http.request_post '/api/git/hook', "name=#{name}" do |response|
       response.read_body do |segment|
         $stdout.write segment
       end
