@@ -22,3 +22,5 @@
 /vendor/bundle
 
 .vagrant
+
+provisioning/hosts
