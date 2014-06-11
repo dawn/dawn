@@ -60,7 +60,6 @@ Dawn::Application.routes.draw do
     end
   end
 
-  post '/api/git/hook',    to: 'api/git/stream#hook',  constraints: { ip: /127.0.0.1/ }
   get '/api/git/allowed',  to: 'api/git/git#allowed',  constraints: { ip: /127.0.0.1/ }
   get '/api/git/discover', to: 'api/git/git#discover', constraints: { ip: /127.0.0.1/ }
   # catch git pushes locally
