@@ -1,5 +1,5 @@
 class RemoveGitFromApp < ActiveRecord::Migration
   def change
-    remove_column :apps, :git
+    rename_column :apps, :git, :deprecated_git_2014_06_10
   end
 end

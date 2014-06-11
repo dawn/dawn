@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140604175104) do
+ActiveRecord::Schema.define(version: 20140609184352) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,12 +21,12 @@ ActiveRecord::Schema.define(version: 20140604175104) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
-    t.hstore   "env",            default: {}
-    t.string   "git"
-    t.hstore   "formation",      default: {"web"=>"1"}
-    t.integer  "version",        default: 0
+    t.hstore   "env",                       default: {}
+    t.string   "deprecated_git_2014_06_10"
+    t.hstore   "formation",                 default: {"web"=>"1"}
+    t.integer  "version",                   default: 0
     t.integer  "logplex_id"
-    t.hstore   "logplex_tokens", default: {}
+    t.hstore   "logplex_tokens",            default: {}
     t.integer  "user_id"
   end
 
