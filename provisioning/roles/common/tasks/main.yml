@@ -1,4 +1,6 @@
 ---
+- include: unix.yml
+
 - name: upgrade packages
   apt: upgrade=yes update_cache=yes
   tags: [skip,upgrade]
@@ -13,6 +15,9 @@
 
 - name: replace the sshd_config
   copy: src=sshd_config dest=/etc/ssh/sshd_config
+
+- name: reload sshd
+  service: name=ssh state=reloaded
 
 - include: ruby.yml
 - include: docker.yml

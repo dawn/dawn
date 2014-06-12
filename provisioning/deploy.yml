@@ -6,7 +6,6 @@
     - vars/main.yml
     - vars/service.yml
   roles:
-    - { role: root, tags: ["root"] }
     - { role: common,   tags: ["common"]   }
     - { role: logplex,  tags: ["logplex"]  }
 
