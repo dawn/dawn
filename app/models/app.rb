@@ -29,8 +29,11 @@ class App < ActiveRecord::Base
     end
     if env_changed?
       build
-      deploy!
     end
+  end
+
+  def version
+    releases.count
   end
 
   def gitname
@@ -44,8 +47,6 @@ class App < ActiveRecord::Base
 
   # build image using buildpacks (buildstep)
   def build
-    self.increment!(:version)
-
     image_name = "#{user.username.downcase}/#{name}"
     git_ref = 'master'
 
@@ -82,24 +83,7 @@ class App < ActiveRecord::Base
     end
 
     # set the release version to the counter
-    releases.create!(image: image_name, version: version)
-  end
-
-  # using the latest release, destroy old gears and
-  # generate new ones
-  def deploy!
-    gears.destroy_all # destroy old gears
-
-    # recreate hipache node
-    redis_key = "frontend:#{url}"
-    $redis.del(redis_key)
-    $redis.rpush(redis_key, name)
-
-    formation.each do |proctype, count| # generate new gears
-      count.to_i.times do
-        gear = gears.create!(proctype: proctype)
-      end
-    end
+    releases.create!(image: image_name)
   end
 
   # restarts the application (restart the gears)
