@@ -177,6 +177,11 @@ class Api::AppsController < ApiController
     render 'api/domains/index', status: 200
   end
 
+  def releases
+    @releases = @app.releases
+    render 'api/releases/index', status: 200
+  end
+
   def gears_restart
     @app.gears.each &:restart
     head 200
