@@ -18,7 +18,7 @@ Dawn::Application.routes.draw do
   #   api.dawn.io/apps -->
   #   Api::AppsController, not AppsController
   subdomain :api do
-    resources :gears do
+    resources :gears, except: [:index, :create] do
       member do
         post '/restart', to: 'gears#restart'
       end
