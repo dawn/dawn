@@ -1,4 +1,4 @@
-class Domain
+class Domain < ActiveRecord::Base
 
   validates :url, presence: true
 
