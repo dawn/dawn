@@ -22,13 +22,17 @@ class Api::AppsController < ApiController
       if @app.save
         render 'app', status: 200
       else
-        head 422
+        response = { id: "app.save.fail",
+                     message: "App (name: #{@app.name}) saving has failed" }
+        response[:errors] = @app.errors.to_h
+
+        render json: response, status: 422
       end
     end
   end
 
   def show
-    render 'app'
+    render 'app', status: 200
   end
 
   def update
@@ -52,8 +56,12 @@ class Api::AppsController < ApiController
   end
 
   def destroy
-    @app.destroy
-    head 200
+    if @app.destroy
+      response = { message: "App removed successfully" }
+      render json: response, status: 200
+    else
+      head 500
+    end
   end
 
   def formation
@@ -175,7 +183,9 @@ class Api::AppsController < ApiController
   end
 
   private def find_app
-    if app = App.where(id: params[:id]).first
+    app = App.where(id: params[:id]).first
+    app = App.where(name: params[:id]).first unless app
+    if app
       @app = app
     else
       response = { id: "app.not_exist",
@@ -186,7 +196,9 @@ class Api::AppsController < ApiController
 
   private def verify_app_owner
     unless @app.user == current_user
-      head 401
+      response = { id: "app.not_owner",
+                   message: "App (id: #{params[:id]}) does not belong to the current user" }
+      render json: response, status: 401
     end
   end
 end
