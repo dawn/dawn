@@ -26,6 +26,7 @@ Dawn::Application.routes.draw do
 
     resources :domains, except: [:index, :create]
     resources :drains,  except: [:index, :create]
+    get '/releases/:id', to: "releases#show"
 
     resources :apps do
       member do
@@ -35,6 +36,7 @@ Dawn::Application.routes.draw do
         get '/gears',    to: 'apps#gears'
         get '/domains',  to: 'apps#domains'
         get '/drains',   to: 'apps#drains'
+        get '/releases',       to: 'apps#releases'
         post '/gears/restart', to: 'apps#gears_restart'
 
         get '/scale',    to: 'apps#formation'
