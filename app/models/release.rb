@@ -17,7 +17,7 @@ class Release < ActiveRecord::Base
     app.gears.destroy_all # destroy old gears
 
     # recreate hipache node
-    redis_key = "frontend:#{url}"
+    redis_key = "frontend:#{app.url}"
     $redis.del(redis_key)
     $redis.rpush(redis_key, app.name)
 
