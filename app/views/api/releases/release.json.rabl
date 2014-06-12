@@ -1,2 +1,3 @@
 object @release
-attributes :id, :created_at, :updated_at, :version, :image, :app_id
+attributes :id, :created_at, :updated_at, :image
+child(:app) { attribute id: :app_id }
