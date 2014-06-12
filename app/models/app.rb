@@ -222,5 +222,5 @@ class App < ActiveRecord::Base
   has_many :releases, -> { order(created_at: :desc) }
   has_many :gears,    dependent: :destroy
   has_many :drains,   dependent: :delete_all # since deleting the chan deletes the drains, don't trigger callback
-
+  has_many :domains
 end
