@@ -1,20 +1,43 @@
 #!/usr/bin/env ruby
-require 'net/http'
-$stdout.sync = true
+require "bundler/setup"
+Bundler.setup
+require "docker"
+require "excon"
+require "json"
 
-while line = STDIN.gets
-  old_rev, new_rev, refname = line.split
+# build token (duh)
+BUILD_TOKEN = "E1HZojQmOoQdLu3fUHxQMqLmJnrJjTqm"
 
-  if refname == 'refs/heads/master'
-    name = Dir.pwd.split("/").last
+# connection header
+HEADERS = {
+  'Accept'                => 'application/json',
+  'Content-Type'          => 'application/json',
+  'Accept-Encoding'       => 'gzip',
+  'User-Agent'            => "dawn/githook",
+  'X-Ruby-Version'        => RUBY_VERSION,
+  'X-Ruby-Platform'       => RUBY_PLATFORM
+}
 
-    http = Net::HTTP.new('localhost', 5000)
-    http.read_timeout = 60*5
-    http.request_post '/api/git/hook', "git=#{name}" do |response|
-      response.read_body do |segment|
-        $stdout.write segment
-      end
-    end
+# some variables which need setting
+username = "" # TODO
+reponame = "" # TODO
 
-  end
-end
+# reponame validation regex
+regex = /(?<username>[a-z][a-z\d-]+)\/(?<repo>[a-z][a-z\d-]+)\.git/
+
+# fetch api_key
+connection = Excon.new "http://localhost", headers: HEADERS
+api_key = JSON.load(connection.request(
+  method: :get,
+  expects: 200,
+  path: "/api/git/api_key",
+  query: {
+    username: username,
+    build_token: BUILD_TOKEN
+  }
+).body)["user"]["api_key"]
+
+# validate reponame
+abort "reponame is invalid" unless repoanme =~ regex
+
+# do other stuff

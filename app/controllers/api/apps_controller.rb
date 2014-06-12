@@ -142,6 +142,17 @@ class Api::AppsController < ApiController
     end
   end
 
+  def create_release
+    image_name = "#{@app.user.username.downcase}/#{@app.name}"
+    @release = @app.releases.create(app: @app, image: image_name)
+    if @release.save
+      render 'releases/release', status: 200
+    else
+      # :TODO: handle save error
+      head 422
+    end
+  end
+
   # fetch scoped subresources
   def gears
     @gears = @app.gears
