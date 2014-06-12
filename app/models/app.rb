@@ -1,4 +1,4 @@
-require 'tempfile'
+require "tempfile"
 
 class App < ActiveRecord::Base
 
@@ -92,6 +92,7 @@ class App < ActiveRecord::Base
   end
 
   def proctypes
+    return {} if releases.empty?
     Dir.chdir repo_path do
       default_procfile_name = '/app/tmp/heroku-buildpack-release-step.yml'
 
