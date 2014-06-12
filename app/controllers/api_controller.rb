@@ -1,15 +1,13 @@
 class ApiController < ActionController::Metal
   include AbstractController::Rendering
-  include ActionController::Rendering   # enables rendering
-  include ActionController::Head        # for header only responses
-  include AbstractController::Callbacks # callbacks for authentication logic (before_action, etc..)
-  #include ActionController::Helpers    # helpers
-  include ActionView::Layouts           # for views (render method)
-
-  include ActionController::ForceSSL    # secure API by forcing SSL in production
-
+  include ActionView::Layouts              # for views (render method)
+  include ActionController::Rendering      # enables rendering
+  include ActionController::Renderers::All # Support for render :json and friends
+  include ActionController::Head           # for header only responses
+  include ActionController::ForceSSL       # secure API by forcing SSL in production
   # Authentication: Token
   include ActionController::HttpAuthentication::Token::ControllerMethods
+  include AbstractController::Callbacks    # callbacks for authentication logic (before_action, etc..)
 
   before_action :authenticate_user_from_api_key!
   before_action :set_default_response_format # force json
