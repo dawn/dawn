@@ -48,11 +48,8 @@ class Api::AppsController < ApiController
   end
 
   def update_env
-    if @app.update(env: params[:env])
-      render 'env', status: 200
-    else
-      head 422
-    end
+    @app.release!(params[:env])
+    render 'env', status: 200
   end
 
   def destroy
@@ -151,8 +148,7 @@ class Api::AppsController < ApiController
   end
 
   def create_release
-    image_name = "#{@app.user.username.downcase}/#{@app.name}"
-    @release = @app.releases.create(app: @app, image: image_name)
+    @release = @app.release!
     if @release.save
       render 'releases/release', status: 200
     else

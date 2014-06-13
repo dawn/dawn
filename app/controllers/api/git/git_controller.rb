@@ -4,12 +4,11 @@ class Api::Git::GitController < ActionController::Metal
   include ActionController::Rendering   # enables rendering
 
   def allowed
-    key = Key.where(id: params[:key_id]).first
-    return head 404 unless key
-    return head 403 unless key.user.apps.where(name: params[:project]).exists?
-    action  = params[:action]
-    ref     = params[:ref]
-    render text: 'true', status: 200
+    if key = Key.where(key: params[:key]).first
+      head 200
+    else
+      head 404
+    end
   end
 
   def discover
@@ -24,12 +23,12 @@ class Api::Git::GitController < ActionController::Metal
       if params[:build_token] == ENV["DAWN_BUILD_TOKEN"]
         render json: { user: { api_key: user.api_key } }, status: 200
       else
-        response = { id: "build_token.mismatch"
+        response = { id: "build_token.mismatch",
                      message: "provided build_token was invalid" }
         render json: response, status: 400
       end
     else
-      response = { id: "user.not_exist"
+      response = { id: "user.not_exist",
                    message: "User (username: #{params[:username]}) does not exist" }
       render json: response, status: 404
     end

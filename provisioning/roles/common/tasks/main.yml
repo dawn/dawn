@@ -1,18 +1,25 @@
 ---
-- name: upgrade packages
-  apt: upgrade=yes update_cache=yes
-  tags: [skip,upgrade]
+- name: create dawn user
+  tags: user
+  user: name={{ user_main }}
+        shell=/bin/bash
+        state=present
+        uid=453
+        groups="docker"
+
+- name: create /var/log/dawn for Upstart
+  sudo: yes
+  file: path=/var/log/dawn
+        owner={{ user_main }}
+        state=directory
 
 - name: install userspace packages
-  apt: pkg={{ item }} state=present
+  apt: update_cache=yes pkg={{ item }} state=present
   tags: [packages]
   with_items:
     - curl
     - git
     - python-pycurl # needed for apt_repo
-
-- name: replace the sshd_config
-  copy: src=sshd_config dest=/etc/ssh/sshd_config
 
 - include: ruby.yml
 - include: docker.yml
@@ -26,3 +33,8 @@
 - name: spin up postgres
   command: docker run -d -p 5432:5432 -e POSTGRESQL_USER=dawn -e POSTGRESQL_PASS=dawn --name postgres orchardup/postgresql
 
+- name: spin up redis-logplex
+  command: docker run -d -p 6733:6379 --name redis-logplex shipyard/redis
+
+- name: spin up logplex
+  command: docker run -d -p 8001:8001 -p 8601:8601 --name logplex -h logplex --link redis-logplex:redis dawn/logplex
