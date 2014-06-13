@@ -1,30 +1,15 @@
-require 'sshkey'
-
 class Api::Account::KeysController < ApiController
   before_action :find_key, only: [:show, :destroy]
 
   def create
-    key = params[:key]
-    if SSHKey.valid_ssh_public_key?(key)
-      fingerprint = SSHKey.fingerprint(key)
-      if !Key.where(fingerprint: fingerprint).exists?
-        @key = current_user.keys.build(key: key, fingerprint: fingerprint)
-        if @key.save
-          render 'key', status: 200
-        else
-          response = { id: "key.save.fail",
-                       message: "Key has failed to save",
-                       error: @key.errors.to_h }
-          render json: response, status: 422
-        end
-      else
-        response = { id: "key.exists",
-                     message: "Key already exists" }
-        render json: response, status: 409
-      end
+    key = params.require(:key)
+    @key = current_user.keys.create(key: key)
+    if @key.save
+      render 'key', status: 200
     else
-      response = { id: "key.invalid",
-                   message: "Key is invalid" }
+      response = { id: "key.save.fail",
+                   message: "saving the key has failed",
+                   error: @key.errors.to_h }
       render json: response, status: 422
     end
   end
@@ -40,9 +25,11 @@ class Api::Account::KeysController < ApiController
 
   def destroy
     if @key.destroy
-      head 200
+      render json: { message: "key removed successfully" }, status: 200
     else
-      head 500
+      response = { id: "key.destroy.fail",
+                   message: "key could not be removed for some unknown reason" }
+      render json: response, status: 500
     end
   end
 
@@ -50,7 +37,9 @@ class Api::Account::KeysController < ApiController
     if key = current_user.keys.where(id: params[:id]).first
       @key = key
     else
-      head 404
+      response = { id: "key.not_exist",
+                   message: "Key (id: #{params[:id]}) does not exist" }
+      render json: response, status: 404
     end
   end
 end
