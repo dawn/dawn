@@ -10,8 +10,12 @@ class Api::DrainsController < ApiController
   end
 
   def destroy
-    @drain.destroy
-    head 200
+    if @drain.destroy
+      response = { message: "drain has been destroyed" }
+      render json: response, status: 200
+    else
+      head 500
+    end
   end
 
   private def find_drain
