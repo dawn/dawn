@@ -1,0 +1,11 @@
+#!/bin/bash
+# authorize
+#   Dawn's magic dust for the git server
+usn=$1
+key=$2
+if ! $(curl "dawn.dev/api/git/allowed?key=$key" --fail) ; then
+  set -eo pipefail
+  false
+else
+  true
+fi
