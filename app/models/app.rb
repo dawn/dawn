@@ -66,10 +66,15 @@ class App < ActiveRecord::Base
     release!
   end
 
-  def release!
+  def env
+    release = releases.last
+    release ? release.env : {}
+  end
+
+  def release!(penv=env)
     image_name = "#{user.username.downcase}/#{name}"
     # set the release version to the counter
-    releases.create!(image: image_name)
+    releases.create!(image: image_name, env: penv)
   end
 
   # restarts the application (restart the gears)
