@@ -50,7 +50,7 @@ class Api::AppsController < ApiController
 
   def destroy
     if @app.destroy
-      response = { message: "App removed successfully" }
+      response = { message: "app has been destroyed" }
       render json: response, status: 200
     else
       head 500
@@ -120,8 +120,10 @@ class Api::AppsController < ApiController
       if @domain.save
         render 'drains/drain', status: 200
       else
-        # :TODO: handle save error
-        head 422
+        response = { id: "drain.save.fail",
+                     message: "saving drain failed",
+                     errors: @drain.errors.to_h }
+        render json: response, status: 422
       end
     else
       head 409
@@ -135,8 +137,10 @@ class Api::AppsController < ApiController
       if @domain.save
         render 'domains/domain', status: 200
       else
-        # :TODO: handle save error
-        head 422
+        response = { id: "domain.save.fail",
+                     message: "saving domain failed",
+                     errors: @domain.errors.to_h }
+        render json: response, status: 422
       end
     else
       response = { id: 'domain.exists',
@@ -150,8 +154,10 @@ class Api::AppsController < ApiController
     if @release.save
       render 'releases/release', status: 200
     else
-      # :TODO: handle save error
-      head 422
+      response = { id: "drain.save.fail",
+                   message: "saving drain failed",
+                   errors: @drain.errors.to_h }
+      render json: response, status: 422
     end
   end
 
