@@ -11,13 +11,6 @@ class Api::Git::GitController < ActionController::Metal
     end
   end
 
-  def discover
-    key = Key.where(id: params[:key_id]).first
-    return head 404 unless key
-    user = key.user
-    render text: {name: user.username}.to_json, status: 200
-  end
-
   def api_key
     if user = User.where(username: params[:username]).first
       if params[:build_token] == ENV["DAWN_BUILD_TOKEN"]
