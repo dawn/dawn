@@ -25,6 +25,9 @@ reponame = "" # TODO
 # reponame validation regex
 regex = /(?<username>[a-z][a-z\d-]+)\/(?<repo>[a-z][a-z\d-]+)\.git/
 
+# validate reponame
+abort "reponame is invalid" unless repoanme =~ regex
+
 # fetch api_key
 connection = Excon.new "http://localhost", headers: HEADERS
 api_key = JSON.load(connection.request(
@@ -37,7 +40,5 @@ api_key = JSON.load(connection.request(
   }
 ).body)["user"]["api_key"]
 
-# validate reponame
-abort "reponame is invalid" unless repoanme =~ regex
 
 # do other stuff
