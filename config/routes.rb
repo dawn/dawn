@@ -65,7 +65,6 @@ Dawn::Application.routes.draw do
 
   get '/api/git/api_key',  to: 'api/git/git#api_key'
   get '/api/git/allowed',  to: 'api/git/git#allowed'
-  #get '/api/git/discover', to: 'api/git/git#discover'
   # catch git pushes locally
 
 end
