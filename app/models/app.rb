@@ -154,5 +154,5 @@ class App < ActiveRecord::Base
   has_many :gears,    dependent: :destroy
   # since deleting the chan deletes the drains, don't trigger callback
   has_many :drains,   dependent: :delete_all
-  has_many :domains
+  has_many :domains,  dependent: :destroy
 end
