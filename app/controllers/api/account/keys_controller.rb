@@ -4,16 +4,28 @@ class Api::Account::KeysController < ApiController
   before_action :find_key, only: [:show, :destroy]
 
   def create
-    fingerprint = SSHKey.fingerprint(params[:key])
-    if !Key.where(fingerprint: fingerprint).exists?
-      @key = current_user.keys.build(key: params[:key], fingerprint: fingerprint)
-      if @key.save
-        render 'key', status: 200
+    key = params[:key]
+    if SSHKey.valid_ssh_public_key?(key)
+      fingerprint = SSHKey.fingerprint(key)
+      if !Key.where(fingerprint: fingerprint).exists?
+        @key = current_user.keys.build(key: key, fingerprint: fingerprint)
+        if @key.save
+          render 'key', status: 200
+        else
+          response = { id: "key.save.fail",
+                       message: "Key has failed to save",
+                       error: @key.errors.to_h }
+          render json: response, status: 422
+        end
       else
-        head 422
+        response = { id: "key.exists",
+                     message: "Key already exists" }
+        render json: response, status: 409
       end
     else
-      head 409
+      response = { id: "key.invalid",
+                   message: "Key is invalid" }
+      render json: response, status: 422
     end
   end
 
