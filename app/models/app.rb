@@ -1,7 +1,6 @@
 require 'tempfile'
 
 class App < ActiveRecord::Base
-
   validates :name, uniqueness: true,
                    presence: true,
                    format: { with: /\A[a-z][a-z\d-]+\z/ }, # a-z + 0-9 + -, must start with a-z
@@ -13,36 +12,18 @@ class App < ActiveRecord::Base
   before_validation :ensure_name,            unless: ->(model){ model.persisted? }
   before_validation :create_logplex_channel, unless: ->(model){ model.persisted? }
 
-  before_create do
-    create_git_repo
-  end
-
   before_destroy do
-    delete_git_repo
     delete_logplex_channel
   end
 
   # after_update = don't do this on create
   after_update do # rebuild and redeploy if config was changed
-    if name_changed?
-      refresh_name_change
-    end
-    if env_changed?
-      build
-    end
+    refresh_name_change if name_changed?
+    release! if env_changed?
   end
 
   def version
     releases.count
-  end
-
-  def gitname
-    "#{name}.git"
-  end
-
-  def refresh_name_change
-    oldname, newname = *name_change
-    move_git_repo oldname, newname
   end
 
   # build image using buildpacks (buildstep)
@@ -82,6 +63,11 @@ class App < ActiveRecord::Base
     rescue Docker::Error::NotFoundError
     end
 
+    release!
+  end
+
+  def release!
+    image_name = "#{user.username.downcase}/#{name}"
     # set the release version to the counter
     releases.create!(image: image_name)
   end
@@ -194,32 +180,9 @@ class App < ActiveRecord::Base
     Logplex.delete(path: "/v2/channels/#{logplex_id}")
   end
 
-  private def gitlab_projects(arg)
-    result = `/opt/gitlab-shell/bin/gitlab-projects #{arg} 2>&1`
-    Rails.logger.tagged("GITLAB::APP") { logger.info(result) } unless result.empty?
-    $?.success?
-  end
-
-  private def repo_path
-    "#{Dir.home("git")}/repositories/#{gitname}"
-  end
-
-  private def create_git_repo
-    gitlab_projects "add-project #{gitname}"
-  end
-
-  private def move_git_repo(oldname, newname)
-    gitlab_projects "mv-project #{oldname} #{newname}"
-  end
-
-  private def delete_git_repo
-    gitlab_projects "rm-project #{gitname}"
-  end
-
   belongs_to :user
 
   has_many :releases, -> { order(created_at: :desc) }
   has_many :gears,    dependent: :destroy
   has_many :drains,   dependent: :delete_all # since deleting the chan deletes the drains, don't trigger callback
-
 end
