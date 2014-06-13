@@ -117,8 +117,8 @@ class Api::AppsController < ApiController
     url = params.require(:drain).require(:url)
     if !@app.drains.where(url: url).exists?
       @drain = @app.drains.create(app: @app, url: url)
-      if @domain.save
         render 'drains/drain', status: 200
+      if @drain.save
       else
         response = { id: "drain.save.fail",
                      message: "saving drain failed",
@@ -131,7 +131,7 @@ class Api::AppsController < ApiController
   end
 
   def create_domain
-    url = params.require(:drain).require(:url)
+    url = params.require(:domain).require(:url)
     if !@app.domains.where(url: url).exists?
       @domain = @app.domains.create(app: @app, url: url)
       if @domain.save
