@@ -1,11 +1,5 @@
 ---
-ruby_version: 2.1.2
-ruby: ruby-{{ ruby_version }}
-gem_bin_path: ~/.rvm/gems/{{ ruby }}/bin
-group_main: dawnusers
-user_git: git
+ruby: ruby-2.1.2
 user_main: dawn
-path_home_git: /home/{{ user_git }}
-path_home_main: /home/{{ user_main }}
 path_app: /app
 project_repo: https://github.com/dawn/dawn

@@ -4,7 +4,6 @@
   sudo: true
   vars_files:
     - vars/main.yml
-    - vars/service.yml
   roles:
     - { role: common,   tags: ["common"]   }
 
@@ -26,7 +25,6 @@
     - name: give dawn ownership of the app directory
       file: path={{ path_app }}
             owner={{ user_main }}
-            group={{ group_main }}
             recurse=yes
 
 - hosts: all
@@ -34,6 +32,5 @@
   sudo: true
   vars_files:
     - vars/main.yml
-    - vars/service.yml
   roles:
     - { role: rails,    tags: ["rails"]    }
