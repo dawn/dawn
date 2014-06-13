@@ -1,5 +1,3 @@
-require 'tempfile'
-
 class App < ActiveRecord::Base
   validates :name, uniqueness: true,
                    presence: true,
@@ -19,46 +17,6 @@ class App < ActiveRecord::Base
     releases.count
   end
 
-  # build image using buildpacks (buildstep)
-  def build
-    image_name = "#{user.username.downcase}/#{name}"
-    git_ref = 'master'
-
-    buildstep = Docker::Container.create({
-      'Image'     => 'dawn/buildstep',
-      'Cmd'       => ['/bin/bash', '-c', 'mkdir -p /app && tar -xC /app && /build/builder'],
-      'Env'       => env.map { |k,v| "#{k}=#{v}" },
-      'OpenStdin' => true,
-      'StdinOnce' => true
-    }, Docker::Connection.new('unix:///var/run/docker.sock', {:chunk_size => 1})) # tempfix for streaming
-
-    Tempfile.open(name) do |tarball| # use a tempfile to not store in memory
-      pid = spawn("git archive #{git_ref}", :out => tarball, chdir: repo_path)
-      Process.wait(pid)
-
-      buildstep.tap(&:start).attach(stdin: tarball) do |stream, chunk|
-        puts "\e[1G#{chunk}" if chunk != "\n" # \e[1G gets rid of that pesky 'remote:' text, skip empty lines
-      end
-
-      if buildstep.wait['StatusCode'] == 0
-        buildstep.commit(repo: image_name)
-      else
-        raise "Buildstep returned a non-zero exit code."
-      end
-    end
-
-    # .. tag the current image commit with version (user/image:v3, etc., the ':v3' part)
-    # `docker tag #{self.image} `
-
-    # clean up
-    begin
-      buildstep.kill.delete force: true
-    rescue Docker::Error::NotFoundError
-    end
-
-    release!
-  end
-
   def env
     release = releases.last
     release ? release.env : {}
@@ -76,6 +34,8 @@ class App < ActiveRecord::Base
   end
 
   def proctypes
+    return {}
+    repo_path # TODO: fix this, it no longer exists
     Dir.chdir repo_path do
       default_procfile_name = '/app/tmp/heroku-buildpack-release-step.yml'
 
