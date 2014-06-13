@@ -15,7 +15,9 @@ class Api::DomainsController < ApiController
   end
 
   private def find_domain
-    if domain = Domain.where(id: params[:id]).first
+    domain = Domain.where(id: params[:id]).first
+    domain = Domain.where(url: params[:id]).first unless domain
+    if domain
       @domain = domain
     else
       response = { id: "domain.not_exist",
