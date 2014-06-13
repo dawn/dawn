@@ -18,10 +18,10 @@ class Key < ActiveRecord::Base
   validates :key, presence: true
   validates :fingerprint, uniqueness: true, presence: true
 
-  belongs_to :user
-
   def generate_fingerprint
     self.fingerprint = SSHKey.fingerprint(key)
   rescue SSHKey::PublicKeyError
   end
+
+  belongs_to :user
 end
