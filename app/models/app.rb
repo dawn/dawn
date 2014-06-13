@@ -12,15 +12,8 @@ class App < ActiveRecord::Base
   before_validation :ensure_name,            unless: ->(model){ model.persisted? }
   before_validation :create_logplex_channel, unless: ->(model){ model.persisted? }
 
-  before_destroy do
-    delete_logplex_channel
-  end
-
-  # after_update = don't do this on create
-  after_update do # rebuild and redeploy if config was changed
-    refresh_name_change if name_changed?
-    release! if env_changed?
-  end
+  before_destroy :delete_logplex_channel
+  after_update :release!, if: ->(model){ model.env_changed? }
 
   def version
     releases.count
