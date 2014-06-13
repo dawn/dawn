@@ -1,12 +1,15 @@
 FROM ubuntu:14.04
 MAINTAINER speed "blaz@roave.com"
 
+RUN apt-get -y update && apt-get -y install software-properties-common
 RUN sudo add-apt-repository ppa:brightbox/ruby-ng
-RUN apt-get -y update &&  apt-get -y install git ruby2.1 wget && apt-get clean
-RUN wget https://storage.googleapis.com/golang/go1.2.2.linux-amd64.tar.gz -O - | tar -C /usr/local -xz
+RUN apt-get -y update && apt-get -y install git ruby2.1-dev build-essential wget mercurial && apt-get clean
+RUN wget https://storage.googleapis.com/golang/go1.2.2.linux-amd64.tar.gz -O - -q | tar -C /usr/local -xz
 ENV PATH $PATH:/usr/local/go/bin
-ENV GOROOT $HOME/go
-ENV PATH $PATH:$GOROOT/bin
+RUN mkdir -p $HOME/go
+ENV GOPATH $HOME/go
+ENV GOROOT /usr/local/go
+ENV PATH $PATH:$GOROOT/bin:$GOPATH/bin
 RUN go get github.com/tools/godep
 
 RUN git clone https://github.com/flynn/gitreceived.git /opt/gitreceived
