@@ -13,6 +13,11 @@ class App < ActiveRecord::Base
   before_destroy :delete_logplex_channel
   after_update :release!, if: ->(model){ model.env_changed? }
 
+  def env_changed?
+    release = releases.last
+    release ? release.env_changed? : true
+  end
+
   def version
     releases.count
   end
