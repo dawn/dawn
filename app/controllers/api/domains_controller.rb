@@ -10,8 +10,12 @@ class Api::DomainsController < ApiController
   end
 
   def destroy
-    @domain.destroy
-    head 200
+    if @domain.destroy
+      response = { message: "domain has been destroyed" }
+      render json: response, status: 200
+    else
+      head 500
+    end
   end
 
   private def find_domain
