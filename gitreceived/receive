@@ -1,6 +1,4 @@
 #!/usr/bin/env ruby
-require "bundler/setup"
-Bundler.setup
 require "docker"
 require "excon"
 require "json"
