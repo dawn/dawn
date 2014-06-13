@@ -7,7 +7,6 @@
     - vars/service.yml
   roles:
     - { role: common,   tags: ["common"]   }
-    - { role: logplex,  tags: ["logplex"]  }
 
 - hosts: all:!vagrant
   remote_user: "{{ lookup('env', 'USER') }}"
@@ -37,5 +36,4 @@
     - vars/main.yml
     - vars/service.yml
   roles:
-    - { role: gitlab,   tags: ["gitlab"]   }
     - { role: rails,    tags: ["rails"]    }
