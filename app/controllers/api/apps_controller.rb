@@ -9,7 +9,7 @@ class Api::AppsController < ApiController
   end
 
   def create
-    appname = params[:name]
+    appname = app_params.require(:name)
     if App.where(name: appname).first
       response = { id: "app.exists", message: "App #{appname} already exists" }
       render json: response, status: 409
@@ -32,7 +32,7 @@ class Api::AppsController < ApiController
   end
 
   def update
-    if @app.update(name: params[:name])
+    if @app.update(app_params.permit(:name))
       render 'app', status: 200
     else
       head 422
@@ -44,7 +44,7 @@ class Api::AppsController < ApiController
   end
 
   def update_env
-    @app.release!(params[:env])
+    @app.release!(app_params.require(:env))
     render 'env', status: 200
   end
 
@@ -62,7 +62,7 @@ class Api::AppsController < ApiController
   end
 
   def scale
-    @app.scale(params[:formation])
+    @app.scale(app_params.require(:formation))
     head 200
   end
 
@@ -114,8 +114,9 @@ class Api::AppsController < ApiController
   end
 
   def create_drain
-    if !@app.drains.where(url: params[:url]).exists?
-      @drain = @app.drains.create(app: @app, url: params[:url])
+    url = params.require(:drain).require(:url)
+    if !@app.drains.where(url: url).exists?
+      @drain = @app.drains.create(app: @app, url: url)
       if @domain.save
         render 'drains/drain', status: 200
       else
@@ -128,8 +129,9 @@ class Api::AppsController < ApiController
   end
 
   def create_domain
-    if !@app.domains.where(url: params[:url]).exists?
-      @domain = @app.domains.create(app: @app, url: params[:url])
+    url = params.require(:drain).require(:url)
+    if !@app.domains.where(url: url).exists?
+      @domain = @app.domains.create(app: @app, url: url)
       if @domain.save
         render 'domains/domain', status: 200
       else
@@ -178,6 +180,9 @@ class Api::AppsController < ApiController
     @app.gears.each &:restart
     render json: { message: "gears have been restarted" }, status: 200
   end
+
+  private def app_params
+    params.require(:app)
   end
 
   private def find_app
