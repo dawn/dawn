@@ -176,7 +176,8 @@ class Api::AppsController < ApiController
 
   def gears_restart
     @app.gears.each &:restart
-    head 200
+    render json: { message: "gears have been restarted" }, status: 200
+  end
   end
 
   private def find_app
