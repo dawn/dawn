@@ -24,3 +24,5 @@
 .vagrant
 
 provisioning/hosts
+
+gitreceived/*key*

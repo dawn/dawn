@@ -1,12 +1,4 @@
 ---
-- name: create dawn user
-  tags: user
-  user: name={{ user_main }}
-        shell=/bin/bash
-        state=present
-        uid=453
-        groups="docker"
-
 - name: create /var/log/dawn for Upstart
   sudo: yes
   file: path=/var/log/dawn
@@ -38,3 +30,9 @@
 
 - name: spin up logplex
   command: docker run -d -p 8001:8001 -p 8601:8601 --name logplex -h logplex --link redis-logplex:redis dawn/logplex
+
+- name: generate ssh key for gitreceived
+  command: ssh-keygen -t rsa -N "" -f git.key chdir={{ path_app }}/gitreceived creates={{ path_app }}/gitreceived/git.key
+
+- name: spin up gitreceived
+  command: docker run -d -p 2201:22 --name gitreceived -v=/var/run/docker.sock:/var/run/docker.sock -e SSH_PRIVATE_KEYS="$(cat {{ path_app }}/git.key)" dawn/gitreceived

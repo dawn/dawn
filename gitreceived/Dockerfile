@@ -21,4 +21,4 @@ ADD receive /bin/dawn-receive
 ADD authorize /bin/dawn-authorize
 EXPOSE 22
 
-cmd ["/opt/gitreceived", "/bin/dawn-authorize", "/bin/dawn-receive"]
+cmd ["/opt/gitreceived/gitreceived", "/bin/dawn-authorize", "/bin/dawn-receive"]
