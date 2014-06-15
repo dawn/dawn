@@ -32,7 +32,7 @@
   command: docker run -d -p 8001:8001 -p 8601:8601 --name logplex -h logplex --link redis-logplex:redis dawn/logplex
 
 - name: generate ssh key for gitreceived
-  command: ssh-keygen -t rsa -N "" -f git.key chdir={{ path_app }}/gitreceived creates={{ path_app }}/gitreceived/git.key
+  command: ssh-keygen -t rsa -N "" -f git.key chdir={{ app_path }}/gitreceived creates={{ app_path }}/gitreceived/git.key
 
 - name: spin up gitreceived
-  command: docker run -d -p 2201:22 --name gitreceived -v=/var/run/docker.sock:/var/run/docker.sock -e SSH_PRIVATE_KEYS="$(cat {{ path_app }}/git.key)" dawn/gitreceived
+  command: docker run -d -p 2201:22 --name gitreceived -v=/var/run/docker.sock:/var/run/docker.sock -e SSH_PRIVATE_KEYS="$(cat {{ app_path }}/git.key)" dawn/gitreceived

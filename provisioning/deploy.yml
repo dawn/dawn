@@ -14,16 +14,16 @@
             groups="docker"
 
     - name: pull source from repository
-      git: repo={{ project_repo }} dest={{ path_app }}
+      git: repo={{ project_repo }} dest={{ app_path }}
       tags: app-get
     - name: setup app directory
-      file: path={{ path_app }}
+      file: path={{ app_path }}
             owner={{ user_main }}
             state=directory
             mode=0755
       tags: app-get
     - name: give dawn ownership of the app directory
-      file: path={{ path_app }}
+      file: path={{ app_path }}
             owner={{ user_main }}
             recurse=yes
 
