@@ -38,7 +38,7 @@ end
 
 #repo_path = File.join(Dir.home("git"), "repositories", git_reponame)
 repo_path = File.join("/tmp/repos", git_reponame)
-image_name = "#{username}/#{reponame}"
+image_name = "#{username.downcase}/#{reponame}"
 git_ref = commit
 
 ##
