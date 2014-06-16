@@ -85,14 +85,12 @@ app = JSON.load(connection.request(
   path: "/apps/#{reponame}"
 ).body)["app"]
 
-env = app.env
-
 ##
 # build app
 buildstep = Docker::Container.create({
   'Image'     => 'dawn/buildstep',
   'Cmd'       => ['/bin/bash', '-c', 'mkdir -p /app && tar -xC /app && /build/builder'],
-  'Env'       => env.map { |k,v| "#{k}=#{v}" },
+  'Env'       => app["env"].map { |k,v| "#{k}=#{v}" },
   'OpenStdin' => true,
   'StdinOnce' => true
 }, Docker::Connection.new('unix:///var/run/docker.sock', {:chunk_size => 1})) # tempfix for streaming
@@ -128,5 +126,5 @@ release = JSON.load(connection.request(
   body: {}.to_json
 ).body)
 
-puts "done, v#{release.version}\n"
-puts "\e[1G       http://#{app.url} deployed to Dawn"
+puts "done, v#{release["version"]}\n"
+puts "\e[1G       http://#{app["url"]} deployed to Dawn"
