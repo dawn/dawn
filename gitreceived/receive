@@ -60,7 +60,10 @@ end
 
 api_key = JSON.load(result.body)["user"]["api_key"]
 
-headers = HEADERS.merge('Authorization' => "Token token=\"#{api_key}\"")
+headers = HEADERS.merge(
+  'Authorization' => "Token token=\"#{api_key}\"",
+  'Host' => "api.dawn.dev"
+)
 connection = Excon.new API_HOST, headers: headers
 
 ##
