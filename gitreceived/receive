@@ -94,3 +94,13 @@ begin
   buildstep.kill.delete force: true
 rescue Docker::Error::NotFoundError
 end
+
+connection.request(
+  method: :post,
+  expects: 200,
+  path: "/apps/#{reponame}/releases",
+  query: {
+    username: username,
+    api_key: api_key
+  }
+)
