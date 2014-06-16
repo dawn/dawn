@@ -5,6 +5,11 @@
   vars_files:
     - vars/main.yml
   tasks:
+    - name: create docker group
+      tags: group
+      group: name=docker
+             state=present
+
     - name: create dawn user
       tags: user
       user: name={{ user_main }}
@@ -13,8 +18,16 @@
             uid=453
             groups="docker"
 
+    - name: install userspace packages
+      apt: update_cache=yes pkg={{ item }} state=present
+      tags: [packages]
+      with_items:
+        - curl
+        - git
+        - python-pycurl # needed for apt_repo
+
     - name: pull source from repository
-      git: repo={{ project_repo }} dest={{ app_path }}
+      git: repo={{ project_repo }} dest={{ app_path }} version=dockerify
       tags: app-get
     - name: setup app directory
       file: path={{ app_path }}

@@ -5,4 +5,4 @@ usn=$1
 key=$2
 
 set -eo pipefail
-curl "http://localhost/api/git/allowed?key=$key" --fail
+curl "http://172.17.42.1:5000/api/git/allowed?key=$key" --fail

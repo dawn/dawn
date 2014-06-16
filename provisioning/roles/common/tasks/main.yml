@@ -5,16 +5,11 @@
         owner={{ user_main }}
         state=directory
 
-- name: install userspace packages
-  apt: update_cache=yes pkg={{ item }} state=present
-  tags: [packages]
-  with_items:
-    - curl
-    - git
-    - python-pycurl # needed for apt_repo
-
 - include: ruby.yml
 - include: docker.yml
+
+- name: destroy old instances
+  shell: docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
 
 - name: spin up redis-hipache
   command: docker run -d -p 6379:6379 --name redis-hipache shipyard/redis
@@ -35,4 +30,4 @@
   command: ssh-keygen -t rsa -N "" -f git.key chdir={{ app_path }}/gitreceived creates={{ app_path }}/gitreceived/git.key
 
 - name: spin up gitreceived
-  command: docker run -d -p 2201:22 --name gitreceived -v=/var/run/docker.sock:/var/run/docker.sock -e SSH_PRIVATE_KEYS="$(cat {{ app_path }}/git.key)" dawn/gitreceived
+  shell: docker run -d -p 2201:2201 --name gitreceived -v=/var/run/docker.sock:/var/run/docker.sock -e SSH_PRIVATE_KEYS="$(cat {{ app_path }}/git.key)" dawn/gitreceive
