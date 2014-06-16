@@ -79,11 +79,13 @@ connection = Excon.new API_HOST, headers: headers
 
 ##
 # fetch app env
-env = JSON.load(connection.request(
+app = JSON.load(connection.request(
   method: :get,
   expects: 200,
-  path: "/apps/#{reponame}/env"
-).body)["env"]
+  path: "/apps/#{reponame}"
+).body)["app"]
+
+env = app.env
 
 ##
 # build app
