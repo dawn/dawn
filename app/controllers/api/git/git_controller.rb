@@ -3,9 +3,17 @@ class Api::Git::GitController < ActionController::Metal
   include AbstractController::Rendering
   include ActionController::Rendering   # enables rendering
 
+  helper GitHelper
+
   def allowed
-    if key = Key.where(key: params[:key]).first
-      head 200
+    key = params[:key].strip
+    if SSHKey.valid_ssh_public_key?(key)
+      key = strip_sshkey(key)
+      if Key.where(key: key).first
+        head 200
+      else
+        head 403 # forbidden? maybe, sure, why the hell not
+      end
     else
       head 404
     end

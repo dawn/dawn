@@ -1,14 +1,22 @@
 require 'sshkey'
 
 class Api::Account::KeysController < ApiController
+  helper GitHelper
+
   before_action :find_key, only: [:show, :destroy]
 
   def create
-    fingerprint = SSHKey.fingerprint(params[:key])
-    if !Key.where(fingerprint: fingerprint).exists?
-      @key = current_user.keys.build(key: params[:key], fingerprint: fingerprint)
-      if @key.save
-        render 'key', status: 200
+    key = params[:key].strip
+    if SSHKey.valid_ssh_public_key?(key)
+      key = strip_sshkey(key)
+      fingerprint = SSHKey.fingerprint(key)
+      if !Key.where(fingerprint: fingerprint).exists?
+        @key = current_user.keys.build(key: key, fingerprint: fingerprint)
+        if @key.save
+          render 'key', status: 200
+        else
+          head 422
+        end
       else
         head 422
       end
