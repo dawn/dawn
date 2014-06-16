@@ -1,7 +1,8 @@
 class Api::Git::GitController < ActionController::Metal
-  include ActionController::Head        # for header only responses
   include AbstractController::Rendering
   include ActionController::Rendering   # enables rendering
+  include ActionController::Renderers::All # enables render json and friends
+  include ActionController::Head        # for header only responses
 
   include GitHelper
 
