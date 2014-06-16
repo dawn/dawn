@@ -72,7 +72,7 @@ env = JSON.load(connection.request(
   method: :get,
   expects: 200,
   path: "/apps/#{reponame}/env"
-).body)["app"]["env"]
+).body)["env"]
 
 ##
 # build app
