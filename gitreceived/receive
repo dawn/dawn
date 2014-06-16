@@ -4,6 +4,17 @@ require "docker"
 require "excon"
 require "json"
 
+$stdout.sync = true # flush input immediately
+
+# patch Excon, to keep it shtum about hijack_block
+module Excon
+  class << self
+    def display_warning(warning)
+      # noop
+    end
+  end
+end
+
 # build token (duh)
 BUILD_TOKEN = "E1HZojQmOoQdLu3fUHxQMqLmJnrJjTqm"
 
