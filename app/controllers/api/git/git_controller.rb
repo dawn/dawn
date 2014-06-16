@@ -8,18 +8,23 @@ class Api::Git::GitController < ActionController::Metal
 
   def allowed
     key = params[:key].strip
-    username = params[:username]
+    #username = params[:username]
     if SSHKey.valid_ssh_public_key?(key)
       key = strip_sshkey(key)
-      if user = User.where(username: username).first
-        if user.keys.where(key: key).first
-          head 200
-        else
-          head 403 # forbidden? maybe, sure, why the hell not
-        end
+      if Key.where(key: key).first
+        head 200
       else
-        head 404
+        head 403 # forbidden? maybe, sure, why the hell not
       end
+      #if user = User.where(username: username).first
+      #  if user.keys.where(key: key).first
+      #    head 200
+      #  else
+      #    head 403 # forbidden? maybe, sure, why the hell not
+      #  end
+      #else
+      #  head 404
+      #end
     else
       head 404
     end
