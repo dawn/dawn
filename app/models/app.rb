@@ -13,6 +13,11 @@ class App < ActiveRecord::Base
   before_destroy :delete_logplex_channel
   after_update :release!, if: ->(model){ model.env_changed? }
 
+  def env_changed?
+    release = releases.last
+    release ? release.env_changed? : true
+  end
+
   def version
     releases.count
   end
@@ -35,6 +40,8 @@ class App < ActiveRecord::Base
 
   def proctypes
     return {}
+    # normal operation starts here
+    return {} if releases.empty?
     repo_path # TODO: fix this, it no longer exists
     Dir.chdir repo_path do
       default_procfile_name = '/app/tmp/heroku-buildpack-release-step.yml'
@@ -76,7 +83,10 @@ class App < ActiveRecord::Base
         diff.times { gears.create!(proctype: gear_proctype) }
       elsif diff < 0
         # get rid of diff number of gears, from the highest worker number down
-        gears.where(type: gear_proctype).order(number: :desc).limit(diff.abs).destroy
+        gears.where(type: gear_proctype)
+             .order(number: :desc)
+             .limit(diff.abs)
+             .destroy
       end
     end
 
@@ -140,7 +150,9 @@ class App < ActiveRecord::Base
 
   belongs_to :user
 
-  has_many :releases, -> { order(created_at: :desc) }
+  has_many :releases, -> { order(created_at: :desc) }, dependent: :destroy
   has_many :gears,    dependent: :destroy
-  has_many :drains,   dependent: :delete_all # since deleting the chan deletes the drains, don't trigger callback
+  # since deleting the chan deletes the drains, don't trigger callback
+  has_many :drains,   dependent: :delete_all
+  has_many :domains,  dependent: :destroy
 end

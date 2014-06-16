@@ -31,5 +31,6 @@ Excon.get API_HOST,
           expects: 200,
           path: "/api/git/allowed",
           query: {
+            username: username,
             key: sshkey
           }

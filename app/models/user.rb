@@ -23,7 +23,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  has_many :apps
-  has_many :keys
-
+  has_many :apps, dependent: :destroy
+  has_many :keys, dependent: :destroy
 end

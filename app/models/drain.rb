@@ -23,5 +23,4 @@ class Drain < ActiveRecord::Base
   end
 
   belongs_to :app
-
 end

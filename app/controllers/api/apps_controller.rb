@@ -6,16 +6,12 @@ class Api::AppsController < ApiController
   before_action :verify_app_owner, except: actions
 
   def index
-    if name = params[:name]
-      @apps = current_user.apps.where(name: name)
-    else
-      @apps = current_user.apps
-    end
+    @apps = current_user.apps
     render status: 200
   end
 
   def create
-    appname = params[:name]
+    appname = app_params.require(:name)
     if App.where(name: appname).first
       response = { id: "app.exists", message: "App #{appname} already exists" }
       render json: response, status: 409
@@ -24,17 +20,21 @@ class Api::AppsController < ApiController
       if @app.save
         render 'app', status: 200
       else
-        head 422
+        response = { id: "app.save.fail",
+                     message: "App (name: #{@app.name}) saving has failed" }
+        response[:errors] = @app.errors.to_h
+
+        render json: response, status: 422
       end
     end
   end
 
   def show
-    render 'app'
+    render 'app', status: 200
   end
 
   def update
-    if @app.update(name: params[:name])
+    if @app.update(app_params.permit(:name))
       render 'app', status: 200
     else
       head 422
@@ -46,13 +46,17 @@ class Api::AppsController < ApiController
   end
 
   def update_env
-    @app.release!(params[:env])
+    @app.release!(app_params.require(:env))
     render 'env', status: 200
   end
 
   def destroy
-    @app.destroy
-    head 200
+    if @app.destroy
+      response = { message: "app has been destroyed" }
+      render json: response, status: 200
+    else
+      head 500
+    end
   end
 
   def formation
@@ -60,7 +64,7 @@ class Api::AppsController < ApiController
   end
 
   def scale
-    @app.scale(params[:formation])
+    @app.scale(app_params.require(:formation))
     head 200
   end
 
@@ -111,13 +115,16 @@ class Api::AppsController < ApiController
   end
 
   def create_drain
-    if !@app.drains.where(url: params[:url]).exists?
-      @drain = @app.drains.create(app: @app, url: params[:url])
-      if @domain.save
+    url = params.require(:drain).require(:url)
+    if !@app.drains.where(url: url).exists?
+      @drain = @app.drains.create(app: @app, url: url)
+      if @drain.save
         render 'api/drains/drain', status: 200
       else
-        # :TODO: handle save error
-        head 422
+        response = { id: "drain.save.fail",
+                     message: "saving drain failed",
+                     errors: @drain.errors.to_h }
+        render json: response, status: 422
       end
     else
       head 409
@@ -125,13 +132,16 @@ class Api::AppsController < ApiController
   end
 
   def create_domain
-    if !@app.domains.where(url: params[:url]).exists?
-      @domain = @app.domains.create(app: @app, url: params[:url])
+    url = params.require(:domain).require(:url)
+    if !@app.domains.where(url: url).exists?
+      @domain = @app.domains.create(app: @app, url: url)
       if @domain.save
         render 'api/domains/domain', status: 200
       else
-        # :TODO: handle save error
-        head 422
+        response = { id: "domain.save.fail",
+                     message: "saving domain failed",
+                     errors: @domain.errors.to_h }
+        render json: response, status: 422
       end
     else
       response = { id: 'domain.exists',
@@ -145,8 +155,10 @@ class Api::AppsController < ApiController
     if @release.save
       render 'api/releases/release', status: 200
     else
-      # :TODO: handle save error
-      head 422
+      response = { id: "drain.save.fail",
+                   message: "saving drain failed",
+                   errors: @drain.errors.to_h }
+      render json: response, status: 422
     end
   end
 
@@ -166,13 +178,24 @@ class Api::AppsController < ApiController
     render 'api/domains/index', status: 200
   end
 
+  def releases
+    @releases = @app.releases
+    render 'api/releases/index', status: 200
+  end
+
   def gears_restart
     @app.gears.each &:restart
-    head 200
+    render json: { message: "gears have been restarted" }, status: 200
+  end
+
+  private def app_params
+    params.require(:app)
   end
 
   private def find_app
-    if app = App.where(id: params[:id]).first
+    app = App.where(id: params[:id]).first
+    app = App.where(name: params[:id]).first unless app
+    if app
       @app = app
     else
       response = { id: "app.not_exist",
@@ -183,7 +206,9 @@ class Api::AppsController < ApiController
 
   private def verify_app_owner
     unless @app.user == current_user
-      head 401
+      response = { id: "app.not_owner",
+                   message: "App (id: #{params[:id]}) does not belong to the current user" }
+      render json: response, status: 401
     end
   end
 end

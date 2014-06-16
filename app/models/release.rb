@@ -29,5 +29,4 @@ class Release < ActiveRecord::Base
   end
 
   belongs_to :app
-
 end
