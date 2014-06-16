@@ -33,7 +33,7 @@ if git_reponame.match(REPONAME_REGEX)
   username = $~[:usernane]
   reponame = $~[:repo]
 else
-  abort "reponame is invalid" unless reponame =~ regex
+  abort "reponame (#{git_reponame}) is invalid"
 end
 
 #repo_path = File.join(Dir.home("git"), "repositories", git_reponame)
@@ -54,16 +54,15 @@ api_key = JSON.load(connection.request(
   }
 ).body)["user"]["api_key"]
 
+headers = HEADERS.merge('Authorization' => "Token token=\"#{api_key}\"")
+connection = Excon.new API_HOST, headers: headers
+
 ##
 # fetch app env
 env = JSON.load(connection.request(
   method: :get,
   expects: 200,
-  path: "/apps/#{reponame}/env",
-  query: {
-    username: username,
-    api_key: api_key
-  }
+  path: "/apps/#{reponame}/env"
 ).body)["app"]["env"]
 
 ##
@@ -100,8 +99,5 @@ connection.request(
   method: :post,
   expects: 200,
   path: "/apps/#{reponame}/releases",
-  query: {
-    username: username,
-    api_key: api_key
-  }
+  body: {}.to_json
 )
