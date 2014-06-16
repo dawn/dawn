@@ -20,7 +20,7 @@ HEADERS = {
   'X-Ruby-Platform'       => RUBY_PLATFORM
 }
 
-REPONAME_REGEX = /(?<username>[a-z][a-z\d-]+)\/(?<repo>[a-z][a-z\d-]+)\.git/
+REPONAME_REGEX = /(?<username>[a-z][a-z\d-]+)~(?<repo>[a-z][a-z\d-]+)/
 
 argv = ARGV.dup
 git_reponame = argv.shift
@@ -30,7 +30,7 @@ commit = argv.shift
 
 # validate reponame
 if git_reponame.match(REPONAME_REGEX)
-  username = $~[:usernane]
+  username = $~[:username]
   reponame = $~[:repo]
 else
   abort "reponame (#{git_reponame}) is invalid"
@@ -44,15 +44,21 @@ git_ref = commit
 ##
 # fetch api_key
 connection = Excon.new API_HOST, headers: HEADERS
-api_key = JSON.load(connection.request(
+result = connection.request(
   method: :get,
-  expects: 200,
   path: "/api/git/api_key",
   query: {
     username: username,
     build_token: BUILD_TOKEN
   }
-).body)["user"]["api_key"]
+)
+
+if result.status != 200
+  message = JSON.load(result.body) rescue ({})
+  abort "Fetching api_key failed with #{message}"
+end
+
+api_key = JSON.load(result.body)["user"]["api_key"]
 
 headers = HEADERS.merge('Authorization' => "Token token=\"#{api_key}\"")
 connection = Excon.new API_HOST, headers: headers
