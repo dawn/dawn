@@ -20,7 +20,7 @@ HEADERS = {
   'X-Ruby-Platform'       => RUBY_PLATFORM
 }
 
-REPONAME_REGEX = /(?<username>[a-z][a-z\d-]+)\/(?<repo>[a-z][a-z\d-]+)\.git/
+REPONAME_REGEX = /(?<username>[a-z][a-z\d-]+)\\(?<repo>[a-z][a-z\d-]+)/
 
 argv = ARGV.dup
 git_reponame = argv.shift
