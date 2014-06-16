@@ -7,6 +7,9 @@ require "json"
 # build token (duh)
 BUILD_TOKEN = "E1HZojQmOoQdLu3fUHxQMqLmJnrJjTqm"
 
+#API_HOST = "http://localhost"
+API_HOST = "http://172.17.42.1:5000"
+
 # connection header
 HEADERS = {
   'Accept'                => 'application/json',
@@ -45,7 +48,7 @@ git_ref = commit
 
 ##
 # fetch api_key
-connection = Excon.new "http://localhost", headers: HEADERS
+connection = Excon.new API_HOST, headers: HEADERS
 api_key = JSON.load(connection.request(
   method: :get,
   expects: 200,
