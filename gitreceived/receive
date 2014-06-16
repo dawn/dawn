@@ -44,15 +44,21 @@ git_ref = commit
 ##
 # fetch api_key
 connection = Excon.new API_HOST, headers: HEADERS
-api_key = JSON.load(connection.request(
+result = connection.request(
   method: :get,
-  expects: 200,
   path: "/api/git/api_key",
   query: {
     username: username,
     build_token: BUILD_TOKEN
   }
-).body)["user"]["api_key"]
+)
+
+if result.status != 200
+  message = JSON.load(result.body) rescue ({})
+  abort "Fetching api_key failed with #{message}"
+end
+
+api_key = JSON.load(result.body)["user"]["api_key"]
 
 headers = HEADERS.merge('Authorization' => "Token token=\"#{api_key}\"")
 connection = Excon.new API_HOST, headers: headers
