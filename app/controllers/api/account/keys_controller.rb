@@ -1,7 +1,7 @@
 require 'sshkey'
 
 class Api::Account::KeysController < ApiController
-  helper GitHelper
+  include GitHelper
 
   before_action :find_key, only: [:show, :destroy]
 
