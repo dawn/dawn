@@ -27,6 +27,7 @@ argv = ARGV.dup
 
 git_reponame = argv.shift
 commit = argv.shift
+
 # reponame validation regex
 
 # validate reponame
@@ -36,6 +37,11 @@ if git_reponame.match(REPONAME_REGEX)
 else
   abort "reponame is invalid" unless reponame =~ regex
 end
+
+#repo_path = File.join(Dir.home("git"), "repositories", git_reponame)
+repo_path = File.join("/tmp/repos", git_reponame)
+image_name = "#{username}/#{reponame}"
+git_ref = commit
 
 ##
 # fetch api_key
@@ -49,6 +55,7 @@ api_key = JSON.load(connection.request(
     build_token: BUILD_TOKEN
   }
 ).body)["user"]["api_key"]
+
 ##
 # fetch app env
 env = JSON.load(connection.request(
@@ -63,9 +70,6 @@ env = JSON.load(connection.request(
 
 ##
 # build app
-image_name = "#{username}/#{reponame}"
-git_ref = commit
-
 buildstep = Docker::Container.create({
   'Image'     => 'dawn/buildstep',
   'Cmd'       => ['/bin/bash', '-c', 'mkdir -p /app && tar -xC /app && /build/builder'],
@@ -74,7 +78,6 @@ buildstep = Docker::Container.create({
   'StdinOnce' => true
 }, Docker::Connection.new('unix:///var/run/docker.sock', {:chunk_size => 1})) # tempfix for streaming
 
-repo_path = File.expand_path(File.join("repositories", git_reponame), Dir.home("git"))
 Tempfile.open(reponame) do |tarball| # use a tempfile to not store in memory
   pid = spawn("git archive #{git_ref}", :out => tarball, chdir: repo_path)
   Process.wait(pid)
