@@ -58,7 +58,7 @@ class Gear < ActiveRecord::Base
   end
 
   def url
-    "http://#{gear.ip}:#{gear.port}"
+    "http://#{ip}:#{port}"
   end
 
   private def reset_started_at
