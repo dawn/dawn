@@ -100,5 +100,4 @@ class Gear < ActiveRecord::Base
   end
 
   belongs_to :app
-
 end

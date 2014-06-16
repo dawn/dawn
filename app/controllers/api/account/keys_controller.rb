@@ -1,27 +1,18 @@
-require 'sshkey'
-
 class Api::Account::KeysController < ApiController
   helper GitHelper
 
   before_action :find_key, only: [:show, :destroy]
 
   def create
-    key = params[:key].strip
-    if SSHKey.valid_ssh_public_key?(key)
-      key = strip_sshkey(key)
-      fingerprint = SSHKey.fingerprint(key)
-      if !Key.where(fingerprint: fingerprint).exists?
-        @key = current_user.keys.build(key: key, fingerprint: fingerprint)
-        if @key.save
-          render 'key', status: 200
-        else
-          head 422
-        end
-      else
-        head 422
-      end
+    key = strip_sshkey(params.require(:key))
+    @key = current_user.keys.create(key: key)
+    if @key.save
+      render 'key', status: 200
     else
-      head 409
+      response = { id: "key.save.fail",
+                   message: "saving the key has failed",
+                   error: @key.errors.to_h }
+      render json: response, status: 422
     end
   end
 
@@ -36,9 +27,11 @@ class Api::Account::KeysController < ApiController
 
   def destroy
     if @key.destroy
-      head 200
+      render json: { message: "key removed successfully" }, status: 200
     else
-      head 500
+      response = { id: "key.destroy.fail",
+                   message: "key could not be removed for some unknown reason" }
+      render json: response, status: 500
     end
   end
 
@@ -46,7 +39,9 @@ class Api::Account::KeysController < ApiController
     if key = current_user.keys.where(id: params[:id]).first
       @key = key
     else
-      head 404
+      response = { id: "key.not_exist",
+                   message: "Key (id: #{params[:id]}) does not exist" }
+      render json: response, status: 404
     end
   end
 end
