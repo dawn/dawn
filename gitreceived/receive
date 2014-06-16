@@ -30,7 +30,7 @@ commit = argv.shift
 
 # validate reponame
 if git_reponame.match(REPONAME_REGEX)
-  username = $~[:usernane]
+  username = $~[:username]
   reponame = $~[:repo]
 else
   abort "reponame (#{git_reponame}) is invalid"
