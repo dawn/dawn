@@ -1,3 +1,5 @@
+require 'shellwords'
+
 class Api::AppsController < ApiController
   actions = [:index, :create]
   before_action :find_app, except: actions
@@ -71,7 +73,6 @@ class Api::AppsController < ApiController
   end
 
   # starts a one-off container session
-  require 'shellwords'
   def run
     head 400 unless params[:command]
 
@@ -113,7 +114,7 @@ class Api::AppsController < ApiController
     if !@app.drains.where(url: params[:url]).exists?
       @drain = @app.drains.create(app: @app, url: params[:url])
       if @domain.save
-        render 'drains/drain', status: 200
+        render 'api/drains/drain', status: 200
       else
         # :TODO: handle save error
         head 422
@@ -127,7 +128,7 @@ class Api::AppsController < ApiController
     if !@app.domains.where(url: params[:url]).exists?
       @domain = @app.domains.create(app: @app, url: params[:url])
       if @domain.save
-        render 'domains/domain', status: 200
+        render 'api/domains/domain', status: 200
       else
         # :TODO: handle save error
         head 422
@@ -142,7 +143,7 @@ class Api::AppsController < ApiController
   def create_release
     @release = @app.release!
     if @release.save
-      render 'releases/release', status: 200
+      render 'api/releases/release', status: 200
     else
       # :TODO: handle save error
       head 422
