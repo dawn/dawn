@@ -15,7 +15,7 @@ HEADERS = {
   'Accept'                => 'application/json',
   'Content-Type'          => 'application/json',
   'Accept-Encoding'       => 'gzip',
-  'User-Agent'            => "dawn/githook",
+  'User-Agent'            => "dawn-gitreceived-receive",
   'X-Ruby-Version'        => RUBY_VERSION,
   'X-Ruby-Platform'       => RUBY_PLATFORM
 }
