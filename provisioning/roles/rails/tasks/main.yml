@@ -6,7 +6,7 @@
     - libpq-dev # for pg gem
 
 - name: build dawn/buildstep
-  command: docker build -t dawn/buildstep . chdir={{ app_path }}
+  command: docker build -t dawn/buildstep . chdir={{ app_path }}/buildstep
   sudo_user: "{{ user_main }}"
 
 - name: install global foreman
