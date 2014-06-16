@@ -22,12 +22,7 @@ HEADERS = {
 
 REPONAME_REGEX = /(?<username>[a-z][a-z\d-]+)\/(?<repo>[a-z][a-z\d-]+)\.git/
 
-if argv.size < 2
-  abort "USAGE: receive <REPONAME> <COMMIT>"
-end
-
 argv = ARGV.dup
-
 git_reponame = argv.shift
 commit = argv.shift
 
