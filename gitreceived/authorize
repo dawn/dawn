@@ -9,7 +9,7 @@
 #curl "http://172.17.42.1:5000/api/git/allowed?key=$key" --fail
 require "excon"
 
-API_HOST "http://localhost"
+#API_HOST "http://localhost"
 API_HOST = "http://172.17.42.1:5000"
 
 # connection header
