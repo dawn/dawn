@@ -115,9 +115,16 @@ begin
 rescue Docker::Error::NotFoundError
 end
 
-connection.request(
+
+puts "\e[1G\n"
+$stdout.write "\e[1G-----> Launching... " # no newline
+
+release = JSON.load(connection.request(
   method: :post,
   expects: 200,
   path: "/apps/#{reponame}/releases",
   body: {}.to_json
-)
+).body)
+
+puts "done, v#{release.version}\n"
+puts "\e[1G       http://#{app.url} deployed to Dawn"
