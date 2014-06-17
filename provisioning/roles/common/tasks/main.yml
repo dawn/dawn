@@ -1,11 +1,4 @@
 ---
-- name: create /var/log/dawn for Upstart
-  sudo: yes
-  file: path=/var/log/dawn
-        owner={{ user_main }}
-        state=directory
-
-- include: ruby.yml
 - include: docker.yml
 
 - name: destroy old instances
@@ -31,3 +24,21 @@
 
 - name: spin up gitreceived
   shell: docker run -d -p 2201:2201 --name gitreceived -v=/var/run/docker.sock:/var/run/docker.sock -e SSH_PRIVATE_KEYS="$(cat {{ app_path }}/git.key)" dawn/gitreceive
+
+- name: build dawn/buildstep
+  command: docker build -t dawn/buildstep . chdir={{ app_path }}/buildstep
+
+- name: build dawn/dawn
+  command: docker build -t dawn/dawn . chdir={{ app_path }}
+
+- name: setup the database
+  command: docker run --rm --link postgres dawn/dawn bin/rake db:create db:migrate db:seed
+
+- name: setup logplex
+  command: docker run --rm --link redis-hipache --link redis-logplex dawn/dawn script/logplex
+
+- name: setup hipache
+  command: docker run --rm --link redis-hipache --link redis-logplex dawn/dawn script/hipache
+
+- name: deploy API
+  command: docker run -p 5000:5000 --name api --link redis-hipache --link redis-logplex --link postgres dawn/dawn

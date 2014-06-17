@@ -5,19 +5,6 @@
   vars_files:
     - vars/main.yml
   tasks:
-    - name: create docker group
-      tags: group
-      group: name=docker
-             state=present
-
-    - name: create dawn user
-      tags: user
-      user: name={{ user_main }}
-            shell=/bin/bash
-            state=present
-            uid=453
-            groups="docker"
-
     - name: install userspace packages
       apt: update_cache=yes pkg={{ item }} state=present
       tags: [packages]
@@ -29,16 +16,6 @@
     - name: pull source from repository
       git: repo={{ project_repo }} dest={{ app_path }} version=dockerify
       tags: app-get
-    - name: setup app directory
-      file: path={{ app_path }}
-            owner={{ user_main }}
-            state=directory
-            mode=0755
-      tags: app-get
-    - name: give dawn ownership of the app directory
-      file: path={{ app_path }}
-            owner={{ user_main }}
-            recurse=yes
 
 - hosts: all
   remote_user: "{{ lookup('env', 'USER') }}"
@@ -48,4 +25,3 @@
   tasks:
   roles:
     - { role: common,   tags: ["common"]   }
-    - { role: rails,    tags: ["rails"]    }

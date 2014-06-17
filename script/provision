@@ -1,4 +1,4 @@
 #!/bin/bash
 
-ansible-playbook provisioning/newhost.yml -i provisioning/hosts -c paramiko -e 'host_key_checking=False' -k "$@"
-ansible-playbook provisioning/deploy.yml -i provisioning/hosts -c paramiko -e 'host_key_checking=False' "$@"
+ansible-playbook provisioning/newhost.yml -i provisioning/hosts -e 'host_key_checking=False' -k "$@"
+ansible-playbook provisioning/deploy.yml -i provisioning/hosts -e 'host_key_checking=False' "$@"
