@@ -18,8 +18,7 @@ end
 # build token (duh)
 BUILD_TOKEN = "E1HZojQmOoQdLu3fUHxQMqLmJnrJjTqm"
 
-#API_HOST = "http://localhost"
-API_HOST = "http://172.17.42.1:5000"
+API_HOST = "http://api:5000"
 
 # connection header
 HEADERS = {

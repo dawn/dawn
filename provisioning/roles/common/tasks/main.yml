@@ -19,12 +19,6 @@
 - name: spin up logplex
   command: docker run -d -p 8001:8001 -p 8601:8601 --name logplex -h logplex --link redis-logplex:redis dawn/logplex
 
-- name: generate ssh key for gitreceived
-  command: ssh-keygen -t rsa -N "" -f git.key chdir={{ app_path }}/gitreceived creates={{ app_path }}/gitreceived/git.key
-
-- name: spin up gitreceived
-  shell: docker run -d -p 2201:2201 --name gitreceived -v=/var/run/docker.sock:/var/run/docker.sock -e SSH_PRIVATE_KEYS="$(cat {{ app_path }}/git.key)" dawn/gitreceive
-
 - name: build dawn/buildstep
   command: docker build -t dawn/buildstep . chdir={{ app_path }}/buildstep
 
@@ -32,10 +26,17 @@
   command: docker build -t dawn/dawn . chdir={{ app_path }}
 
 - name: setup the database
-  command: docker run --rm --link postgres dawn/dawn bin/rake db:create db:migrate db:seed
+  command: docker run --rm --link postgres:postgres dawn/dawn bin/rake db:create db:migrate db:seed
 
 - name: setup logplex
-  command: docker run --rm --link redis-logplex dawn/dawn script/logplex
+  command: docker run --rm --link redis-logplex:redis-logplex dawn/dawn script/logplex
 
 - name: deploy API
-  command: docker run -p 5000:5000 --name api --link redis-hipache --link redis-logplex --link postgres --link logplex dawn/dawn
+  command: docker run -p 5000:5000 --name api --link redis-hipache:redis-hipache --link redis-logplex:redis-logplex --link postgres:postgres --link logplex dawn/dawn
+
+- name: generate ssh key for gitreceived
+  command: ssh-keygen -t rsa -N "" -f git.key chdir={{ app_path }}/gitreceived creates={{ app_path }}/gitreceived/git.key
+
+- name: spin up gitreceived
+  shell: docker run -d -p 2201:2201 --name gitreceived --link api:api -v=/var/run/docker.sock:/var/run/docker.sock -e SSH_PRIVATE_KEYS="$(cat {{ app_path }}/git.key)" dawn/gitreceive
+
