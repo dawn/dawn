@@ -25,4 +25,4 @@
 
 provisioning/hosts
 
-gitreceived/*key*
+git.key*
