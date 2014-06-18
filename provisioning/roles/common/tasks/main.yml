@@ -1,8 +1,8 @@
 ---
 - include: docker.yml
 
-- name: destroy old instances
-  shell: docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
+#- name: destroy old instances
+#  shell: docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
 
 - name: spin up redis-hipache
   command: docker run -d -p 6379:6379 --name redis-hipache shipyard/redis
@@ -20,7 +20,7 @@
   command: docker run -d -p 8001:8001 -p 8601:8601 --name logplex -h logplex --link redis-logplex:redis dawn/logplex
 
 - name: build dawn/buildstep
-  command: docker build -t dawn/buildstep . chdir={{ app_path }}/buildstep
+  command: docker build -t dawn/buildstep . chdir={{ app_path }}/services/buildstep
 
 - name: build dawn/dawn
   command: docker build -t dawn/dawn . chdir={{ app_path }}
