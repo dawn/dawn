@@ -1,4 +1,4 @@
-FROM ubuntu:12.04
+FROM ubuntu:14.04
 MAINTAINER speed "blaz@roave.com"
 
 RUN apt-get -y update
