@@ -8,7 +8,7 @@ require 'yaml'
 cfg = YAML.load_file('config/application.yml')
 
 redis_key = "frontend:#{cfg["DAWN_HOST"]}"
-redis = Redis.new
+redis = Redis.new(host: 'redis-hipache')
 redis.rpush(redis_key, "dawn")
 redis.rpush(redis_key, "http://172.17.42.1:5000")
 # subdomains

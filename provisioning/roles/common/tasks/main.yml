@@ -35,10 +35,10 @@
   command: docker run --rm --link postgres dawn/dawn bin/rake db:create db:migrate db:seed
 
 - name: setup logplex
-  command: docker run --rm --link redis-hipache --link redis-logplex dawn/dawn script/logplex
+  command: docker run --rm --link redis-logplex dawn/dawn script/logplex
 
 - name: setup hipache
-  command: docker run --rm --link redis-hipache --link redis-logplex dawn/dawn script/hipache
+  command: docker run --rm --link redis-hipache dawn/dawn script/hipache
 
 - name: deploy API
-  command: docker run -p 5000:5000 --name api --link redis-hipache --link redis-logplex --link postgres dawn/dawn
+  command: docker run -p 5000:5000 --name api --link redis-hipache --link redis-logplex --link postgres --link logplex dawn/dawn

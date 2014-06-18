@@ -14,5 +14,5 @@ credentials = {
   full_api: "1"
 }
 
-redis = Redis.new(port: 6733)
+redis = Redis.new(host: 'redis-logplex')
 redis.mapped_hmset "cred:#{credentials[:name]}", credentials
