@@ -26,10 +26,10 @@
   command: docker build -t dawn/dawn . chdir={{ app_path }}
 
 - name: setup the database
-  command: docker run --rm --link postgres:postgres dawn/dawn bin/rake db:create db:migrate db:seed
+  command: docker run --rm --link redis-hipache:redis-hipache --link redis-logplex:redis-logplex --link postgres:postgres dawn/dawn bin/rake db:create db:migrate db:seed
 
 - name: setup logplex
-  command: docker run --rm --link redis-logplex:redis-logplex dawn/dawn script/logplex
+  command: docker run --rm --link redis-hipache:redis-hipache --link redis-logplex:redis-logplex --link postgres:postgres dawn/dawn script/logplex
 
 - name: deploy API
   command: docker run -p 5000:5000 --name api --link redis-hipache:redis-hipache --link redis-logplex:redis-logplex --link postgres:postgres --link logplex dawn/dawn
