@@ -4,4 +4,4 @@ MAINTAINER speed "blaz@roave.com"
 RUN apt-get install -y libssl-dev libpq-dev
 RUN gem install foreman
 EXPOSE 5000
-CMD ["foreman start"]
+CMD ["foreman", "start"]
