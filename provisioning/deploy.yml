@@ -1,5 +1,5 @@
 ---
-- hosts: all:!vagrant
+- hosts: all
   remote_user: "{{ lookup('env', 'USER') }}"
   sudo: true
   vars_files:
@@ -13,6 +13,12 @@
         - git
         - python-pycurl # needed for apt_repo
 
+- hosts: all:!vagrant
+  remote_user: "{{ lookup('env', 'USER') }}"
+  sudo: true
+  vars_files:
+    - vars/main.yml
+  tasks:
     - name: pull source from repository
       git: repo={{ project_repo }} dest={{ app_path }} version=dockerify
       tags: app-get

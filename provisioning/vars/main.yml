@@ -1,5 +1,3 @@
 ---
-ruby: ruby-2.1.2
-user_main: dawn
 app_path: /app
 project_repo: https://github.com/dawn/dawn
