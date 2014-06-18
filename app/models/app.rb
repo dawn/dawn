@@ -16,8 +16,7 @@ class App < ActiveRecord::Base
   end
 
   def env
-    release = releases.last
-    release ? release.env : {}
+    releases.last.try(:env) || {}
   end
 
   def release!(penv=env)
