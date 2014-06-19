@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+containers=$(docker ps -a -q)
+# destroy old instances
+if [ -n "$containers" ]; then
+  echo "=====> Destroying old instances..."
+  docker stop $containers && docker rm $containers
+fi
+
+echo "=====> Starting up redis-hipache"
+docker run -d --name redis-hipache shipyard/redis
+
+echo "=====> Starting up redis-logplex"
+docker run -d --name redis-logplex shipyard/redis
+
+echo "=====> Starting up logplex"
+docker run -d -p 8001:8001 -p 8601:8601 --name logplex -h logplex --link redis-logplex:redis dawn/logplex
+
+echo "=====> Starting up postgres"
+docker run -d -e POSTGRESQL_USER=dawn -e POSTGRESQL_PASS=dawn --name postgres orchardup/postgresql
+
+echo "=====> Configuring db"
+docker run --rm --link redis-hipache:redis-hipache --link redis-logplex:redis-logplex --link postgres:postgres dawn/dawn bin/rake db:create db:migrate db:seed
+
+echo "=====> Configuring logplex"
+docker run --rm --link redis-hipache:redis-hipache --link redis-logplex:redis-logplex --link postgres:postgres dawn/dawn script/logplex
+
+echo "=====> Starting up api"
+docker run -d --name api --link redis-hipache:redis-hipache --link redis-logplex:redis-logplex --link postgres:postgres --link logplex:logplex -v=/var/run/docker.sock:/var/run/docker.sock dawn/dawn
+
+echo "=====> Starting up hipache"
+docker run -d -p 80:80 --name hipache --link redis-hipache:redis --link api:api shipyard/router
+
+if [ ! -f /app/git.key ]; then
+  echo "=====> Generating git ssh key"
+  ssh-keygen -t rsa -N "" -f /app/git.key
+fi
+
+echo "=====> Starting up gitreceive"
+docker run -d -p 2201:2201 --name gitreceive --link api:api -v=/var/run/docker.sock:/var/run/docker.sock -e SSH_PRIVATE_KEYS="$(cat /app/git.key)" dawn/gitreceive
+
+echo "=====> Done!"

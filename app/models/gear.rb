@@ -1,5 +1,4 @@
 class Gear < ActiveRecord::Base
-
   validates_uniqueness_of :container_id, :ip
   validates_uniqueness_of :number, scope: :proctype # only one number with the same proctype
 
@@ -58,7 +57,7 @@ class Gear < ActiveRecord::Base
   end
 
   def url
-    "http://#{gear.ip}:#{gear.port}"
+    "http://#{ip}:#{port}"
   end
 
   private def reset_started_at
@@ -100,5 +99,4 @@ class Gear < ActiveRecord::Base
   end
 
   belongs_to :app
-
 end

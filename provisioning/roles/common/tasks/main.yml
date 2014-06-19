@@ -1,9 +1,0 @@
----
-- include: packages.yml
-- include: ruby.yml
-- include: nodejs.yml
-- include: docker.yml
-- include: hipache.yml
-- include: ssh.yml
-- include: postgresql.yml
-- include: redis.yml

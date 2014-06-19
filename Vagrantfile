@@ -17,18 +17,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder ".", "/app", mount_options: ["uid=453,gid=453"]
+  config.vm.synced_folder ".", "/app"
 
   config.vm.provider :virtualbox do |vb|
     # Use VBoxManage to customize the VM. For example to change memory:
     vb.customize ["modifyvm", :id, "--memory", "1024"]
   end
-
-  #config.vm.provision :ansible do |ansible|
-  #  ansible.playbook = "provisioning/deploy.yml"
-  #  ansible.inventory_path = "provisioning/hosts"
-  #  ansible.limit = :all
-  #  ansible.ask_sudo_pass = true
-  #  #ansible.verbose = 'vvv'
-  #end
+  
+  config.vm.provision :shell, path: 'script/setup'
+  config.vm.provision :shell, path: 'script/build'
+  config.vm.provision :shell, path: 'script/bootstrap'
 end

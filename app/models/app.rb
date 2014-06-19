@@ -1,7 +1,4 @@
-require 'tempfile'
-
 class App < ActiveRecord::Base
-
   validates :name, uniqueness: true,
                    presence: true,
                    format: { with: /\A[a-z][a-z\d-]+\z/ }, # a-z + 0-9 + -, must start with a-z
@@ -12,83 +9,19 @@ class App < ActiveRecord::Base
 
   before_validation :ensure_name,            unless: ->(model){ model.persisted? }
   before_validation :create_logplex_channel, unless: ->(model){ model.persisted? }
+  before_destroy    :delete_logplex_channel
 
-  before_create do
-    self.git = "#{name}.git"
-    create_git_repo
+  def version
+    releases.count
   end
 
-  before_destroy do
-    delete_git_repo
-    delete_logplex_channel
+  def env
+    releases.last.try(:env) || {}
   end
 
-  # after_update = don't do this on create
-  after_update do # rebuild and redeploy if config was changed
-    if env_changed?
-      build
-      deploy!
-    end
-  end
-
-  # build image using buildpacks (buildstep)
-  def build
-    self.increment!(:version)
-
+  def release!(penv=env)
     image_name = "#{user.username.downcase}/#{name}"
-    git_ref = 'master'
-
-    buildstep = Docker::Container.create({
-      'Image'     => 'dawn/buildstep',
-      'Cmd'       => ['/bin/bash', '-c', 'mkdir -p /app && tar -xC /app && /build/builder'],
-      'Env'       => env.map { |k,v| "#{k}=#{v}" },
-      'OpenStdin' => true,
-      'StdinOnce' => true
-    }, Docker::Connection.new('unix:///var/run/docker.sock', {:chunk_size => 1})) # tempfix for streaming
-
-    Tempfile.open(name) do |tarball| # use a tempfile to not store in memory
-      pid = spawn("git archive #{git_ref}", :out => tarball, chdir: repo_path)
-      Process.wait(pid)
-
-      buildstep.tap(&:start).attach(stdin: tarball) do |stream, chunk|
-        puts "\e[1G#{chunk}" if chunk != "\n" # \e[1G gets rid of that pesky 'remote:' text, skip empty lines
-      end
-
-      if buildstep.wait['StatusCode'] == 0
-        buildstep.commit(repo: image_name)
-      else
-        raise "Buildstep returned a non-zero exit code."
-      end
-    end
-
-    # .. tag the current image commit with version (user/image:v3, etc., the ':v3' part)
-    # `docker tag #{self.image} `
-
-    # clean up
-    begin
-      buildstep.kill.delete force: true
-    rescue Docker::Error::NotFoundError
-    end
-
-    # set the release version to the counter
-    releases.create!(image: image_name, version: version)
-  end
-
-  # using the latest release, destroy old gears and
-  # generate new ones
-  def deploy!
-    gears.destroy_all # destroy old gears
-
-    # recreate hipache node
-    redis_key = "frontend:#{url}"
-    $redis.del(redis_key)
-    $redis.rpush(redis_key, name)
-
-    formation.each do |proctype, count| # generate new gears
-      count.to_i.times do
-        gear = gears.create!(proctype: proctype)
-      end
-    end
+    releases.create!(image: image_name, env: penv)
   end
 
   # restarts the application (restart the gears)
@@ -97,6 +30,10 @@ class App < ActiveRecord::Base
   end
 
   def proctypes
+    return {}
+    # normal operation starts here
+    return {} if releases.empty?
+    repo_path # TODO: fix this, it no longer exists
     Dir.chdir repo_path do
       default_procfile_name = '/app/tmp/heroku-buildpack-release-step.yml'
 
@@ -137,7 +74,10 @@ class App < ActiveRecord::Base
         diff.times { gears.create!(proctype: gear_proctype) }
       elsif diff < 0
         # get rid of diff number of gears, from the highest worker number down
-        gears.where(type: gear_proctype).order(number: :desc).limit(diff.abs).destroy
+        gears.where(type: gear_proctype)
+             .order(number: :desc)
+             .limit(diff.abs)
+             .destroy
       end
     end
 
@@ -199,28 +139,11 @@ class App < ActiveRecord::Base
     Logplex.delete(path: "/v2/channels/#{logplex_id}")
   end
 
-  private def gitlab_projects(arg)
-    result = `/opt/gitlab-shell/bin/gitlab-projects #{arg} 2>&1`
-    Rails.logger.tagged("GITLAB::APP") { logger.info(result) } unless result.empty?
-    $?.success?
-  end
-
-  private def repo_path
-    "#{Dir.home("git")}/repositories/#{git}"
-  end
-
-  private def create_git_repo
-    gitlab_projects "add-project #{git}"
-  end
-
-  private def delete_git_repo
-    gitlab_projects "rm-project #{git}"
-  end
-
   belongs_to :user
 
-  has_many :releases, -> { order(created_at: :desc) }
+  has_many :releases, -> { order(created_at: :desc) }, dependent: :destroy
   has_many :gears,    dependent: :destroy
-  has_many :drains,   dependent: :delete_all # since deleting the chan deletes the drains, don't trigger callback
-
+  # since deleting the chan deletes the drains, don't trigger callback
+  has_many :drains,   dependent: :delete_all
+  has_many :domains,  dependent: :destroy
 end

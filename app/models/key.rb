@@ -1,17 +1,27 @@
-class Key < ActiveRecord::Base # SSH public key representation
+require 'sshkey'
 
-  private def gitlab_keys(arg)
-    system("/opt/gitlab-shell/bin/gitlab-keys #{arg}")
+# SSH public key representation
+class SSHKeyValidator < ActiveModel::Validator
+  def validate(record)
+    unless SSHKey.valid_ssh_public_key?(record.key)
+      record.errors[:key] << "is not a valid ssh public key"
+    end
+  end
+end
+
+class Key < ActiveRecord::Base
+  before_validation(on: :create) do
+    generate_fingerprint
   end
 
-  after_create do
-    gitlab_keys("add-key \"key-#{id}\" \"#{key}\"")
-  end
+  validates_with SSHKeyValidator
+  validates :key, presence: true
+  validates :fingerprint, uniqueness: true, presence: true
 
-  before_destroy do
-    gitlab_keys("rm-key \"key-#{id}\"")
+  def generate_fingerprint
+    self.fingerprint = SSHKey.fingerprint(key)
+  rescue SSHKey::PublicKeyError
   end
 
   belongs_to :user
-
 end

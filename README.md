@@ -1,5 +1,7 @@
 Dawn
 ====
+[![Dependency Status](https://gemnasium.com/dawn/dawn.svg)](https://gemnasium.com/dawn/dawn)
+[![Code Climate](https://codeclimate.com/github/dawn/dawn.png)](https://codeclimate.com/github/dawn/dawn)
 
 Hello, welcome to Dawn, a PaaS that leverages Ruby on Rails and Docker. It implements a Heroku-like interface,
 with an API-first approach. Initial development started in October 2013 intending to be launched as a commercial
@@ -23,43 +25,44 @@ to deploy and scale, and faster to provision.
 ## Prerequisites
 * A system capable of running amd64 VMs (for our development box)
 * Vagrant >= 1.6.2
-* Ansible >= 1.6.2
 * Patience (if you have a bad network connection and/or not so fancy computer)
 
 ## Installation (Development)
-
-First, make sure to initialize git submodules (we currently use a submodule for erlang provisioning).
-```
-git submodule update --init
-```
-
-Setting up a development environment is pretty easy, as Vagrant automatically runs the Ansible playbooks provided.
-All it takes to get the box up and running is:
-
-```shell
-$ vagrant up
-$ script/provision -l vagrant
-```
-
-The initial provisioning run might take a while, because we pull and compile several dependencies.
-
-To provision your own server, simply add it under a different group inside `provisioning/hosts`, then run
-```
-$ script/provision -l <group>
-```
 
 ### dnsmasq
 The box IP needs to resolve to dawn.dev and dawnapp.dev (configurable in config/application.yml). You can add an alias to
 /etc/resolv.conf, or use your own method of doing so. We suggest using dnsmasq, with the following line
 in it's configuration:
 
-```
-# /etc/dnsmasq.conf
+#### /etc/dnsmasq.conf
 ...
 address=/dev/192.168.33.10
 ```
 
-All set! Your box is now ready to use. Point your browser to http://dawn.dev, and it should show a landing page.
+### The machine
+
+Setting up a development environment is pretty easy. All it takes to get the box up and running is:
+
+```shell
+$ vagrant up
+```
+
+The initial provisioning run might take a while, because we pull and build several dependencies.
+
+All set! Your box is now ready to use.
+
+```
+curl http://api.dawn.dev/healthcheck
+```
+
+In order to provision a custom server, you can use the included script,
+`script/provision`. Another option is to copy Dawn onto the server, and run the
+steps yourself; `script/setup && script/build && script/bootstrap` (in fact, `script/provision` is a wrapper
+that does exactly that).
+
+```
+script/provision root@myserver.com
+```
 
 [Our client](https://github.com/dawn/dawn-cli) is recommended currently, as it's the most feature complete, however, a
 web interface is also in the works, available under [dashboard.dawn.dev](http://dashboard.dawn.dev).
@@ -84,7 +87,7 @@ Password: test1234
 
 The utility then stores the API token under `~/.netrc` for further use. (Note that our format is currently incompatible with `curl -n`, because we use `Authorization: Token` instead of `Authorization: Basic`. This will change in the near future.)
 
-Next up, we need to add our ssh key, in order to be authorized to push to the platform. This will automatically take your 
+Next up, we need to add our ssh key, in order to be authorized to push to the platform. This will automatically take your
 
 ```
 dawn key:add
@@ -178,10 +181,16 @@ vagrant@ubuntu-14:~$ sudo restart dawn
 ```
 
 ### API is not working after a system sleep/hybernation
-Vagrant sometimes seems to unmount the shared folder `/app` on such occasions. Run `vagrant reload`. 
+Vagrant sometimes seems to unmount the shared folder `/app` on such occasions. Run `vagrant reload`.
 
 ## Documentation
 [API documentation](http://dawn.github.io/docs/) is available. We're in the process of providing online CLI documentation and guides as well.
+
+
+## Known Problems
+- dashboard.dawn.dev doesn't work
+#7
+[Dawn Dashboard](https://github.com/dawn/dawn-dashboard)
 
 ## Have Questions?
 Hit us up on the irc on freenode #dawn

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+cd /app
+
+cd services
+
+for f in *; do
+  echo "=====> Building $f..."
+  pushd $f > /dev/null
+  docker build -t dawn/$f .
+  popd > /dev/null
+done
+
+cd ..
+
+docker build -t dawn/dawn .

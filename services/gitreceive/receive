@@ -1,0 +1,129 @@
+#!/usr/bin/env ruby
+require "tempfile"
+require "docker"
+require "excon"
+require "json"
+
+$stdout.sync = true # flush input immediately
+
+# patch Excon, to keep it shtum about hijack_block
+module Excon
+  class << self
+    def display_warning(warning)
+      # noop
+    end
+  end
+end
+
+# build token (duh)
+BUILD_TOKEN = "E1HZojQmOoQdLu3fUHxQMqLmJnrJjTqm"
+
+API_HOST = "http://api:5000"
+
+# connection header
+HEADERS = {
+  'Accept'                => 'application/json',
+  'Content-Type'          => 'application/json',
+  'Accept-Encoding'       => 'gzip',
+  'User-Agent'            => "dawn-gitreceived-receive",
+  'X-Ruby-Version'        => RUBY_VERSION,
+  'X-Ruby-Platform'       => RUBY_PLATFORM
+}
+
+REPONAME_REGEX = /\A(?<username>[A-z][A-z\d-]+)~(?<repo>[a-z][a-z\d-]+)\z/
+
+argv = ARGV.dup
+git_reponame = argv.shift
+commit = argv.shift
+
+# reponame validation regex
+
+# validate reponame
+if git_reponame.match(REPONAME_REGEX)
+  username = $~[:username]
+  reponame = $~[:repo]
+else
+  abort "reponame (#{git_reponame}) is invalid"
+end
+
+#repo_path = File.join(Dir.home("git"), "repositories", git_reponame)
+repo_path = File.join("/tmp/repos", git_reponame)
+image_name = "#{username.downcase}/#{reponame}"
+git_ref = commit
+
+##
+# fetch api_key
+connection = Excon.new API_HOST, headers: HEADERS
+result = connection.request(
+  method: :get,
+  path: "/git/api_key",
+  query: {
+    username: username,
+    build_token: BUILD_TOKEN
+  }
+)
+
+if result.status != 200
+  message = JSON.load(result.body) rescue ({})
+  abort "Fetching api_key failed with #{message}"
+end
+
+api_key = JSON.load(result.body)["user"]["api_key"]
+
+headers = HEADERS.merge(
+  'Authorization' => "Token token=\"#{api_key}\"",
+  'Host' => "api.dawn.dev"
+)
+connection = Excon.new API_HOST, headers: headers
+
+##
+# fetch app env
+app = JSON.load(connection.request(
+  method: :get,
+  expects: 200,
+  path: "/apps/#{reponame}"
+).body)["app"]
+
+##
+# build app
+buildstep = Docker::Container.create({
+  'Image'     => 'dawn/buildstep',
+  'Cmd'       => ['/bin/bash', '-c', 'mkdir -p /app && tar -xC /app && /build/builder'],
+  'Env'       => app["env"].map { |k,v| "#{k}=#{v}" },
+  'OpenStdin' => true,
+  'StdinOnce' => true
+}, Docker::Connection.new('unix:///var/run/docker.sock', {:chunk_size => 1})) # tempfix for streaming
+
+Tempfile.open(reponame) do |tarball| # use a tempfile to not store in memory
+  pid = spawn("git archive #{git_ref}", :out => tarball, chdir: repo_path)
+  Process.wait(pid)
+
+  buildstep.tap(&:start).attach(stdin: tarball) do |stream, chunk|
+    puts "\e[1G#{chunk}" if chunk != "\n" # \e[1G gets rid of that pesky 'remote:' text, skip empty lines
+  end
+
+  if buildstep.wait['StatusCode'] == 0
+    buildstep.commit(repo: image_name)
+  else
+    raise "Buildstep returned a non-zero exit code."
+  end
+end
+
+begin
+  buildstep.kill.delete force: true
+rescue Docker::Error::NotFoundError
+end
+
+
+puts "\e[1G\n"
+$stdout.write "\e[1G-----> Launching... " # no newline
+
+release = JSON.load(connection.request(
+  method: :post,
+  expects: 200,
+  path: "/apps/#{reponame}/releases",
+  body: {}.to_json
+).body)
+
+puts "done, v#{release["version"]}\n"
+puts "\e[1G       http://#{app["url"]} deployed to Dawn"

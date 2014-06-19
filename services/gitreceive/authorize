@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+# authorize
+#   Dawn's magic dust for the git server
+# BASH
+#usn=$1
+#key=$2
+#
+#set -eo pipefail
+#curl "http://172.17.42.1:5000/api/git/allowed?key=$key" --fail
+require "excon"
+
+API_HOST = "http://api:5000"
+
+# connection header
+HEADERS = {
+  'Accept'                => 'application/json',
+  'Content-Type'          => 'application/json',
+  'Accept-Encoding'       => 'gzip',
+  'User-Agent'            => "dawn-gitreceived-authorize",
+  'X-Ruby-Version'        => RUBY_VERSION,
+  'X-Ruby-Platform'       => RUBY_PLATFORM
+}
+
+argv = ARGV.dup
+username = argv.shift
+sshkey = argv.shift
+
+Excon.get API_HOST,
+          headers: HEADERS,
+          expects: 200,
+          path: "/git/allowed",
+          query: {
+            username: username,
+            key: sshkey
+          }

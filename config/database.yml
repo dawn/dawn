@@ -1,17 +1,30 @@
-development:
-  adapter: postgresql
-  encoding: unicode
-  database: dawn_development
-  template: template0
-  pool: 5
-  username: dawn
-  password:
-
+---
 test:
   adapter: postgresql
+  host: postgres
   encoding: unicode
   database: dawn_test
   template: template0
   pool: 5
   username: dawn
   password:
+
+development:
+  adapter: postgresql
+  host: postgres
+  encoding: unicode
+  database: dawn_development
+  template: template0
+  pool: 5
+  username: dawn
+  password: dawn
+
+production:
+  adapter: postgresql
+  host: postgres
+  encoding: unicode
+  database: dawn_production
+  template: template0
+  pool: 5
+  username: dawn
+  password: dawn
