@@ -37,6 +37,6 @@ if [ ! -f /app/git.key ]; then
 fi
 
 echo "=====> Starting up gitreceive"
-docker run -d -p 2201:2201 --name gitreceived --link api:api -v=/var/run/docker.sock:/var/run/docker.sock -e SSH_PRIVATE_KEYS="$(cat /app/git.key)" dawn/gitreceive
+docker run -d -p 2201:2201 --name gitreceive --link api:api -v=/var/run/docker.sock:/var/run/docker.sock -e SSH_PRIVATE_KEYS="$(cat /app/git.key)" dawn/gitreceive
 
 echo "=====> Done!"
