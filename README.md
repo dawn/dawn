@@ -25,41 +25,32 @@ to deploy and scale, and faster to provision.
 ## Prerequisites
 * A system capable of running amd64 VMs (for our development box)
 * Vagrant >= 1.6.2
-* Ansible >= 1.6.2
 * Patience (if you have a bad network connection and/or not so fancy computer)
 
 ## Installation (Development)
-
-First, make sure to initialize git submodules (we currently use a submodule for erlang provisioning).
-```
-git submodule update --init
-```
-
-Setting up a development environment is pretty easy, as Vagrant automatically runs the Ansible playbooks provided.
-All it takes to get the box up and running is:
-
-```shell
-$ vagrant up
-$ script/provision -l vagrant
-```
-
-The initial provisioning run might take a while, because we pull and compile several dependencies.
-
-To provision your own server, simply add it under a different group inside `provisioning/hosts`, then run
-```
-$ script/provision -l <group>
-```
 
 ### dnsmasq
 The box IP needs to resolve to dawn.dev and dawnapp.dev (configurable in config/application.yml). You can add an alias to
 /etc/resolv.conf, or use your own method of doing so. We suggest using dnsmasq, with the following line
 in it's configuration:
 
-```
-# /etc/dnsmasq.conf
+#### /etc/dnsmasq.conf
 ...
 address=/dev/192.168.33.10
 ```
+
+### The machine
+
+Setting up a development environment is pretty easy. All it takes to get the box up and running is:
+
+```shell
+$ vagrant up
+$ ssh root@dawn.dev bash < script/setup
+$ ssh root@dawn.dev bash < script/build
+$ ssh root@dawn.dev bash < script/bootstrap
+```
+
+The initial provisioning run might take a while, because we pull and build several dependencies.
 
 All set! Your box is now ready to use.
 
