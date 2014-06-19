@@ -45,9 +45,6 @@ Setting up a development environment is pretty easy. All it takes to get the box
 
 ```shell
 $ vagrant up
-$ ssh root@dawn.dev bash < script/setup
-$ ssh root@dawn.dev bash < script/build
-$ ssh root@dawn.dev bash < script/bootstrap
 ```
 
 The initial provisioning run might take a while, because we pull and build several dependencies.
@@ -56,6 +53,15 @@ All set! Your box is now ready to use.
 
 ```
 curl http://api.dawn.dev/healthcheck
+```
+
+In order to provision a custom server, you can use the included script,
+`script/provision`. Another option is to copy Dawn onto the server, and run the
+steps yourself; `script/setup && script/build && script/bootstrap` (in fact, `script/provision` is a wrapper
+that does exactly that).
+
+```
+script/provision root@myserver.com
 ```
 
 [Our client](https://github.com/dawn/dawn-cli) is recommended currently, as it's the most feature complete, however, a

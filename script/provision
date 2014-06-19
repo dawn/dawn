@@ -1,4 +1,3 @@
 #!/bin/bash
 
-ansible-playbook provisioning/newhost.yml -i provisioning/hosts -e 'host_key_checking=False' -k "$@"
-ansible-playbook provisioning/deploy.yml -i provisioning/hosts -e 'host_key_checking=False' "$@"
+cat script/setup script/build script/bootstrap | ssh "$@" bash
