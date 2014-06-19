@@ -6,8 +6,8 @@ class ApiController < ActionController::Metal
   include ActionController::Head             # for header only responses
   include ActionController::StrongParameters # for params.require
   include ActionController::ForceSSL         # secure API by forcing SSL in production
-  # Authentication: Token
-  include ActionController::HttpAuthentication::Token::ControllerMethods
+  # Authentication: Basic 
+  include ActionController::HttpAuthentication::Basic::ControllerMethods
   include AbstractController::Callbacks    # callbacks for authentication logic (before_action, etc..)
 
   before_action :authenticate_user_from_api_key!
@@ -26,11 +26,11 @@ class ApiController < ActionController::Metal
     !Rails.env.development?
   end
 
-  # Bare metal authentication using Authentication: Token
+  # Bare metal authentication
   attr_accessor :current_user
 
   def authenticate_user_from_api_key!
-    authenticate_or_request_with_http_token do |token, options|
+    authenticate_or_request_with_http_basic do |_, token|
       if token && user = User.find_by(api_key: token)
         self.current_user = user
       else
