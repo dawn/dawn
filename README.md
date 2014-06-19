@@ -61,7 +61,11 @@ in it's configuration:
 address=/dev/192.168.33.10
 ```
 
-All set! Your box is now ready to use. Point your browser to http://dawn.dev, and it should show a landing page.
+All set! Your box is now ready to use.
+
+```
+curl http://api.dawn.dev/healthcheck
+```
 
 [Our client](https://github.com/dawn/dawn-cli) is recommended currently, as it's the most feature complete, however, a
 web interface is also in the works, available under [dashboard.dawn.dev](http://dashboard.dawn.dev).

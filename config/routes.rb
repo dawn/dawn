@@ -43,6 +43,8 @@ Dawn::Application.routes.draw do
     resources :keys
   end
 
+  get '/healthcheck',  to: 'healthcheck#index'
+
   get '/git/api_key',  to: 'git/git#api_key'
   get '/git/allowed',  to: 'git/git#allowed'
 end
