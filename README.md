@@ -85,7 +85,7 @@ Username: Speed
 Password: test1234
 ```
 
-The utility then stores the API token under `~/.netrc` for further use. (Note that our format is currently incompatible with `curl -n`, because we use `Authorization: Token` instead of `Authorization: Basic`. This will change in the near future.)
+The utility then stores the API token under `~/.netrc` for further use.
 
 Next up, we need to add our ssh key, in order to be authorized to push to the platform. This will automatically take your
 
