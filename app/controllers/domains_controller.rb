@@ -1,4 +1,4 @@
-class Api::DomainsController < ApiController
+class DomainsController < ApiController
   before_action :find_domain, only: [:show, :update, :destroy]
 
   def show

@@ -1,4 +1,4 @@
-class Api::ReleasesController < ApiController
+class ReleasesController < ApiController
   def show
     render 'release', status: 200
   end

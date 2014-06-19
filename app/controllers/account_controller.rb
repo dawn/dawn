@@ -1,4 +1,4 @@
-class Api::AccountController < ApiController
+class AccountController < ApiController
   before_action :find_account, only: [:index, :update]
 
   def index

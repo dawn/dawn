@@ -1,4 +1,4 @@
-class Api::DrainsController < ApiController
+class DrainsController < ApiController
   before_action :find_drain, only: [:show, :update, :destroy]
 
   def show

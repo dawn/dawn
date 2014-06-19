@@ -1,4 +1,4 @@
-class Api::Account::KeysController < ApiController
+class Account::KeysController < ApiController
   include GitHelper
 
   before_action :find_key, only: [:show, :destroy]

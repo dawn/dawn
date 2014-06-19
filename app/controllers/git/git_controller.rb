@@ -1,4 +1,4 @@
-class Api::Git::GitController < ActionController::Metal
+class Git::GitController < ActionController::Metal
   include AbstractController::Rendering
   include ActionController::Rendering   # enables rendering
   include ActionController::Renderers::All # enables render json and friends

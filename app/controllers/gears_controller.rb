@@ -1,4 +1,4 @@
-class Api::GearsController < ApiController
+class GearsController < ApiController
   before_action :find_gear, only: [:show, :update, :restart, :destroy]
 
   def show

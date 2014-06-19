@@ -1,6 +1,6 @@
 require 'shellwords'
 
-class Api::AppsController < ApiController
+class AppsController < ApiController
   actions = [:index, :create]
   before_action :find_app, except: actions
   before_action :verify_app_owner, except: actions
@@ -119,7 +119,7 @@ class Api::AppsController < ApiController
     if !@app.drains.where(url: url).exists?
       @drain = @app.drains.create(app: @app, url: url)
       if @drain.save
-        render 'api/drains/drain', status: 200
+        render 'drains/drain', status: 200
       else
         response = { id: "drain.save.fail",
                      message: "saving drain failed",
@@ -136,7 +136,7 @@ class Api::AppsController < ApiController
     if !@app.domains.where(url: url).exists?
       @domain = @app.domains.create(app: @app, url: url)
       if @domain.save
-        render 'api/domains/domain', status: 200
+        render 'domains/domain', status: 200
       else
         response = { id: "domain.save.fail",
                      message: "saving domain failed",
@@ -153,7 +153,7 @@ class Api::AppsController < ApiController
   def create_release
     @release = @app.release!
     if @release.save
-      render 'api/releases/release', status: 200
+      render 'releases/release', status: 200
     else
       response = { id: "drain.save.fail",
                    message: "saving drain failed",
@@ -165,22 +165,22 @@ class Api::AppsController < ApiController
   # fetch scoped subresources
   def gears
     @gears = @app.gears
-    render 'api/gears/index', status: 200
+    render 'gears/index', status: 200
   end
 
   def drains
     @drains = @app.drains
-    render 'api/drains/index', status: 200
+    render 'drains/index', status: 200
   end
 
   def domains
     @domains = @app.domains
-    render 'api/domains/index', status: 200
+    render 'domains/index', status: 200
   end
 
   def releases
     @releases = @app.releases
-    render 'api/releases/index', status: 200
+    render 'releases/index', status: 200
   end
 
   def gears_restart
