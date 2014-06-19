@@ -7,4 +7,4 @@ $redis = Redis.new(host: 'redis-hipache')
 redis_key = "frontend:api.#{ENV["DAWN_HOST"]}"
 $redis.del(redis_key)
 $redis.rpush(redis_key, "dawn")
-$redis.rpush(redis_key, "#{ip}:5000")
+$redis.rpush(redis_key, "http://#{ip}:5000")
