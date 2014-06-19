@@ -10,9 +10,8 @@ released it as open-source. Enjoy!
 
 Our current development stack is ubuntu 14.04, running docker, ruby 2.1.2 (rails 4.1.1), postgresql, redis, logplex and hipache.
 
-Future goal is to port the platform onto coreOS, and split the app into several containers (using a similar setup
-to what userspace apps will use -- dogfeeding us our own stack). Doing so will make the platform more modular, easier
-to deploy and scale, and faster to provision.
+Future goal is to port the platform onto coreOS. Dso will make the platform more modular, easier
+to deploy and scale.
 
 ## Features
 
@@ -34,7 +33,8 @@ The box IP needs to resolve to dawn.dev and dawnapp.dev (configurable in config/
 /etc/resolv.conf, or use your own method of doing so. We suggest using dnsmasq, with the following line
 in it's configuration:
 
-#### /etc/dnsmasq.conf
+```
+# /etc/dnsmasq.conf
 ...
 address=/dev/192.168.33.10
 ```
