@@ -28,7 +28,7 @@ sshkey = argv.shift
 Excon.get API_HOST,
           headers: HEADERS,
           expects: 200,
-          path: "/api/git/allowed",
+          path: "/git/allowed",
           query: {
             username: username,
             key: sshkey

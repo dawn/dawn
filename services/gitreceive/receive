@@ -56,7 +56,7 @@ git_ref = commit
 connection = Excon.new API_HOST, headers: HEADERS
 result = connection.request(
   method: :get,
-  path: "/api/git/api_key",
+  path: "/git/api_key",
   query: {
     username: username,
     build_token: BUILD_TOKEN
