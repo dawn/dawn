@@ -11,3 +11,8 @@ apt-get install -y lxc-docker
 if [ ! -d /app ]; then
   git clone https://github.com/dawn/dawn /app
 fi
+
+docker pull dawn/dawn
+docker pull dawn/buildstep
+docker pull dawn/logplex
+docker pull dawn/gitreceive
