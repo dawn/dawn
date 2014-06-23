@@ -90,14 +90,14 @@ The utility then stores the API token under `~/.netrc` for further use.
 Next up, we need to add our ssh key, in order to be authorized to push to the platform. This will automatically take your
 
 ```
-dawn key:add
+dawn key add
 ```
 
 Then, we initialize our project on the Dawn platform.
 
 ```
 $ cd awesome-app
-$ dawn init
+$ dawn create
 ```
 
 And we're done! To build our app, simply push to the `dawn` remote.
