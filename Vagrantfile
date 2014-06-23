@@ -25,6 +25,5 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
   
   config.vm.provision :shell, path: 'script/setup'
-  config.vm.provision :shell, path: 'script/build'
   config.vm.provision :shell, path: 'script/bootstrap'
 end
