@@ -26,7 +26,7 @@ echo "=====> Configuring logplex"
 docker run --rm --link redis-hipache:redis-hipache --link redis-logplex:redis-logplex --link postgres:postgres dawn/dawn script/logplex
 
 echo "=====> Starting up api"
-docker run -d --name api --link redis-hipache:redis-hipache --link redis-logplex:redis-logplex --link postgres:postgres --link logplex:logplex -v=/var/run/docker.sock:/var/run/docker.sock dawn/dawn
+docker run -d --name api --link redis-hipache:redis-hipache --link postgres:postgres --link logplex:logplex -v=/var/run/docker.sock:/var/run/docker.sock dawn/dawn
 
 echo "=====> Starting up hipache"
 docker run -d -p 80:80 --name hipache --link redis-hipache:redis --link api:api shipyard/router

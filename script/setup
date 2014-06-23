@@ -8,4 +8,6 @@ echo "deb http://get.docker.io/ubuntu docker main" > /etc/apt/sources.list.d/doc
 apt-get update -y
 apt-get install -y lxc-docker
 
-git clone -b dockerify https://github.com/dawn/dawn /app
+if [ ! -d /app ]; then
+  git clone https://github.com/dawn/dawn /app
+fi
