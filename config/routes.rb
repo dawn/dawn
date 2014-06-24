@@ -37,7 +37,9 @@ Dawn::Application.routes.draw do
 
   post '/login', to: 'session#create'
 
-  resources :accounts, only: [:index, :update] do
+  namespace :account do
+    get '/',   to: 'account#index'
+    patch '/', to: 'account#update'
     resources :keys
   end
 
