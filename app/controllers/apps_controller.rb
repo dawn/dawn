@@ -11,7 +11,7 @@ class AppsController < ApiController
   end
 
   def create
-    appname = app_params.require(:name)
+    appname = app_params[:name]
     if App.where(name: appname).first
       response = { id: "app.exists", message: "App #{appname} already exists" }
       render json: response, status: 409
