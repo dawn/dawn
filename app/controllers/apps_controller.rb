@@ -78,7 +78,7 @@ class AppsController < ApiController
 
   # starts a one-off container session
   def run
-    unless params[:command]
+    unless params[:command].present?
       response = { id: "run.command.invalid",
                    message: "invalid command given (#{params[:command]})" }
       render json: response, status: 400
