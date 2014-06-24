@@ -111,7 +111,9 @@ class AppsController < ApiController
 
   # -- new subresources
   def create_gear
-    head
+    # TODO
+    response = { message: "POST /apps/:id/gears is not implemented as yet" }
+    render json: response, status: 501
   end
 
   def create_drain
