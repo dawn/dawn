@@ -78,7 +78,11 @@ class AppsController < ApiController
 
   # starts a one-off container session
   def run
-    head 400 unless params[:command]
+    unless params[:command]
+      response = { id: "run.command.invalid",
+                   message: "invalid command given (#{params[:command]})" }
+      render json: response, status: 400
+    end
 
     if env['rack.hijack']
       env['rack.hijack'].call
