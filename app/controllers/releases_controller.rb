@@ -1,4 +1,6 @@
 class ReleasesController < ApiController
+  before_action :find_release, only: [:show]
+
   def show
     render 'release', status: 200
   end
