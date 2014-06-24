@@ -65,7 +65,7 @@ class AppsController < ApiController
 
   def scale
     @app.scale(app_params.require(:formation))
-    head 200
+    render 'formation', status: 200
   end
 
   def logs
