@@ -38,10 +38,10 @@ Dawn::Application.routes.draw do
   post '/login', to: 'session#create'
 
   namespace :account do
-    get '/',   to: 'account#index'
-    patch '/', to: 'account#update'
     resources :keys
   end
+  get '/account',   to: 'account#index'
+  patch '/account', to: 'account#update'
 
   get '/healthcheck',  to: 'healthcheck#index'
 
