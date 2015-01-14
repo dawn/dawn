@@ -3,6 +3,8 @@ Dawn
 [![Dependency Status](https://gemnasium.com/dawn/dawn.svg)](https://gemnasium.com/dawn/dawn)
 [![Code Climate](https://codeclimate.com/github/dawn/dawn.png)](https://codeclimate.com/github/dawn/dawn)
 
+##**Note that this project is discontinued in favour of us joining efforts with [Flynn](https://github.com/flynn/flynn). No future work is planned on this as the artchitecture is fundamentally flawed. We suggest you rather check out [Flynn](http://flynn.io) instead.**
+
 Hello, welcome to Dawn, a PaaS that leverages Ruby on Rails and Docker. It implements a Heroku-like interface,
 with an API-first approach. Initial development started in October 2013 intending to be launched as a commercial
 service eventually, however due to the increasing competition in the PaaS market, and the lack of time, we've
@@ -10,8 +12,6 @@ released it as open-source. Enjoy!
 
 Our current development stack is ubuntu 14.04, running docker, ruby 2.1.2 (rails 4.1.1), postgresql, redis, logplex and hipache.
 
-Future goal is to port the platform onto coreOS. Dso will make the platform more modular, easier
-to deploy and scale.
 
 ## Features
 
@@ -191,8 +191,3 @@ Vagrant sometimes seems to unmount the shared folder `/app` on such occasions. R
 - dashboard.dawn.dev doesn't work
 #7
 [Dawn Dashboard](https://github.com/dawn/dawn-dashboard)
-
-## Have Questions?
-Hit us up on the irc on freenode #dawn
-
-But please, don't really *hit us*
